@@ -13,6 +13,7 @@
     "async": "^2.6.2",
     "cheerio": "^1.0.0-rc.2",
     "mongoose": "^5.4.19",
+    "node-xlsx": "^0.14.1",
     "request": "^2.88.0"
   }
 }
