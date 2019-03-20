@@ -42,37 +42,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import { getList } from '@/api/table';
-import { Component, Vue } from 'vue-property-decorator';
+<script>
+import { getList } from '@/api/table'
 
-@Component({
+export default {
   filters: {
-    statusFilter(status: string) {
-      const statusMap: { [id: string]: string } = {
+    statusFilter(status) {
+      const statusMap = {
         published: 'success',
         draft: 'gray',
-        deleted: 'danger',
-      };
-      return statusMap[status];
-    },
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    }
   },
-})
-export default class Table extends Vue {
-  list = null;
-  listLoading = true;
-  listQuery = {};
-
+  data() {
+    return {
+      list: null,
+      listLoading: true
+    }
+  },
   created() {
-    this.fetchData();
-  }
-
-  fetchData() {
-    this.listLoading = true;
-    getList(this.listQuery).then((response) => {
-      this.list = response.data.items;
-      this.listLoading = false;
-    });
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      this.listLoading = true
+      getList(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.listLoading = false
+      })
+    }
   }
 }
 </script>
