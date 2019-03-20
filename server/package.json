@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon --harmony index.js",
+    "check": "cross-env NODE_ENV=production nodemon --harmony index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "pm2 deploy production"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +32,11 @@
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
-    "nodemon": "^1.18.6"
+    "chalk": "^2.4.2",
+    "connect-history-api-fallback": "^1.6.0",
+    "cookie-parser": "^1.4.4",
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.18.6",
+    "sha1": "^1.1.1"
   }
 }
