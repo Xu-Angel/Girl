@@ -4,6 +4,12 @@ const Schema = mongoose.Schema
 const db = mongoose.createConnection('mongodb://127.0.0.1:27017/Girls', {
   useCreateIndex: true,
   useNewUrlParser: true
+}, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('连接数据库成功');
+  }
 })
 
 const girlSchema = new Schema({

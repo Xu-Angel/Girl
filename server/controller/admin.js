@@ -17,7 +17,7 @@ class Admin extends Base {
       console.log(fields);
       if (err) {
         res.send({
-          status: 0,
+          status: 100,
           type: 'FORM_DATA_ERROR',
           message: '表单信息错误'
         })
@@ -33,7 +33,7 @@ class Admin extends Base {
       } catch (err) {
         console.log(err.message, err);
         res.send({
-          status: 0,
+          status: 400,
           type: 'GET_ERROR_PARAM',
           message: err.message,
         })
@@ -53,27 +53,27 @@ class Admin extends Base {
           }
           await AdminModel.create(newAdmin)
           res.send({
-            status: 1,
+            status: 200,
             success: '注册管理员成功',
           })
         } else if (newpassword.toString() != admin.password.toString()) {
           console.log('管理员登录密码错误');
           res.send({
-            status: 0,
+            status: 400,
             type: 'ERROR_PASSWORD',
             message: '该用户已存在，密码输入错误',
           })
         } else {
           req.session.admin_id = admin_id;
           res.send({
-            status: 1,
+            status: 200,
             success: '登录成功'
           })
         }
       } catch (err) {
         console.log('登录管理员失败', err);
         res.send({
-          status: 0,
+          status: 400,
           type: 'LOGIN_ADMIN_FAILED',
           message: '登录管理员失败',
         })
@@ -85,13 +85,13 @@ class Admin extends Base {
     try {
       delete req.session.admin_id;
       res.send({
-        status: 1,
+        status: 200,
         success: '退出成功'
       })
     } catch (err) {
       console.log('退出失败', err)
       res.send({
-        status: 0,
+        status: 400,
         message: '退出失败'
       })
     }
