@@ -4,6 +4,8 @@ import AdminModel from "../model/admin";
 import formidable from 'formidable'
 import crypto from 'crypto'
 import Base from './basePrototype'
+import config from 'config-lite'
+import { domainToASCII } from "url";
 class Admin extends Base {
   constructor() {
     super()
@@ -24,7 +26,7 @@ class Admin extends Base {
         })
         return
       }
-      const { username, password } = fields;
+      const { username, password, status = 1 } = fields;
       try {
         if (!username) {
           throw new Error('用户名参数错误')
@@ -44,17 +46,25 @@ class Admin extends Base {
       try {
         const admin = await AdminModel.findOne({ username })
         if (!admin) {
+          console.log(admin, 'admin')
+          const role = status == 1 ? 1 : 2
           const admin_id = await this.getId('admin_id');
-          console.log(admin_id, '48');
           const newAdmin = {
             username,
             password: newpassword,
-            id: admin_id
+            id: admin_id,
+            role
           }
           await AdminModel.create(newAdmin)
           res.send({
             status: 200,
             success: '注册管理员成功',
+            token: config.token,
+            data: {
+              role: admin.role,
+              avatar: admin.avatar,
+              name: admin.username
+            }
           })
         } else if (newpassword.toString() != admin.password.toString()) {
           console.log('管理员登录密码错误');
@@ -67,7 +77,13 @@ class Admin extends Base {
           req.session.admin_id = admin.id;
           res.send({
             status: 200,
-            success: '登录成功'
+            message: '登录成功',
+            token: config.token,
+            data: {
+              role: admin.role,
+              avatar: admin.avatar,
+              name: admin.username
+            }
           })
         }
       } catch (err) {
@@ -81,7 +97,7 @@ class Admin extends Base {
     })
   }
 
-  async singout(req, res, next) {
+  async logout(req, res, next) {
     try {
       delete req.session.admin_id;
       res.send({
@@ -126,6 +142,38 @@ class Admin extends Base {
   //     return
   //   }
   // }
+  async getAdminInfo(req, res, next) {
+    console.log('getinfo api')
+    const admin_id = req.session.admin_id;
+    console.log(admin_id, 'id');
+    if (!admin_id || !Number(admin_id)) {
+      console.log('获取管理员信息的session失效');
+      res.send({
+        status: 400,
+        type: 'ERROR_SESSION',
+        message: '获取管理员信息失败'
+      })
+      return
+    }
+    try {
+      const info = await AdminModel.findOne({ id: admin_id }, '-_id -__v -password');
+      if (!info) {
+        throw new Error('未找到当前管理员')
+      } else {
+        res.send({
+          status: 200,
+          data: info
+        })
+      }
+    } catch (err) {
+      console.log('获取管理员信息失败');
+      res.send({
+        status: 0,
+        type: 'GET_ADMIN_INFO_FAILED',
+        message: '获取管理员信息失败'
+      })
+    }
+  }
   encryption(password) {
     const newpassword = this.Md5(this.Md5(password).substr(2, 7) + this.Md5(password));
     return newpassword

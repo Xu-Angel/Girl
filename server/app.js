@@ -19,6 +19,7 @@ app.all('*', (req, res, next) => { // 跨域处理
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
   res.header("Access-Control-Allow-Credentials", true) //可以带cookies
   res.header("X-Powered-By", 'Express')
+  // res.header("X-Token", config.token)
   if (req.method == 'OPTIONS') {
     res.sendStatus(200)
   } else {
