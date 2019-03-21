@@ -31,19 +31,24 @@ const adminSchema = new Schema({
   'avatar': { type: String, default: 'default_avatar.jpg' }
 })
 
-const idsSchema = new mongoose.Schema({
-  admin_id: Number
+const idsSchema = new Schema({
+  admin_id: {type: Number, default:0 },
+  girl_id: {type: Number, default:0 },
 });
 
-const Ids = mongoose.model('Ids', idsSchema);
+const Ids = db.model('Ids', idsSchema);
 Ids.findOne((err, data) => {
   if (!data) {
     const newIds = new Ids({
       admin_id: 0,
+      girl_id: 0
     });
+    console.log('id_46');
     newIds.save();
+    console.log('id_48');
   }
 })
+
 adminSchema.index({ id: 1 });
 
 const Girl = db.model('Girl', girlSchema)

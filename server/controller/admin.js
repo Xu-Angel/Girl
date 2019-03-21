@@ -42,8 +42,10 @@ class Admin extends Base {
       const newpassword = this.encryption(password)
       try {
         const admin = await AdminModel.findOne({ username })
+        console.log(admin, '45');
         if (!admin) {
           const admin_id = await this.getId('admin_id');
+          console.log(admin_id, '48');
           const newAdmin = {
             username,
             password: newpassword,
