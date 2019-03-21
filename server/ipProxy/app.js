@@ -24,7 +24,7 @@ const deepFlatten = arr => [].concat(...arr.map(v => Array.isArray(v) ? deepFlat
 
 // 开启爬虫['', '',]
 const pageNum = parseInt(1 + Math.random() * 10)
-const pageArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const pageArr = [1, 2, 3, 4,5,6,7,8,9,10]
 // request({
 //   // url: 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js',
 //   url: 'http://xutianshi.top',
@@ -35,13 +35,14 @@ const pageArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 // }, (error, response, body) => {
 //     console.log(body, error, response);
 // })
-
-async.mapLimit(pageArr, 3, function (pageNum, cb) {
+console.log('task start');
+async.mapLimit(pageArr, 2, function (pageNum, cb) {
   getXici(pageNum).then(rs => {
     console.log(pageNum, 'pageNum');
-    cb(null, rs)
+    cb(null, [...rs])
   })
 }, function (err, rs) {
+    console.log(rs, 'fianl');
     if (rs.length > 0) {
     console.log('final');
     const deepFlatten = arr => [].concat(...arr.map(v => Array.isArray(v) ? deepFlatten(v) : v))
