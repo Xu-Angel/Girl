@@ -44,8 +44,7 @@ export const constantRouterMap = [
     redirect: '/example/table',
     name: 'Example',
     meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
+    children: [{
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
@@ -63,14 +62,12 @@ export const constantRouterMap = [
   {
     path: '/form',
     component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
+    children: [{
+      path: 'index',
+      name: 'Form',
+      component: () => import('@/views/form/index'),
+      meta: { title: 'Form', icon: 'form' }
+    }]
   },
 
   {
@@ -82,14 +79,12 @@ export const constantRouterMap = [
       title: 'Nested',
       icon: 'nested'
     },
-    children: [
-      {
+    children: [{
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'Menu1' },
-        children: [
-          {
+        children: [{
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
@@ -100,8 +95,7 @@ export const constantRouterMap = [
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
             meta: { title: 'Menu1-2' },
-            children: [
-              {
+            children: [{
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
@@ -130,18 +124,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 

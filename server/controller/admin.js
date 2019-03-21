@@ -5,7 +5,6 @@ import formidable from 'formidable'
 import crypto from 'crypto'
 import Base from './basePrototype'
 import config from 'config-lite'
-import { domainToASCII } from "url";
 class Admin extends Base {
   constructor() {
     super()
