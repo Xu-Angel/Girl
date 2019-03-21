@@ -1,5 +1,6 @@
 // 处理admin 表
-import { Admin as AdminModel } from '../model/index'
+// import { Admin as AdminModel } from '../model/admin'
+import AdminModel from "../model/admin";
 import formidable from 'formidable'
 import crypto from 'crypto'
 import Base from './basePrototype'
@@ -42,7 +43,6 @@ class Admin extends Base {
       const newpassword = this.encryption(password)
       try {
         const admin = await AdminModel.findOne({ username })
-        console.log(admin, '45');
         if (!admin) {
           const admin_id = await this.getId('admin_id');
           console.log(admin_id, '48');
@@ -64,7 +64,7 @@ class Admin extends Base {
             message: '该用户已存在，密码输入错误',
           })
         } else {
-          req.session.admin_id = admin_id;
+          req.session.admin_id = admin.id;
           res.send({
             status: 200,
             success: '登录成功'

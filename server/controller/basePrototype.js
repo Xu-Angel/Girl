@@ -1,4 +1,4 @@
-import { Ids as IDsModel } from '../model/index'
+import IDsModel from '../model/ids'
 
 export default class BaseComponent {
   constructor() {
