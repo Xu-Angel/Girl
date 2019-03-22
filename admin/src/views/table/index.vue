@@ -22,12 +22,12 @@
       </el-table-column>
       <el-table-column prop="image" label="头像" align="center">
         <template slot-scope="scope">
-          <img :src="scope.row.image" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
+          <img :src="scope.row.image" style="width: 50px; height: 50px;">
         </template>
       </el-table-column>
-      <el-table-column prop="income" label="收入" align="center" sortable width="150">
+      <el-table-column prop="income" label="收入" align="center" sortable width="110">
       </el-table-column>
-      <el-table-column prop="userIcon" label="认证标志" align="center">
+      <el-table-column prop="userIcon" label="认证标志" width="110" align="center">
         <template slot-scope="scope">
           <div class="i" v-html="scope.row.userIcon" ></div>
         </template>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getList, distinctGirls } from '@/api/table'
 
 export default {
   filters: {
@@ -95,10 +95,23 @@ export default {
           v.income = parseInt(Math.random() * 20000) + '￥'
         })
         this.list = response.data.items
+        let test = [...response.data.items]
         this.total = response.data.total
         this.listLoading = false
+        console.log(this.list)
+        test.forEach((v, i, arr) => {
+          const real = v.realUid
+          const _id = v._id
+            arr.forEach((v, i, arr) => {
+              if (v.realUid === real && _id !== v._id) {
+                test.splice(i,1)
+                // console.log(test.splice(i,1), 'splice')
+              }
+            })
+        })
+        console.log(test)
       })
-    }
+    },
   }
 }
 </script>

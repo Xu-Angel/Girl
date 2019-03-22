@@ -7,3 +7,10 @@ export function getList(data = {}) {
     data
   })
 }
+
+export function distinctGirls() {
+  return request({
+    url: '/girl/distinct',
+    method: 'get'
+  })
+}

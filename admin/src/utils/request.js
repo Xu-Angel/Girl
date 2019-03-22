@@ -6,7 +6,7 @@ import { Message } from 'element-ui'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000 // 请求超时时间
+  timeout: 500000 // 请求超时时间
 })
 
 axios.defaults.withCredentials = true // 保证不关闭浏览器 获取的session  一致
