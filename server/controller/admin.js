@@ -1,6 +1,6 @@
 // 处理admin 表
 // import { Admin as AdminModel } from '../model/admin'
-import AdminModel from "../model/admin";
+import AdminModel from "../model/admins"
 import formidable from 'formidable'
 import crypto from 'crypto'
 import Base from './basePrototype'

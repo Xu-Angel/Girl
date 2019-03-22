@@ -6,7 +6,7 @@ const idsSchema = new Schema({
   girl_id: { type: Number, default: 0 },
 })
 
-const Ids = mongoose.model('Ids', idsSchema)
+const Ids = mongoose.model('id', idsSchema)
 
 Ids.findOne((err, data) => {
   if (!data) {

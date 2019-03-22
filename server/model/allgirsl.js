@@ -20,6 +20,6 @@ const girlSchema = new Schema({
   'realUid': Number
 })
 
-const uniGirl = mongoose.model('uniGirl', girlSchema)
+const Girl = mongoose.model('allgirl', girlSchema)
 
-export default uniGirl
+export default Girl

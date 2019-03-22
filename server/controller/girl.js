@@ -1,6 +1,6 @@
 // 处理girl表
-import GirlModel from '../model/girl'
-import uniGirlModel from '../model/uniGirl'
+import GirlModel from '../model/allgirsl'
+import uniGirlModel from '../model/unigirls'
 import formidable from 'formidable'
 import Base from './basePrototype'
 
@@ -11,7 +11,7 @@ class Girl extends Base {
   }
 
   async getList(req, res, next) {
-    const form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
       console.log(fields);
       if (err) {
@@ -71,7 +71,6 @@ class Girl extends Base {
       })
       uniGirlModel.insertMany(girl, function (err, data) {
         GirlModel.remove({ }, function (err) {
-          if (err) return handleError(err)
           console.log('去重girls表成功,girls表清空成功，精数据在unigirls表中')
         });
       })
