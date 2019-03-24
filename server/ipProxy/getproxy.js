@@ -17,7 +17,7 @@ module.exports = function getXici(pageNum) {
       url: url,
       method: "GET",
       headers: { 'User-Agent': userAgent },
-      proxy: 'http://27.29.44.220:9999/'
+      // proxy: 'http://27.29.44.220:9999/'
     }, async function (error, response, body) {
       if (!error) {
         var $ = cheerio.load(body);

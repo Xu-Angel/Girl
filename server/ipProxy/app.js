@@ -3,7 +3,8 @@ const request = require('request')
 const mongoose = require('mongoose')
 const async = require('async')
 const Schema = mongoose.Schema
-const db = mongoose.createConnection('mongodb://127.0.0.1:27017/ipTable', { useNewUrlParser: true })
+
+const db = mongoose.createConnection('mongodb://root:password123@123.207.72.208:27017/iptable?authSource=admin', { useNewUrlParser: true })
 const getXici = require('./getproxy')
 // 暂时是随机爬一页的IP 下来存入数据库
 const ipSchema = new Schema({
