@@ -11,35 +11,35 @@
       >
       <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
       </el-table-column>
-      <el-table-column prop="nickname" align="center" label="昵称" width="95">
+      <el-table-column prop="nickname" align="center" label="昵称" >
       </el-table-column>
-      <el-table-column prop="randListTag" align="center" label="标签" width="220" >
+      <el-table-column prop="randListTag" align="center" label="标签"  >
         <template slot-scope="scope" >
           <div class="span" v-html="scope.row.randListTag"></div>
         </template>
       </el-table-column>
-      <el-table-column prop="education" label="学历" width="150" align="center">
+      <el-table-column prop="education" label="学历"  align="center">
       </el-table-column>
       <el-table-column prop="image" label="头像" align="center">
         <template slot-scope="scope">
           <img :src="scope.row.image" style="width: 50px; height: 50px;">
         </template>
       </el-table-column>
-      <el-table-column prop="income" label="收入" align="center" sortable width="110">
+      <el-table-column prop="income" label="收入" align="center" sortable >
       </el-table-column>
-      <el-table-column prop="userIcon" label="认证标志" width="110" align="center">
+      <el-table-column prop="userIcon" label="认证标志"  align="center">
         <template slot-scope="scope">
           <div class="i" v-html="scope.row.userIcon" ></div>
         </template>
       </el-table-column>
-      <el-table-column prop="height" label="身高" width="110" sortable align="center">
+      <el-table-column prop="height" label="身高"  sortable align="center" width="50">
       </el-table-column>
-      <el-table-column prop="marriage" class-name="status-col" label="状态" width="110" align="center">
+      <el-table-column prop="marriage" class-name="status-col" label="状态"  align="center" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.marriage | statusFilter">{{ scope.row.marriage }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="age" label="年龄" sortable width="200">
+      <el-table-column align="center" prop="age" label="年龄" sortable width="50">
       </el-table-column>
       <el-table-column align="center" prop="matchCondition" label="择偶要求" >
       </el-table-column>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getList, distinctGirls } from '@/api/table'
+import { getList, distinctGirls,getDetail } from '@/api/table'
 
 export default {
   filters: {
@@ -98,7 +98,7 @@ export default {
         let test = [...response.data.items]
         this.total = response.data.total
         this.listLoading = false
-        console.log(this.list)
+        // console.log(this.list)
         test.forEach((v, i, arr) => {
           const real = v.realUid
           const _id = v._id
@@ -109,7 +109,10 @@ export default {
               }
             })
         })
-        console.log(test)
+        // console.log(test)
+        getDetail({uid: 200720396}).then(rs => {
+          console.log('details:', rs)
+        })
       })
     },
   }

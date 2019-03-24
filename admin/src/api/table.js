@@ -8,6 +8,14 @@ export function getList(data = {}) {
   })
 }
 
+export function getDetail(data = {}) {
+  return request({
+    url: '/girl/getDetail',
+    method: 'post',
+    data
+  })
+}
+
 export function distinctGirls() {
   return request({
     url: '/girl/distinct',
