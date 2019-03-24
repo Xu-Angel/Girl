@@ -29,7 +29,7 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
   response => {
-    console.log(response, 'res')
+    // console.log(response, 'res')
     /**
      * status,100,101,200,400外的 进行拦截报错
      */

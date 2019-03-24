@@ -10,6 +10,9 @@
       style="width: 100%"
       >
       <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
+        <template slot-scope="scope" >
+          <span @click="toDetailById(scope.row.realUid)">{{scope.row.realUid}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="nickname" align="center" label="昵称" >
       </el-table-column>
@@ -115,6 +118,15 @@ export default {
         })
       })
     },
+    toDetailById(row) {
+      console.log(row, 'id');
+      this.$router.push({
+        path: '/girls/detail',
+        query: {
+          uid: row
+        }
+      })
+    }
   }
 }
 </script>

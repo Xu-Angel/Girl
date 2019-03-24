@@ -1,0 +1,370 @@
+ul, li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.DNA_xq li {
+display: inline-block;
+margin-top: 10px;
+}
+.pag_list_grey_r {
+  float: left;
+  width: 10px;
+  height: 26px;
+  background: url(../../assets/icons/yj_icon.gif) no-repeat -12px -29px;
+}
+
+.DNA_ppd_a {
+  float: left;
+}
+
+.DNA_ppd_a_con1 {
+  float: left;
+  display: inline;
+  width: 45px;
+  height: 15px;
+  margin: 50px 0 0 10px;
+  background: url(../../assets/icons/DNA_ppd.jpg) no-repeat;
+}
+
+.DNA_ppd_a_con2 {
+  left: 150px;
+  float: left;
+  margin-top: 20px;
+  color: #999;
+}
+
+.DNA_ppd_a_con2 h4 {
+  width: 87px;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  text-align: center;
+}
+
+.DNA_ppd_a_con2 h4 em {
+  font: 16px/28px Arial, Helvetica, sans-serif;
+  color: #ff556b;
+  vertical-align: middle;
+}
+
+.DNA_ppd_a_con2 p {
+  float: left;
+  width: 87px;
+  height: 26px;
+  line-height: 28px;
+  background: url(../../assets/icons/DNA_ppd.jpg) no-repeat 0 -48px;
+  color: #0098c2;
+  text-align: center;
+}
+
+.DNA_ppd_a_con3 {
+  float: left;
+  width: 51px;
+  height: 15px;
+  margin: 50px 0 0 0;
+  background: url(../../assets/icons/DNA_ppd.jpg) no-repeat 0 -23px;
+  ;
+}
+
+.tj_ly h2 {
+  float: left;
+  margin-top: 25px;
+  margin-left: 22px;
+  font: 14px/22px 'Microsoft YaHei';
+  color: #666;
+}
+
+.tj_ly h2 strong {
+  font-size: 16px;
+  color: #0098c2;
+}
+
+.zl_DNA_a .DNA_xq {
+  width: 630px;
+  margin: 30px 0 0 20px;
+}
+
+.zl_DNA_a .DNA_xq .f_999 {
+  font-weight: normal;
+  color: #999;
+}
+
+.DNA_xq .red,
+.DNA_gx_pag .red {
+  width: auto;
+  height: auto;
+  color: #ff556b;
+}
+
+.zl_DNA_a .w_a {
+  float: left;
+  width: 95px;
+  line-height: 42px;
+  font-weight: normal;
+  color: #999;
+}
+
+.zl_DNA_a .w_b {
+  float: left;
+  width: 125px;
+  line-height: 42px;
+  font-weight: normal;
+  color: #999;
+}
+
+.DNA_xq h5 b,
+.DNA_gx_pag h5 b {
+  font-weight: normal;
+}
+
+.DNA_xq ul {
+  float: left;
+  width: 440px;
+}
+
+.DNA_xq ul li {
+  float: left;
+  height: 35px;
+  line-height: 32px;
+  margin-right: 10px;
+  color: #222;
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.DNA_xq span {
+  display: inline-block;
+  width: 32px;
+  width: 32px;
+  height: 32px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.DNA_xq .yd span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 0;
+}
+
+.DNA_xq .ms span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -32px;
+}
+
+.DNA_xq .yl span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -64px;
+}
+
+.DNA_xq .dy span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -96px;
+}
+
+.DNA_xq .lx span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -128px;
+}
+
+.DNA_xq .sj span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -160px;
+}
+
+.DNA_xq .ds span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -190px;
+}
+
+.DNA_xq .ah span {
+  background: url(../../assets/icons/xq_icon.gif) no-repeat 0 -224px;
+}
+
+.DNA_xq {
+  display: inline-block;
+}
+
+.DNA_xq_more {
+  float: right;
+  margin-top: 3px;
+  color: #2c81d6;
+}
+
+.DNA_xq_more_a {
+  float: right;
+  margin-top: 12px;
+  color: #2c81d6;
+}
+
+.DNA_xq_more .test1 {
+  width: 40px;
+  padding-left: 15px;
+  background: url(../../assets/icons/DNA_more_2.gif) no-repeat 0 8px;
+  font-weight: normal;
+}
+
+.test2 {
+  width: 40px;
+  padding-left: 15px;
+  background: url(../../assets/icons/DNA_more_1.gif) no-repeat 0 8px;
+  font-weight: normal;
+}
+
+.DNA_xq_more img {
+  padding-right: 5px;
+  vertical-align: middle;
+}
+
+.DNA_xq_more a {
+  color: #2c81d6;
+}
+
+.DNA_gx_pag {
+  float: left;
+  display: inline;
+  width: 630px;
+  margin: 0 0 0 20px;
+}
+
+.DNA_gx_pag .pag_list {
+  float: left;
+  display: inline;
+  height: 26px;
+  margin-top: 10px;
+  margin-right: 12px;
+  color: #e97676;
+}
+
+.zl_DNA_a .list_a,
+.zl_DNA_a .list_b {
+  float: left;
+  width: 440px;
+}
+
+.DNA_gx_zs .pag_list {
+  float: left;
+  display: inline;
+  margin-top: 8px;
+  margin-right: 12px;
+  color: #747474;
+}
+
+.DNV_rr {
+  float: left;
+  display: inline;
+  width: 500px;
+  margin-top: 10px;
+  margin-left: 20px;
+  font-weight: normal;
+  color: #999;
+}
+
+.DNV_rr p {
+  margin-bottom: 30px;
+}
+
+.DNV_rr .bg {
+  display: inline-block;
+  width: 35px;
+  height: 24px;
+  margin-left: 5px;
+  padding: 5px 0 0 26px;
+  background: url(../../assets/icons/DNA_ppd.jpg) no-repeat 0 -74px;
+}
+
+.DNV_rr b {
+  font-weight: normal;
+}
+
+.DNA_xq_bj {
+  float: right;
+  width: 36px;
+  height: 23px;
+  margin-top: 10px;
+  padding-left: 20px;
+  background: url(../../assets/icons/DNA_ppd.jpg) no-repeat 0 -257px;
+  color: #2c81d6;
+  cursor: pointer;
+}
+
+.DNA_xq_bj a {
+  color: #2c81d6;
+}
+
+.DNA_gx_pag_input {
+  float: left;
+  display: inline;
+  width: 460px;
+  margin: 20px 20px;
+  color: #999;
+  vertical-align: middle;
+}
+
+.DNA_gx_pag_input input {
+  display: inline;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.zl_DNA_a .m_c {
+  display: inline;
+  margin: 0 3px;
+}
+
+.zl_DNA_b .DNA_xq h5,
+.zl_DNA_b .DNA_gx_pag h5,
+.w_b {
+  float: left;
+  width: 85px;
+  line-height: 42px;
+  font-weight: normal;
+  color: #999;
+}
+
+.zl_DNA_c .bc {
+  float: left;
+  width: 400px;
+  color: #999;
+}
+
+.zl_DNA_c .DNA_gx_pag .w_l,
+.zl_DNA_c .DNA_xq .w_l {
+  float: left;
+  clear: both;
+  width: 85px;
+  line-height: 42px;
+  font-weight: normal;
+  color: #999;
+}
+
+.zl_DNA_c .DNV_rr {
+  margin-top: 15px;
+}
+
+.zl_DNA_c .DNA_gx_pag_tips {
+  float: left;
+  width: 600px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  color: #999;
+}
+
+.zl_DNA_d h5 {
+  width: 600px;
+  color: #999;
+}
+
+.zl_DNA_d .DNA_gx_pag .w_l {
+  float: left;
+  width: 85px;
+}
+
+.zl_DNA_d h5 p {
+  float: left;
+}
+
+.DNV_rr_mt {
+  margin-top: 30px;
+}
+
+.DNV_rr_mt_1 {
+  margin-top: 15px;
+}
+
+.zl_DNA_a .m_hide {
+  display: none;
+}
