@@ -1,12 +1,19 @@
-ul, li {
+ul {
+  width: 200px;
+}
+
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .DNA_xq li {
-display: inline-block;
-margin-top: 10px;
+  display: inline-block;
+  margin-top: 10px;
 }
+
 .pag_list_grey_r {
   float: left;
   width: 10px;
