@@ -6,7 +6,7 @@
       <el-card :body-style="{ padding: '0px' }" class="flex-card">
         <el-col :span="5">
           <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item v-for="item in carousel" :key="item">
+            <el-carousel-item v-for="(item, key, index) in carousel" :key="index">
               <!-- <h3>{{ item }}</h3> -->
               <img :src="item" alt style="width:100%; height:100%">
             </el-carousel-item>
@@ -20,7 +20,7 @@
             <div class="margin-top l-height">{{ about }}</div>
             <el-row class style="display:flex;">
               <el-col>
-                <div v-for="(item, key ) in selfMsg" :key="item" class="l-height">
+                <div v-for="(item, key, index ) in selfMsg" :key="index" class="l-height">
                   <span>{{ key }}</span>:
                   <span>{{ item }}</span>
                 </div>
@@ -41,7 +41,7 @@
       <div slot="header" class="clearfix">
         <span>她的择偶要求</span>
       </div>
-      <div v-for="(item, key) in 择偶要求" :key="item" class="text item">
+      <div v-for="(item, key , index) in 择偶要求" :key="index" class="text item">
         <span>{{ key }}</span>:
         <span>{{ item }}</span>
       </div>
@@ -51,10 +51,10 @@
       <div slot="header" class="clearfix">
         <span>生活方式</span>
       </div>
-      <div v-for="(itemList, key) in 生活方式" :key="itemList" class="text item">
+      <div v-for="(itemList, key, index) in 生活方式" :key="index" class="text item">
         <div>{{ key }}:</div>
         <div class>
-          <div v-for="(item, key) in itemList" :key="item" class>
+          <div v-for="(item, key, index) in itemList" :key="index" class>
             <span>{{ key }}</span>:
             <span>{{ item }}</span>
           </div>
@@ -66,7 +66,7 @@
       <div slot="header" class="clearfix">
         <span>经济实力</span>
       </div>
-      <div v-for="(item, key) in 经济实力" :key="item" class="text item">
+      <div v-for="(item, key, index) in 经济实力" :key="index" class="text item">
         <span>{{ key }}</span>:
         <span>{{ item }}</span>
       </div>
@@ -76,9 +76,9 @@
       <div slot="header" class="clearfix">
         <span>工作学习</span>
       </div>
-      <div v-for="(item, key) in 工作学习" :key="item" class="text item">
+      <div v-for="(item, key, index) in 工作学习" :key="index" class="text item">
         <div>{{ key }}:</div>
-        <div v-for="(detail, key) in item" :key="key">
+        <div v-for="(detail, key, index) in item" :key="index">
           <!-- <span>{{key}}</span>: <div v-html="detail"></div> -->
         </div>
       </div>
@@ -88,9 +88,9 @@
       <div slot="header" class="clearfix">
         <span>婚姻观念</span>
       </div>
-      <div v-for="(item, key) in 婚姻观念" :key="item" class="text item">
+      <div v-for="(item, key, index) in 婚姻观念" :key="index" class="text item">
         <div>{{ key }}:</div>
-        <div v-for="(detail, key) in item" :key="detail">
+        <div v-for="(detail, key, index) in item" :key="index">
           <span>{{ key }}</span>:
           <span>{{ detail }}</span>
         </div>
@@ -117,7 +117,8 @@ export default {
         学习: ''
       },
       婚姻观念: {},
-      爱情DNA: ''
+      爱情DNA: '',
+      carousel: {}
     }
   },
   created() {
