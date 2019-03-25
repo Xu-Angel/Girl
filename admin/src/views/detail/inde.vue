@@ -72,7 +72,7 @@
       </div>
       <div v-for="(item, key) in 工作学习" :key="item" class="text item">
         <div>{{key}}:</div>
-        <div v-for="(detail, key) in item" :key="detail">
+        <div v-for="(detail, key) in item" :key="key">
           <!-- <span>{{key}}</span>: <div v-html="detail"></div> -->
         </div>
       </div>

@@ -190,7 +190,17 @@ module.exports = {
     'object-curly-spacing': [2, 'always', {
       objectsInObjects: false
     }],
-    'array-bracket-spacing': [2, 'never']
+    'array-bracket-spacing': [2, 'never'],
+    // 不对template 里面的闭合标签做校验
+    "vue/html-self-closing": ["error", {
+      "html": {
+        "void": "any",
+        "normal": "any",
+        "component": "any"
+      },
+      "svg": "any",
+      "math": "any"
+    }]
   }
 }
 
