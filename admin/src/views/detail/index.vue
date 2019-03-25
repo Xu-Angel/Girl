@@ -51,7 +51,7 @@
         <div v-for="(itemList, key, index) in 生活方式" :key="index">
           <div>{{ key }}:</div>
           <div class>
-            <div class="text item" v-for="(item, key, index) in itemList" :key="index">
+            <div v-for="(item, key, index) in itemList" :key="index" class="text item">
               <span>{{ key }}</span>:
               <span>{{ item }}</span>
             </div>
@@ -88,7 +88,7 @@
         </div>
         <div v-for="(item, key, index) in 婚姻观念" :key="index">
           <div>{{ key }}:</div>
-          <div class="text item" v-for="(detail, key, index) in item" :key="index">
+          <div v-for="(detail, key, index) in item" :key="index" class="text item" >
             <span>{{ key }}</span>:
             <span>{{ detail }}</span>
           </div>
@@ -124,8 +124,7 @@ export default {
       carousel: {},
       dialogImgUrl: '',
       imgDialogVisible: false,
-      bigImg: null,
-      uid: ''
+      bigImg: null
     }
   },
   created() {
@@ -138,7 +137,7 @@ export default {
   },
   methods: {
     findme() {
-     window.open(`http://www.shijijiayuan.com/${this.uid}`)
+      window.open(`http://www.shijijiayuan.com/${this.uid}`)
     },
     showAdvImage(row) {
       this.imgDialogVisible = true

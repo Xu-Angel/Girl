@@ -20,6 +20,7 @@
     "mockjs": "1.0.1-beta3",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
+    "server": "^1.0.18",
     "vue": "2.5.17",
     "vue-router": "3.0.1",
     "vuex": "3.0.1"
