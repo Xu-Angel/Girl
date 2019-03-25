@@ -29,8 +29,6 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    console.log(to, from)
-
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
