@@ -84,7 +84,9 @@ class Girl extends Base {
         return
       }
       try {
-        const girl = await detailModel.findOne({uid})
+        const girl = await detailModel.findOne({ uid })
+        girl['照片'].small = girl['照片'].samll
+        delete  girl['照片'].samll
         res.send({
           status: 200,
           data: {
