@@ -14,10 +14,10 @@ baseUrl: http://girl.xutianshi.top
 http://girl.xutianshi.top/admin/login
 ```
 #### POST 参数类型：form-data
-|参数|是否必选|类型
+|参数|是否必选|类型|说明|
 |:-----|:-------:|:-----|:-----|
-|username      |Y       |string
-|password      |Y       |string
+|username      |Y       |string   |用户名 |
+|password      |Y       |string   |密码 |
 #### 返回示例：
 ```javascript
 {
