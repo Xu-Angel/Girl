@@ -1,6 +1,10 @@
 <template>
   <div class="app-container">
     <!-- start -->
+    <div style="text-align: right;padding-bottom: 20px;">
+      <el-button type="danger"  @click="findme">联系我</el-button>
+      <el-button icon="el-icon-back" @click="returnList" class="return-list">返回列表</el-button>
+      </div>
     <el-row>
       <div>
         <span>自我介绍:</span>
@@ -19,7 +23,6 @@
           <span v-html="情感故事"></span>
         </div>
       </div>
-      <el-button type="primary" @click="findme">联系我</el-button>
     </el-row>
     <div>
       <el-card>
@@ -124,11 +127,13 @@ export default {
       carousel: {},
       dialogImgUrl: '',
       imgDialogVisible: false,
-      bigImg: null
+      bigImg: null,
+      pageNum: 1
     }
   },
   created() {
     this.uid = this.$route.query.uid
+    this.pageNum = this.$route.query.pageNum
     this.title = `第${this.uid}号佳丽的大图`
     this._getDetail({ uid: this.uid })
   },
@@ -136,6 +141,14 @@ export default {
 
   },
   methods: {
+    returnList(){
+      this.$router.push({
+        path: '/girls/list',
+        query: {
+          pageNum: this.pageNum
+        }
+      })
+    },
     findme() {
       window.open(`http://www.shijijiayuan.com/${this.uid}`)
     },

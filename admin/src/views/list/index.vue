@@ -39,13 +39,18 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="age" label="年龄" sortable width="50"></el-table-column>
-      <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column>
+      <!-- <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column> -->
+      <el-table-column align="center" prop="realUid" label="操作">
+        <template slot-scope="scope">
+          <el-button @click="toDetailById(scope.row.realUid,currentPage)">查看</el-button>
+        </template>
+        </el-table-column>
     </el-table>
     <div class="pagination-container">
       <el-pagination
         :total="total"
         :current-page="currentPage"
-        :page-sizes="[10,20,30, 50]"
+        :page-sizes="[10,20,30,40,50,60]"
         :page-size="pageSize"
         background
         @size-change="handleSizeChange"
@@ -56,7 +61,7 @@
 </template>
 
 <script>
-import { getList, getDetail } from '@/api/table'
+import { getList } from '@/api/table'
 
 export default {
   filters: {
@@ -79,6 +84,7 @@ export default {
     }
   },
   created() {
+    this.currentPage = this.$route.query.pageNum || 1
     this.fetchData()
   },
   methods: {
@@ -100,18 +106,15 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
-        // console.log(test)
-        getDetail({ uid: 200720396 }).then(rs => {
-          console.log('details:', rs)
-        })
       })
     },
-    toDetailById(row) {
-      console.log(row, 'id')
+    toDetailById(uid, pageNum) {
+      console.log(uid, pageNum, 'id')
       this.$router.push({
         path: '/girls/detail',
         query: {
-          uid: row
+          uid,
+          pageNum
         }
       })
     }
