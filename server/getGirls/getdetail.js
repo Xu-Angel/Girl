@@ -31,7 +31,7 @@ module.exports = function (realUid) {
       all['属相'] = infoLis.eq(8).find('.pr em').text()
       all['血型'] = infoLis.eq(9).find('.pr em').text()
       const jsArrs = $('.js_box')
-      all['自我介绍'] = jsArrs.eq(0).find('.js_text').text()
+      all['自我介绍'] = jsArrs.eq(0).find('.js_text').html()
       if ($('.DNA_xq ul').html()) {
         all['爱情DNA'] = $('.DNA_xq ul').html()
       }

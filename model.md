@@ -107,6 +107,7 @@
 |matchCondition      |Y       |String  |- |择偶要求 |
 |helloUrl      |Y       |String  |- |打招呼 |
 |top      |Y       |Number  |0 |受欢迎程度,用于前台展示 |
+|hidden      |Y       |Boolean  |false |用于显示隐藏 |
 
 #### detail  女性详细表
 |键|是否必选|类型|默认|说明|
