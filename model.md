@@ -29,8 +29,23 @@
 |id      |Y       |Number  |- |管理员id,来自id表admin_id |
 |username      |Y       |String |-  |管理员名字 |
 |password      |Y       |String |-  |管理员密码 |
-|avatar      |N       |String  |- |管理员头像，后期可修改 |
+|avatar      |N       |String  |- |管理员头像，可修改 |
 |role      |Y       |Number  |1 |1:普通管理、 2:超级管理员 |
+
+#### spider 爬虫表
+爬虫配置
+|键|是否必选|类型|默认|说明|
+|:-----|:-------:|:-----|:-----|:-----|
+|cookie      |Y       |String  |- |详细页的cookie |
+|area      |Y       |Object |-  |选项的地区参数 |
+|tag      |Y       |Object |-  |标签的参数 |
+|param      |Y       |Object  |- |爬列表页的参数 |
+
+#### task 任务表
+任务配置//TODO:
+|键|是否必选|类型|默认|说明|
+|:-----|:-------:|:-----|:-----|:-----|
+|-      |Y       |-  |- |- |
 
 #### user 用户表
 前台用户
@@ -39,7 +54,7 @@
 |id      |Y       |Number  |- |用户id,来自id表user_id |
 |username      |Y       |String |-  |用户名字 |
 |password      |Y       |String |-  |用户密码 |
-|avatar      |N       |String  |- |管理员头像，后期可修改 |
+|avatar      |N       |String  |- |用户头像，可修改 |
 |fav      |N       |Array  |- |收藏的女性uid |
 |yes      |N       |Array  |- |赞过的女性uid |
 
