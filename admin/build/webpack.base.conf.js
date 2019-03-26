@@ -21,6 +21,11 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  // 用cdn  不是用自己的资源
+  externals: {
+    vue: 'Vue',
+    'element-ui': 'ELEMENT'
+  },
   devServer: { disableHostCheck: true, },
   context: path.resolve(__dirname, '../'),
   entry: {
