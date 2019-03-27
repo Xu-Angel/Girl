@@ -26,7 +26,7 @@
           <img :src="scope.row.image" style="width: 50px; height: 50px;">
         </template>
       </el-table-column>
-      <el-table-column prop="income" label="收入" align="center" sortable></el-table-column>
+      <el-table-column prop="area" label="地区" align="center" sortable></el-table-column>
       <el-table-column prop="userIcon" label="认证标志" align="center">
         <template slot-scope="scope">
           <div class="i" v-html="scope.row.userIcon"></div>
@@ -39,6 +39,8 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="age" label="年龄" sortable width="50"></el-table-column>
+      <!-- <el-table-column prop="shortnote"  label="短语" align="center">
+      </el-table-column> -->
       <!-- <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column> -->
       <el-table-column align="center" prop="realUid" label="操作">
         <template slot-scope="scope">
@@ -90,8 +92,18 @@ export default {
   methods: {
     handleSizeChange() { },
     handleCurrentChange(changePage) {
+      // 重新请求本路由页 回到顶部
+      this.$router.push({
+        query: {
+          pageNum: changePage
+        }
+      })
       this.currentPage = changePage
       this.fetchData()
+      // 常规请求分页 不回到顶部
+      // this.$route.query.pageNum = changePage
+      // this.currentPage = changePage
+      // this.fetchData()
     },
     fetchData() {
       this.listLoading = true
@@ -100,9 +112,6 @@ export default {
         pageSize: this.pageSize
       }).then(response => {
         console.log(response)
-        response.data.items.filter(v => {
-          v.income = parseInt(Math.random() * 20000) + '￥'
-        })
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false

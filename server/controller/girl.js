@@ -106,19 +106,33 @@ class Girl extends Base {
   async distinct(req, res, next) {
     try {
       console.log('接到请求')
-      // let girl = await GirlModel.find({}) // 1. 整表取
+      //let girl = await GirlModel.find({}) // 1. 整表取
       let uids = await GirlModel.distinct('realUid')
-      // 2.distinct 然后find 再insert
-      console.log(uids)
+      console.log('uids.length:',uids.length)
+      // 去除已完成的uid
       // 切割uid 分布写入
-
-
-      for (let key in uids) {
+      let fin = await uniGirlModel.find({}, { realUid: 1, _id: 0 })
+      let finArr = []
+      for (let K in fin) {
+        // console.log(fin[K]['realUid'])
+        finArr.push(fin[K]['realUid'])
+      }
+      console.log('finArr.length:', finArr.length)
+      const difference = (a, b) => {
+        const s = new Set(b)
+        return a.filter(v => !s.has(v))
+      }
+      const uidArr = difference(uids,finArr); // [3]
+      // console.log('uidArr.length',uidArr.length)
+      // 2.distinct 然后find 再insert
+      //console.log(uids)
+      // return
+      for (let key in uidArr) {
         (function (key) {
           console.log(key)
           setTimeout(() => {
             GirlModel.find({ realUid: uids[key] }, function (err, data) {
-              console.log(key,'datastart',data,'dataend')
+              // console.log(key, 'datastart', data, 'dataend')
               // console.log('datastart0',data[0],'dataend0')
               // const {
               //   _id,
@@ -128,18 +142,20 @@ class Girl extends Base {
               // console.log('unidatastart',unidata, 'unidataend')
 
               // console.log(unidata['_doc'], 'unidata[_doc]')
+              // 一级赋值结构有问题  需要详细结构
               const { realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden } = data[0]
               new uniGirlModel({ realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden }).save(function (err, data) {
                 if (err) {
                   console.log('create', err)
                 } else {
-                  console.log(data, 'success:')
+                  // console.log(data, 'success:')
                 }
               })
             })
-          }, key * 25 + 200)
+          }, key * 30 + 200)
         })(key)
       }
+      // 3. 单表上的操作：利用distinct 出不重复的uid 然后全部UID数组去除Set() 在find&&remove
       // girl.forEach((v, i, arr) => {
       //   const real = v.realUid
       //   const _id = v._id
