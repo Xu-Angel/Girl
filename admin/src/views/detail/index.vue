@@ -2,9 +2,9 @@
   <div class="app-container">
     <!-- start -->
     <div style="text-align: right;padding-bottom: 20px;">
-      <el-button type="danger"  @click="findme">联系我</el-button>
-      <el-button icon="el-icon-back" @click="returnList" class="return-list">返回列表</el-button>
-      </div>
+      <el-button type="danger" @click="findme">联系我</el-button>
+      <el-button class="return-list" icon="el-icon-back" @click="returnList">返回列表</el-button>
+    </div>
     <el-row>
       <div>
         <span>自我介绍:</span>
@@ -91,7 +91,7 @@
         </div>
         <div v-for="(item, key, index) in 婚姻观念" :key="index">
           <div>{{ key }}:</div>
-          <div v-for="(detail, key, index) in item" :key="index" class="text item" >
+          <div v-for="(detail, key, index) in item" :key="index" class="text item">
             <span>{{ key }}</span>:
             <span>{{ detail }}</span>
           </div>
@@ -141,7 +141,7 @@ export default {
 
   },
   methods: {
-    returnList(){
+    returnList() {
       this.$router.push({
         path: '/girls/list',
         query: {

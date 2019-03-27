@@ -44,7 +44,7 @@
         <template slot-scope="scope">
           <el-button @click="toDetailById(scope.row.realUid,currentPage)">查看</el-button>
         </template>
-        </el-table-column>
+      </el-table-column>
     </el-table>
     <div class="pagination-container">
       <el-pagination
@@ -88,7 +88,7 @@ export default {
     this.fetchData()
   },
   methods: {
-    handleSizeChange() {},
+    handleSizeChange() { },
     handleCurrentChange(changePage) {
       this.currentPage = changePage
       this.fetchData()
