@@ -4,3 +4,5 @@ node_modules/
 server/getGirls/json/
 
 server/getGirls/jsonGirl/
+
+server/getGirls/db/json/

@@ -1,116 +1,64 @@
-const fs = require('fs')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
-const db = mongoose.createConnection('mongodb://127.0.0.1:27017/Girls', { useNewUrlParser: true })
+const stc = require('../area')
+const db = mongoose.createConnection('mongodb://root:password123@123.207.72.208:27017/girldatabasev1?authSource=admin', { useNewUrlParser: true,   useCreateIndex: true })
 
 const girlSchema = new Schema({
+  'realUid': Number,
+  'area': String,
   'nickname': String,
   'sex': { type: String, default: '女' },
   'marriage': { type: String, default: '未婚' },
-  'height': { type: Number, default: 160 },
+  'height': Number,
   'education': String,
-  'income': { type: Number, default: Math.random() * 50000 },
-  'workLocation': String,
+  'work_location': String,
   'age': { type: Number, default: 18 },
   'image': String,
   'randListTag': String,
   'userIcon': String,
-  'helloUrl': String,
-  'sendMsgUrl': String,
-  'shortNote': String,
+  'shortnote': String,
   'matchCondition': String,
-  'realUid': Number
+  'helloUrl': String,
+  'top': { type: Number, default: 0 },
+  'hidden': { type: Boolean, default: false }
 })
-const f = 'jsonGirl'
-// const f = 'test'
-const Girl = db.model('Girl', girlSchema)
-// const jsonArr = fs.readdirSync(`../${f}`)
-// 两层循环会导致连接超时  
-// jsonArr.forEach((v, i) => {
-//   const json = require(`../${f}/${v}`)
-//   json.userInfo.forEach((v, i) => {
-//     console.log(v, 'JSON');
-//     Girl({ ...v }).save(function (err, data) {
-//       if (err) { console.log(err) } else {
-//         console.log(data)
-//       }
-//     })
-//   })
-// })
-// setTimeout(() => {
-//   const json = require(`../${f}/jsonP_${i}.json`)
-//   json.userInfo.forEach(async(v, i) => {
-//     console.log(v, 'JSON');
-//     await new Girl({ ...v }).save(function (err, data) {
-//       if (err) { console.log(err) } else {
-//         console.log(data)
-//       }
-//     })
-//   })
-// }, 5000)
-function pushOne(I = 1) {
-  const json = require(`../${f}/jsonP_${I}.json`)
+
+girlSchema.index({ realUid: 1 })
+
+const Girl = db.model('allgirl', girlSchema)
+
+let N = 0
+for (var key in stc) {
+  // console.log(key, 'stc-:', stc[key])
+  (function(key,NN) {
+    setTimeout(() => {
+      console.log(`地区${key}任务已经开始`)
+      // 执行任务
+      let n = 1
+      let t = 1000 * 0.3   // 0.3s 压力极限？ 3*25 docs avg: 855b * 25 * 3 ~~ 62kb/s =>
+      let timer = setInterval(() => {
+        pushOne(key,n)
+        n++
+        if (n === 501) {
+          console.log(`地区${key}任务已经结束`);
+          clearInterval(timer)
+        }
+      }, t)
+    }, NN);
+ })(key,N)
+  N = N + 1000 * 60 * 3 // 3mins  跑一个地区
+  console.log(key,N)
+}
+
+function pushOne(area,I = 1) {
+  const json = require(`./json/json_${area}/jsonP${I}.json`)
   json.userInfo.forEach(async(v, i) => {
-    await new Girl({ ...v }).save(function (err, data) {
+    await new Girl({ ...v,area }).save(function (err, data) {
       if (err) { console.log(err) } else {
         console.log(data)
-        console.log(`page ${I} finished`);
+        console.log(`${area} page ${I} finished`)
       }
     })
   })
 }
-let i = 565
-let t = setInterval(() => {
-  pushOne(i)
-  i++
-  if (i === 3522) {
-    console.log('all finished');
-    clearInterval(t)
-  }
-}, 500)
-// console.log('finished');
-// 先生成最后的JSON  再写入数据库
-// const arr = []
 
-// function joinArr() {
-//   return new Promise((resolve, reject) => {
-//     jsonArr.forEach((v, i) => {
-//       const json = require(`../${f}/${v}`)
-//       json.userInfo.forEach((v, i) => {
-//         console.log(v, 'JSON');
-//         arr.push(v)
-//       })
-//     })
-//     resolve(arr)
-//   })
-// }
-
-// joinArr().then(rs => {
-//   fs.writeFileSync('./arr.json', JSON.stringify(rs))
-//   Girl.insertMany(rs.slice(2000))
-// })
-// let i = 1000
-// joinArr().then(rs => {
-//   let len = rs.length
-//   setTimeout(() => {
-//     Girl.insertMany(rs.slice(i - 1000, i), function (err, data) {
-//       console.log(data)
-//       i++
-//       if (i > len) {
-//         i = len - 1
-//       }
-//     })
-//   }, 10000 * (i / 5000))
-// })
-// console.log(arr, 'final')
-
-// for (let key in arr) {
-//   setTimeout(() => {
-//     new Girl({ ...arr[key] }).save(function (err, data) {
-//       if (err) { console.log(err) } else {
-//         console.log(data)
-//       }
-//     })
-//   }, 20 * (key + 1))
-// }

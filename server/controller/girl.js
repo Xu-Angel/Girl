@@ -86,7 +86,7 @@ class Girl extends Base {
       try {
         const girl = await detailModel.findOne({ uid })
         girl['照片'].small = girl['照片'].samll
-        delete  girl['照片'].samll
+        delete girl['照片'].samll
         res.send({
           status: 200,
           data: {
@@ -105,29 +105,64 @@ class Girl extends Base {
   // 手动路由方法
   async distinct(req, res, next) {
     try {
-      let girl = await GirlModel.find({})
-      girl.forEach((v, i, arr) => {
-        const real = v.realUid
-        const _id = v._id
-        arr.forEach((v, i, arr) => {
-          if (v.realUid === real && _id !== v._id) {
-            girl.splice(i, 1)
-            // console.log(test.splice(i,1), 'splice')
-          }
-        })
-      })
-      uniGirlModel.insertMany(girl, function (err, data) {
-        GirlModel.remove({}, function (err) {
-          console.log('去重girls表成功,girls表清空成功，精数据在unigirls表中')
-        });
-      })
-      res.send({
-        status: 200,
-        message: '去重girls表成功,girls表清空成功，精数据在unigirls表中',
-        data: {
-          items: girl
-        }
-      })
+      console.log('接到请求')
+      // let girl = await GirlModel.find({}) // 1. 整表取
+      let uids = await GirlModel.distinct('realUid')
+      // 2.distinct 然后find 再insert
+      console.log(uids)
+      // 切割uid 分布写入
+
+
+      for (let key in uids) {
+        (function (key) {
+          console.log(key)
+          setTimeout(() => {
+            GirlModel.find({ realUid: uids[key] }, function (err, data) {
+              console.log(key,'datastart',data,'dataend')
+              // console.log('datastart0',data[0],'dataend0')
+              // const {
+              //   _id,
+              //   __v,
+              //   ...unidata,
+              // } = data[0]
+              // console.log('unidatastart',unidata, 'unidataend')
+
+              // console.log(unidata['_doc'], 'unidata[_doc]')
+              const { realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden } = data[0]
+              new uniGirlModel({ realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden }).save(function (err, data) {
+                if (err) {
+                  console.log('create', err)
+                } else {
+                  console.log(data, 'success:')
+                }
+              })
+            })
+          }, key * 25 + 200)
+        })(key)
+      }
+      // girl.forEach((v, i, arr) => {
+      //   const real = v.realUid
+      //   const _id = v._id
+      //   arr.forEach((v, i, arr) => {
+      //     if (v.realUid === real && _id !== v._id) {
+      //       girl.splice(i, 1)
+      //       // console.log(test.splice(i,1), 'splice')
+      //     }
+      //   })
+      // })
+      // uniGirlModel.insertMany(girl, function (err, data) {
+      //     console.log('去重girls表数据已在unigirls表中')
+      //   // GirlModel.remove({}, function (err) {
+      //   // });
+      // })
+
+      // res.send({
+      //   status: 200,
+      //   message: '去重girls表成功,girls表清空成功，精数据在unigirls表中',
+      //   data: {
+      //     items: girl
+      //   }
+      // })
       // GirlModel.findOne({ realUid: 200715830 }, function (err, data) {
       //   console.log(data)
       // })

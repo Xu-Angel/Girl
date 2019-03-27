@@ -2,22 +2,23 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const girlSchema = new Schema({
+  'realUid': Number,
+  'area': String,
   'nickname': String,
   'sex': { type: String, default: '女' },
   'marriage': { type: String, default: '未婚' },
-  'height': { type: Number, default: 160 },
+  'height': Number,
   'education': String,
-  'income': { type: Number, default: Math.random() * 50000 },
-  'workLocation': String,
+  'work_location': String,
   'age': { type: Number, default: 18 },
   'image': String,
   'randListTag': String,
   'userIcon': String,
-  'helloUrl': String,
-  'sendMsgUrl': String,
-  'shortNote': String,
+  'shortnote': String,
   'matchCondition': String,
-  'realUid': Number
+  'helloUrl': String,
+  'top': { type: Number, default: 0 },
+  'hidden': { type: Boolean, default: false }
 })
 
 const Girl = mongoose.model('allgirl', girlSchema)

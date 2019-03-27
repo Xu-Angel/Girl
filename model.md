@@ -85,6 +85,8 @@
 |shortnote      |Y       |String  |- |女性留言 |
 |matchCondition      |Y       |String  |- |择偶要求 |
 |helloUrl      |Y       |String  |- |打招呼 |
+|top      |Y       |Number  |0 |受欢迎程度,用于前台展示 |
+|hidden      |Y       |Boolean  |false |用于显示隐藏 |
 
 #### unigirl 女性概要表
 净数据存放 混合索引 搜索表
