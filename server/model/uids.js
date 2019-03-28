@@ -5,7 +5,7 @@ const uidSchema = new Schema({
   'realUid': Number,
 })
 
-uidSchema.index({ 'realUid': 1 });
+uidSchema.index({ 'realUid': 1 })
 
 const Uid = mongoose.model('uids', uidSchema)
 

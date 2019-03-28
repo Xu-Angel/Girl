@@ -59,21 +59,21 @@ service.interceptors.response.use(
       // }
       return Promise.reject('error')
     } else {
-      if (res.status === 400) {
+      if (res.status === 400 && res.message) {
         Message({
           message: res.message,
           type: 'error',
           duration: 5 * 1000
         })
       }
-      if (res.status === 200) {
+      if (res.status === 200 && res.message) {
         Message({
           message: res.message,
           type: 'success',
           duration: 2 * 1000
         })
       }
-      if (res.status === 100) {
+      if (res.status === 100 && res.message) {
         Message({
           message: res.message,
           type: 'warning',

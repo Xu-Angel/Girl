@@ -67,13 +67,13 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/form',
+    path: '/spider',
     component: Layout,
     children: [{
       path: 'index',
-      name: 'Form',
-      component: () => import('@/views/form/index'),
-      meta: { title: 'Form', icon: 'form' }
+      name: '爬取设置',
+      component: () => import('@/views/spider/index'),
+      meta: { title: '爬取设置', icon: 'form' }
     }]
   },
 

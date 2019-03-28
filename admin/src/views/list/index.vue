@@ -2,21 +2,25 @@
   <div class="app-container">
     <div class="search-container">
       <div class="fr">
-        <el-select clearable style="width: 180px;" v-model="search.area" placeholder="请选择地区">
+        <el-select v-model="search.area" clearable style="width: 180px;" placeholder="请选择地区">
           <el-option v-for="(item, key) in area" :key="key" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select clearable style="width: 180px;" v-model="search.age" placeholder="请选择年龄">
+        <el-select v-model="search.age" clearable style="width: 180px;" placeholder="请选择年龄">
           <el-option v-for="(item, key) in age" :key="key" :label="item + '岁'" :value="item"></el-option>
         </el-select>
-        <el-select clearable style="width: 180px;" v-model="search.height" placeholder="请选择身高">
+        <el-select v-model="search.height" clearable style="width: 180px;" placeholder="请选择身高">
           <el-option v-for="(item, key) in height" :key="key" :label="item + 'cm'" :value="item"></el-option>
         </el-select>
-        <el-select clearable style="width: 180px;" v-model="search.education" placeholder="请选择学历">
+        <el-select v-model="search.education" clearable style="width: 180px;" placeholder="请选择学历">
           <el-option v-for="(item, key) in education" :key="key" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select clearable style="width: 180px;" v-model="search.marriage" placeholder="请选择状态">
+        <el-select v-model="search.marriage" clearable style="width: 180px;" placeholder="请选择状态">
           <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="item"></el-option>
         </el-select>
+        <el-select v-model="search.status" clearable style="width: 180px;" placeholder="请选择爬取状态">
+          <el-option v-for="(item, key) in status" :key="key" :label="item ? '完成' : '待爬'" :value="item"></el-option>
+        </el-select>
+        <el-input v-model="search.realUid" placeholder="请输入realUid" style="width: 180px;"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
       </div>
     </div>
@@ -35,7 +39,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
-      <el-table-column prop="randListTag" align="center" label="标签">
+      <el-table-column prop="randListTag" align="center" label="标签" width="200">
         <template slot-scope="scope">
           <div class="span" v-html="scope.row.randListTag"></div>
         </template>
@@ -53,13 +57,18 @@
           <div class="i" v-html="scope.row.userIcon"></div>
         </template>
       </el-table-column>
-      <el-table-column prop="height" label="身高" sortable align="center" width="50"></el-table-column>
+      <el-table-column prop="height" label="身高" sortable align="center" ></el-table-column>
       <el-table-column prop="marriage" class-name="status-col" label="状态" align="center" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.marriage | statusFilter">{{ scope.row.marriage }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="age" label="年龄" sortable width="50"></el-table-column>
+      <el-table-column align="center" prop="age" label="年龄" sortable ></el-table-column>
+      <el-table-column align="center" prop="status" label="爬取状态" sortable>
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status ? '完成' : '待爬' }}</el-tag>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="shortnote"  label="短语" align="center">
       </el-table-column>-->
       <!-- <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column> -->
@@ -93,7 +102,9 @@ export default {
       const statusMap = {
         未婚: 'success',
         // draft: 'gray',
-        离异: 'danger'
+        离异: 'danger',
+        false: 'gray',
+        true: 'success'
       }
       return statusMap[status]
     }
@@ -109,12 +120,15 @@ export default {
       search: {
         area: '',
         age: '',
-        height: ''
+        height: '',
+        realUid: '',
+        status: ''
       },
       age: [],
       height: [],
       education: [],
-      marriage: []
+      marriage: [],
+      status: [true, false]
     }
   },
   created() {
@@ -145,12 +159,12 @@ export default {
       // this.currentPage = changePage
       // this.fetchData()
     },
-    fetchData(param) {
+    fetchData() {
       this.listLoading = true
       getList({
         page: this.currentPage,
         pageSize: this.pageSize,
-        ...param
+        ...this.search
       }).then(response => {
         console.log(response)
         this.list = response.data.items
@@ -161,7 +175,7 @@ export default {
     handleSearch() {
       console.log(this.search)
       this.currentPage = 1
-      this.fetchData(this.search)
+      this.fetchData()
     },
     toDetailById(uid, pageNum) {
       console.log(uid, pageNum, 'id')

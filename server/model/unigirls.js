@@ -18,7 +18,8 @@ const girlSchema = new Schema({
   'matchCondition': String,
   'helloUrl': String,
   'top': { type: Number, default: 0 },
-  'hidden': { type: Boolean, default: false }
+  'hidden': { type: Boolean, default: false },
+  'status': {type: Boolean, default: false}
 })
 
 const uniGirl = mongoose.model('unigirl', girlSchema)

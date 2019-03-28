@@ -5,101 +5,103 @@
       <el-button type="danger" @click="findme">联系我</el-button>
       <el-button class="return-list" icon="el-icon-back" @click="returnList">返回列表</el-button>
     </div>
-    <el-row>
-      <div>
-        <span>自我介绍:</span>
-        <span v-html="自我介绍"></span>
+    <div v-loading="isloading">
+      <el-row>
         <div>
-          我
-          <span class="margin-top l-height">{{ about }}</span>
-          <span v-for="(item, key, index ) in selfMsg" :key="index" class="l-height">
-            ,
-            <span style="padding:5px;">{{ key }}</span>:
-            <span>{{ item }}</span>
-          </span>。
-        </div>
-        <div v-if="情感故事" style="margin-bottom: 10px">
-          <span>情感故事：</span>
-          <span v-html="情感故事"></span>
-        </div>
-      </div>
-    </el-row>
-    <div>
-      <el-card>
-        <div v-for="(item, key, index) in carousel" :key="index" class="img-container">
-          <img :src="item" class="image" @click="showAdvImage(key)">
-        </div>
-      </el-card>
-      <!-- 图片end -->
-      <!-- </el-col> -->
-      <el-card v-if="爱情DNA">
-        <h3>爱情DNA</h3>
-        <ul class="DNA_xq" v-html="爱情DNA"></ul>
-      </el-card>
-      <!-- 择偶要求 -->
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>我的择偶要求</span>
-        </div>
-        <div v-for="(item, key , index) in 择偶要求" :key="index" class="text item">
-          <span>{{ key }}</span>:
-          <span>{{ item }}</span>
-        </div>
-      </el-card>
-      <!-- 生活方式 -->
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>生活方式</span>
-        </div>
-        <div v-for="(itemList, key, index) in 生活方式" :key="index">
-          <div>{{ key }}:</div>
-          <div class>
-            <div v-for="(item, key, index) in itemList" :key="index" class="text item">
-              <span>{{ key }}</span>:
+          <span>自我介绍:</span>
+          <span v-html="自我介绍"></span>
+          <div>
+            我
+            <span class="margin-top l-height">{{ about }}</span>
+            <span v-for="(item, key, index ) in selfMsg" :key="index" class="l-height">
+              ,
+              <span style="padding:5px;">{{ key }}</span>:
               <span>{{ item }}</span>
+            </span>。
+          </div>
+          <div v-if="情感故事" style="margin-bottom: 10px">
+            <span>情感故事：</span>
+            <span v-html="情感故事"></span>
+          </div>
+        </div>
+      </el-row>
+      <div>
+        <el-card>
+          <div v-for="(item, key, index) in carousel" :key="index" class="img-container">
+            <img :src="item" class="image" @click="showAdvImage(key)">
+          </div>
+        </el-card>
+        <!-- 图片end -->
+        <!-- </el-col> -->
+        <el-card v-if="爱情DNA">
+          <h3>爱情DNA</h3>
+          <ul class="DNA_xq" v-html="爱情DNA"></ul>
+        </el-card>
+        <!-- 择偶要求 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>我的择偶要求</span>
+          </div>
+          <div v-for="(item, key , index) in 择偶要求" :key="index" class="text item">
+            <span>{{ key }}</span>:
+            <span>{{ item }}</span>
+          </div>
+        </el-card>
+        <!-- 生活方式 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>生活方式</span>
+          </div>
+          <div v-for="(itemList, key, index) in 生活方式" :key="index">
+            <div>{{ key }}:</div>
+            <div class>
+              <div v-for="(item, key, index) in itemList" :key="index" class="text item">
+                <span>{{ key }}</span>:
+                <span>{{ item }}</span>
+              </div>
             </div>
           </div>
-        </div>
-      </el-card>
-      <!-- 经济实力 -->
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>经济实力</span>
-        </div>
-        <div v-for="(item, key, index) in 经济实力" :key="index" class="text item">
-          <span>{{ key }}</span>:
-          <span>{{ item }}</span>
-        </div>
-      </el-card>
-      <!-- 工作学习 -->
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>工作学习</span>
-        </div>
-        <span>工作</span>
-        <div v-for="(item, key, index) in 工作学习['工作']" :key="index" class="text item">
-          <span>{{ key }}</span>:
-          <span>{{ item }}</span>
-        </div>
-        <span>学习</span>
-        <div v-html="工作学习['学习']"></div>
-      </el-card>
-      <!-- 婚姻观念 -->
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>婚姻观念</span>
-        </div>
-        <div v-for="(item, key, index) in 婚姻观念" :key="index">
-          <div>{{ key }}:</div>
-          <div v-for="(detail, key, index) in item" :key="index" class="text item">
-            <span>{{ key }}</span>:
-            <span>{{ detail }}</span>
+        </el-card>
+        <!-- 经济实力 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>经济实力</span>
           </div>
-        </div>
-      </el-card>
-      <el-dialog :visible.sync="imgDialogVisible" :title="title">
-        <img :src="dialogImgUrl" style="max-width: 90%; margin: 0 auto; display: block;" alt>
-      </el-dialog>
+          <div v-for="(item, key, index) in 经济实力" :key="index" class="text item">
+            <span>{{ key }}</span>:
+            <span>{{ item }}</span>
+          </div>
+        </el-card>
+        <!-- 工作学习 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>工作学习</span>
+          </div>
+          <span>工作</span>
+          <div v-for="(item, key, index) in 工作学习['工作']" :key="index" class="text item">
+            <span>{{ key }}</span>:
+            <span>{{ item }}</span>
+          </div>
+          <span>学习</span>
+          <div v-html="工作学习['学习']"></div>
+        </el-card>
+        <!-- 婚姻观念 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>婚姻观念</span>
+          </div>
+          <div v-for="(item, key, index) in 婚姻观念" :key="index">
+            <div>{{ key }}:</div>
+            <div v-for="(detail, key, index) in item" :key="index" class="text item">
+              <span>{{ key }}</span>:
+              <span>{{ detail }}</span>
+            </div>
+          </div>
+        </el-card>
+        <el-dialog :visible.sync="imgDialogVisible" :title="title">
+          <img :src="dialogImgUrl" style="max-width: 90%; margin: 0 auto; display: block;" alt>
+        </el-dialog>
+      </div>
     </div>
   </div>
 </template>
@@ -111,6 +113,7 @@ export default {
 
   data() {
     return {
+      isloading: true,
       detail: {},
       about: '',
       uid: '',
@@ -189,6 +192,7 @@ export default {
         // this['嗜好习惯'] = 生活方式.嗜好习惯;
         // this['宠物'] = 生活方式.宠物;
         // this['家务'] = 生活方式.家务;
+        this.isloading = false
       })
     }
   }

@@ -45,6 +45,10 @@
 |area      |Y       |Object |-  |选项的地区参数 |
 |tag      |Y       |Object |-  |标签的参数 |
 |param      |Y       |Object  |- |爬列表页的参数 |
+|age      |Y       |Array  |- |爬列表页的参数 |
+|height      |Y       |Array  |- |爬列表页的参数 |
+|education      |Y       |Array  |- |爬列表页的参数 |
+|marriage      |Y       |Array  |- |爬列表页的参数 |
 
 #### task 任务表
 任务配置//TODO:
@@ -110,11 +114,12 @@
 |helloUrl      |Y       |String  |- |打招呼 |
 |top      |Y       |Number  |0 |受欢迎程度,用于前台展示 |
 |hidden      |Y       |Boolean  |false |用于显示隐藏 |
+|status      |Y       |Boolean  |false |爬取状态 |
 
 #### detail  女性详细表
 |键|是否必选|类型|默认|说明|
 |:-----|:-------:|:-----|:-----|:-----|
-|uid      |Y       |Number  |- |女性uid |
+|realUid      |Y       |Number  |- |女性realUid |
 |概要      |Y       |String  |- |概要 |
 |学历      |Y       |String  |- |学历 |
 |身高      |Y       |String  |- |身高 |

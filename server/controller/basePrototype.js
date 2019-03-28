@@ -31,4 +31,9 @@ export default class BaseComponent {
   // async uploadImg(req, res, next) {
   //   //...
   // }
+  // 取数组不同值
+  difference(l, s) {
+    const S = new Set(s)
+    return l.filter(v => !S.has(v))
+  }
 }

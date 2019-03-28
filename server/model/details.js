@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const detailSchema = new Schema({
-  'uid': Number,
+  'realUid': Number,
   '概要': String,
   '学历': String,
   '身高': String,
@@ -24,6 +24,8 @@ const detailSchema = new Schema({
   '工作学习': Object,
   '婚姻观念': Object,
 })
+
+detailSchema.index({ 'realUid': 1 })
 
 const Detail = mongoose.model('details', detailSchema)
 
