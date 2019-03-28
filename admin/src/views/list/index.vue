@@ -1,5 +1,25 @@
 <template>
   <div class="app-container">
+    <div class="search-container">
+      <div class="fr">
+        <el-select clearable style="width: 180px;" v-model="search.area" placeholder="请选择地区">
+          <el-option v-for="(item, key) in area" :key="key" :label="item" :value="item"></el-option>
+        </el-select>
+        <el-select clearable style="width: 180px;" v-model="search.age" placeholder="请选择年龄">
+          <el-option v-for="(item, key) in age" :key="key" :label="item + '岁'" :value="item"></el-option>
+        </el-select>
+        <el-select clearable style="width: 180px;" v-model="search.height" placeholder="请选择身高">
+          <el-option v-for="(item, key) in height" :key="key" :label="item + 'cm'" :value="item"></el-option>
+        </el-select>
+        <el-select clearable style="width: 180px;" v-model="search.education" placeholder="请选择学历">
+          <el-option v-for="(item, key) in education" :key="key" :label="item" :value="item"></el-option>
+        </el-select>
+        <el-select clearable style="width: 180px;" v-model="search.marriage" placeholder="请选择状态">
+          <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="item"></el-option>
+        </el-select>
+        <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+      </div>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -27,6 +47,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="area" label="地区" align="center" sortable></el-table-column>
+      <el-table-column prop="work_location" label="工作地" align="center" sortable></el-table-column>
       <el-table-column prop="userIcon" label="认证标志" align="center">
         <template slot-scope="scope">
           <div class="i" v-html="scope.row.userIcon"></div>
@@ -40,7 +61,7 @@
       </el-table-column>
       <el-table-column align="center" prop="age" label="年龄" sortable width="50"></el-table-column>
       <!-- <el-table-column prop="shortnote"  label="短语" align="center">
-      </el-table-column> -->
+      </el-table-column>-->
       <!-- <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column> -->
       <el-table-column align="center" prop="realUid" label="操作">
         <template slot-scope="scope">
@@ -52,7 +73,7 @@
       <el-pagination
         :total="total"
         :current-page="currentPage"
-        :page-sizes="[10,20,30,40,50,60]"
+        :page-sizes="[10,20,30,40,50,60,70,80,90,100]"
         :page-size="pageSize"
         background
         @size-change="handleSizeChange"
@@ -64,6 +85,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import { getSipderConfig } from '@/api/common'
 
 export default {
   filters: {
@@ -82,12 +104,30 @@ export default {
       listLoading: true,
       currentPage: 1,
       total: 10000,
-      pageSize: 10
+      pageSize: 10,
+      area: [],
+      search: {
+        area: '',
+        age: '',
+        height: ''
+      },
+      age: [],
+      height: [],
+      education: [],
+      marriage: []
     }
   },
   created() {
-    this.currentPage = this.$route.query.pageNum || 1
+    this.currentPage = Number(this.$route.query.pageNum) || 1
     this.fetchData()
+    getSipderConfig().then(rs => {
+      console.log(rs)
+      this.area = rs.data.area
+      this.height = rs.data.height
+      this.age = rs.data.age
+      this.education = rs.data.education
+      this.marriage = rs.data.marriage
+    })
   },
   methods: {
     handleSizeChange() { },
@@ -105,17 +145,23 @@ export default {
       // this.currentPage = changePage
       // this.fetchData()
     },
-    fetchData() {
+    fetchData(param) {
       this.listLoading = true
       getList({
         page: this.currentPage,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        ...param
       }).then(response => {
         console.log(response)
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
       })
+    },
+    handleSearch() {
+      console.log(this.search)
+      this.currentPage = 1
+      this.fetchData(this.search)
     },
     toDetailById(uid, pageNum) {
       console.log(uid, pageNum, 'id')
@@ -149,22 +195,40 @@ export default {
   margin-bottom: -3px;
   margin-left: 1px;
 }
-.tel {
-  background: url('../../assets/icons/tel.jpg') no-repeat scroll top;
+.gjhy {
+  background: url(../../assets/icons/icon_services_16_6.jpg) no-repeat scroll
+    top;
+}
+.kxby {
+  background: url(../../assets/icons/icon_kxby.jpg) no-repeat scroll top;
+}
+.phb {
+  background: url(../../assets/icons/icon_phb.jpg) no-repeat scroll top;
+}
+.fxby {
+  background: url(../../assets/icons/icon_fxby.jpg) no-repeat scroll top;
 }
 .zshy {
-  background: url('../../assets/icons/icon_zshy.jpg') no-repeat scroll top;
+  background: url(../../assets/icons/icon_zshy.jpg) no-repeat scroll top;
 }
 .ltby {
-  background: url('../../assets/icons/icon_ltby.jpg') no-repeat scroll top;
+  background: url(../../assets/icons/icon_ltby.jpg) no-repeat scroll top;
+}
+.pmtq {
+  background: url(../../assets/icons/icon_pmtq.jpg) no-repeat scroll top;
+}
+.sjld {
+  background: url(../../assets/icons/icon_sjld.jpg) no-repeat scroll top;
+}
+.tel {
+  background: url(../../assets/icons/tel.jpg) no-repeat scroll top;
 }
 .level {
-  background: url('../../assets/icons/icon_level.jpg?v=1') no-repeat scroll top;
+  background: url(../../assets/icons/icon_level.jpg?v=1) no-repeat scroll top;
   width: 18px !important;
   height: 15px !important;
 }
-.gjhy {
-  background: url('../../assets/icons/icon_services_16_6.jpg') no-repeat scroll
-    top;
+.online {
+  background: url(../../assets/icons/icon_online.png) no-repeat scroll center;
 }
 </style>

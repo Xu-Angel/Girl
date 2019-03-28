@@ -24,7 +24,13 @@ class Girl extends Base {
         })
         return
       }
-      const { page, pageSize } = fields
+      const { page, pageSize, ...params } = fields
+      for (let key in params) {
+        const v = params[key]
+        if (v === '' || v === undefined || v === 'undefind') {
+          delete params[key]
+        }
+      }
       try {
         if (!page) {
           throw new Error('页码参数错误')
@@ -40,10 +46,11 @@ class Girl extends Base {
         return
       }
       try {
-        const girl = await uniGirlModel.find({}).skip(page * pageSize).limit(pageSize).sort({ '_id': 1 })
-        const total = await uniGirlModel.count({})
+        const girl = await uniGirlModel.find({ ...params }).skip(page * pageSize).limit(pageSize).sort({ '_id': 1 })
+        const total = await uniGirlModel.count({ ...params })
         res.send({
           status: 200,
+          message: `获取数据成功`,
           data: {
             items: girl,
             total
@@ -108,7 +115,7 @@ class Girl extends Base {
       console.log('接到请求')
       //let girl = await GirlModel.find({}) // 1. 整表取
       let uids = await GirlModel.distinct('realUid')
-      console.log('uids.length:',uids.length)
+      console.log('uids.length:', uids.length)
       // 去除已完成的uid
       // 切割uid 分布写入
       let fin = await uniGirlModel.find({}, { realUid: 1, _id: 0 })
@@ -122,7 +129,7 @@ class Girl extends Base {
         const s = new Set(b)
         return a.filter(v => !s.has(v))
       }
-      const uidArr = difference(uids,finArr); // [3]
+      const uidArr = difference(uids, finArr); // [3]
       // console.log('uidArr.length',uidArr.length)
       // 2.distinct 然后find 再insert
       //console.log(uids)
