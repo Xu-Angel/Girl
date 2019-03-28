@@ -90,13 +90,13 @@ class Spider extends Base {
         let cur = new Date().getTime()
         getDetail(realUid).then(rs => {
           // 判断当前用户是否是空资料(未审核通过||关闭||隐藏)
-          if (rs['住房'] === '' && rs['学历'] === '' && rs['学历'] === '' && rs['身高'] === '') {
+          if (rs['学历'] === '' && rs['身高'] === '') {
             remainLength--
             console.log(`异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`)
             cb(null, realUid) // 结束本次函数 抛出本次异常realUid
           } else {
             // 判断当前的数据有没有薪资 如果没有，说明cookie过期 需要重新拿TODO:停止爬取任务 发送邮件更新cookie
-            if (rs['经济实力']['月薪'] === '登陆后可见' || rs['经济实力']['购车'] === '登陆后可见') throw new Error(`请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}`)
+            if (rs['经济实力']['月薪'] === '登录后可见' || rs['经济实力']['购车'] === '登录后可见') throw new Error(`请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}`)
             rs['realUid'] = realUid
             detailModel.insertMany([rs], function (err, data) {
               // 更新列表的状态
