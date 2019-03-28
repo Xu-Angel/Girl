@@ -27,10 +27,10 @@
     <el-table
       v-loading="listLoading"
       :data="list"
+      :row-class-name="tableRowClassName"
       element-loading-text="Loading"
       border
       fit
-      highlight-current-row
       style="width: 100%"
     >
       <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
@@ -128,11 +128,15 @@ export default {
       height: [],
       education: [],
       marriage: [],
-      status: [true, false]
+      status: [true, false],
+      uid: 0
     }
   },
   created() {
-    this.currentPage = Number(this.$route.query.pageNum) || 1
+    const { uid, pageNum, ...params } = this.$route.query
+    this.currentPage = Number(pageNum) || 1
+    this.search = params || this.search
+    this.uid = uid
     this.fetchData()
     getSipderConfig().then(rs => {
       console.log(rs)
@@ -178,19 +182,28 @@ export default {
       this.fetchData()
     },
     toDetailById(uid, pageNum) {
-      console.log(uid, pageNum, 'id')
       this.$router.push({
         path: '/girls/detail',
         query: {
           uid,
-          pageNum
+          pageNum,
+          ...this.search
         }
       })
+    },
+    tableRowClassName({ row, rowIndex }) {
+      if (row.realUid === Number(this.uid)) {
+        return 'success-row'
+      }
+      return ''
     }
   }
 }
 </script>
 <style>
+ .el-table .success-row {
+    background: #f0f9eb;
+  }
 .span span {
   height: 18px;
   line-height: 18px;

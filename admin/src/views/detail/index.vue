@@ -131,12 +131,13 @@ export default {
       dialogImgUrl: '',
       imgDialogVisible: false,
       bigImg: null,
-      pageNum: 1
+      pageNum: 1,
+      query: null
     }
   },
   created() {
     this.uid = this.$route.query.uid
-    this.pageNum = this.$route.query.pageNum
+    this.query = this.$route.query
     this.title = `第${this.uid}号佳丽的大图`
     this._getDetail({ uid: this.uid })
   },
@@ -148,7 +149,7 @@ export default {
       this.$router.push({
         path: '/girls/list',
         query: {
-          pageNum: this.pageNum
+          ...this.query
         }
       })
     },
