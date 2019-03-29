@@ -48,10 +48,10 @@ class Girl extends Base {
       try {
         const total = await uniGirlModel.count({ ...params })
         let girl = null
-        if (total < 10) { 
+        if (total < 10) {
           girl = await uniGirlModel.find({ ...params }).sort({ '_id': 1 })
         } else {
-          girl = await uniGirlModel.find({ ...params }).skip(page * pageSize).limit(pageSize).sort({ '_id': 1 })
+          girl = await uniGirlModel.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ '_id': 1 })
         }
         res.send({
           status: 200,
@@ -96,7 +96,7 @@ class Girl extends Base {
         return
       }
       try {
-        const girl = await detailModel.findOne({ realUid:uid })
+        const girl = await detailModel.findOne({ realUid: uid })
         girl['照片'].small = girl['照片'].samll
         delete girl['照片'].samll
         res.send({

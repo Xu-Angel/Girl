@@ -11,7 +11,8 @@ baseUrl: http://localhost:8088
 [3、获取女生详情](#3获取女生详情)<br/>
 [4、获取女生列表](#4获取女生列表)<br/>
 [5、获取搜索参数](#5获取搜索参数)<br/>
-[5、开启爬取详情页任务](#5开启爬取详情页任务)<br/>
+[6、开启爬取详情页任务](#6开启爬取详情页任务)<br/>
+[7、获取统计数](#7开启爬取详情页任务)<br/>
 ## 接口列表：
 ### 1、登录注册
 - [x] 状态 请求URL:  
@@ -140,5 +141,23 @@ eg: http://localhost:8088/spider/spiDetailByRealUid
   status: 200,
   message: `爬取详细页任务已经开始`,
   data: '查询耗时：6s,剩余爬取数为18000,本次开始爬取时间Thu Mar 28 2019 20:56:56 GMT+0800 (中国标准时间)'
+}
+```
+### 7、获取统计数
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/common/getCounts
+```
+#### GET
+
+#### 返回示例：
+```javascript
+{
+  data: {
+    girlCount: 76783,
+    finishedCount: 57047,
+    userCount: 1
+    }
+  status: 200
 }
 ```

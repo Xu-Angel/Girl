@@ -16,7 +16,7 @@ nodejs + express + mongodb + mongoose + es6/7 + vue + element-ui
   - [ ] 妹子列表
     - [x] 默认展示
     - [ ] 展示规则 ?
-    - [ ] 整表展示 ?
+    - [x] 整表展示 ?
     - [ ] 根据登录IP显示 ?
     - [ ] 修改受欢迎程度
   - [x] 妹子详情
@@ -24,7 +24,7 @@ nodejs + express + mongodb + mongoose + es6/7 + vue + element-ui
     - [x] 返回上次列表
     - [ ] 详情展示UI设计
   - [ ] 筛选✨✨
-    - [ ] 根据关键字如年龄、收入、属相、地区
+    - [x] 根据关键字如年龄、收入、属相、地区
     - [ ] 根据信息完善程度进行权重比较
   - [x] 用户
     - [x] 登录、注册

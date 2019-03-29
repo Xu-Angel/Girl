@@ -7,3 +7,10 @@ export function getSipderConfig() {
   })
 }
 
+export function getCounts() {
+  return request({
+    url: '/common/getCounts',
+    method: 'get'
+  })
+}
+
