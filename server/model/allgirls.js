@@ -21,6 +21,8 @@ const girlSchema = new Schema({
   'hidden': { type: Boolean, default: false }
 })
 
+girlSchema.index({ 'realUid': 1 })
+
 const Girl = mongoose.model('allgirl', girlSchema)
 
 export default Girl

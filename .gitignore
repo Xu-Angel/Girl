@@ -6,3 +6,5 @@ server/getGirls/json/
 server/getGirls/jsonGirl/
 
 server/getGirls/db/json/
+
+server/db/json/

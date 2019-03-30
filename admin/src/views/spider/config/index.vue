@@ -1,96 +1,87 @@
 <template>
   <div class="config-container">
-    <el-card>
-      <el-row style="margin-bottom: 20px;">
-        <el-tag type="error" hit="true">爬取详细页配置</el-tag>
-      </el-row>
-      <el-form
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-      >
-        <el-form-item label="Cookie" prop="cookie">
-          <el-input type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据" v-model="ruleForm.cookie"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('ruleForm')">保存配置</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+    <el-row style="margin-bottom: 20px;">
+      <el-button type="danger" @click="detailConfigDialog=true">详细页配置</el-button>
+    </el-row>
+            <el-dialog
+  :visible.sync="detailConfigDialog"
+  title="请谨慎操作"
+  width="50%"
+  :before-close="handleClose">
+    <el-form :model="detailConfig" :rules="rules" ref="detailConfig" label-width="100px">
+      <el-form-item label="Cookie" prop="cookie">
+        <el-input type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据" v-model="detailConfig.cookie"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="submitForm('detailConfig')">保存并开始</el-button>
+      </el-form-item>
+    </el-form>
+    </el-dialog>
     <!-- 爬取列表页配置 -->
-    <el-card style="margin-top: 20px;">
-      <el-row style="margin-bottom: 20px;">
-        <el-tag type="error" hit="true">爬取列表页配置</el-tag>
-      </el-row>
-      <el-form
-        :model="ruleForm"
-        :rules="rules1"
-        ref="ruleForm1"
-        label-width="100px"
-      >
-        <el-form-item label="realUid" prop="name">
-          <div style="width:180px;">
-            <el-input placeholder="模拟登陆" v-model="ruleForm.name"></el-input>
-          </div>
-        </el-form-item>
-        <el-form-item label="开始页码" prop="name" style="width:180px">
-            <el-input v-model="ruleForm.pageRange"></el-input>
-        </el-form-item>
-        <el-form-item label="结束页码" prop="name" style="width:180px">
-            <el-input v-model="ruleForm.pageRange"></el-input>
-        </el-form-item>
-        <el-form-item label="区域" prop="region">
-          <el-select style="width: 180px;" v-model="ruleForm.region" placeholder="请选择爬取区域">
-            <el-option v-for="(item, key) in area" :key="key" :label="item" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="年龄" prop="region">
-          <el-select v-model="search.age" clearable style="width: 180px;" placeholder="请选择年龄">
-            <el-option v-for="(item, key) in age" :key="key" :label="item + '岁'" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="学历" prop="region">
-          <el-select v-model="search.education" clearable style="width: 180px;" placeholder="请选择学历">
-            <el-option v-for="(item, key) in education" :key="key" :label="item" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="region">
-          <el-select v-model="search.marriage" clearable style="width: 180px;" placeholder="请选择状态">
-            <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item label="年龄" prop="region">
-          <el-select v-model="search.age" clearable style="width: 180px;" placeholder="请选择年龄">
-            <el-option v-for="(item, key) in age" :key="key" :label="item + '岁'" :value="item"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="标签" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="性别" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
+    <el-row style="margin-bottom: 20px;">
+      <el-button type="danger" @click="listConfigDialog=true">列表页配置</el-button>
+      <el-button type="danger" @click="distinct">去重列表页数据</el-button>
+    </el-row>
+        <el-dialog
+  :visible.sync="listConfigDialog"
+  title="请谨慎操作"
+  width="50%"
+  :before-close="handleClose">
+   <el-form :model="listConfig" ref="listConfig" :rules="rules" label-width="100px">
+      <el-form-item label="区域" prop="area">
+        <el-select style="width: 180px;" v-model="listConfig.area" placeholder="请选择爬取区域">
+          <el-option v-for="(item, key) in area" :key="key" :label="item" :value="item"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="学历">
+        <el-select
+          v-model="listConfig.education"
+          clearable
+          style="width: 180px;"
+          placeholder="请选择学历"
+        >
+          <el-option
+            v-for="(item, key) in education"
+            :key="key"
+            :label="item"
+            :value="(key + 1) * 10"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="状态">
+        <el-select
+          v-model="listConfig.marriage"
+          clearable
+          style="width: 180px;"
+          placeholder="请选择状态"
+        >
+          <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="key + 1"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- <el-form-item label="标签">
+          <el-radio-group v-model="listConfig.type" size="medium">
+            <el-radio border label="高级白领"></el-radio>
+            <el-radio border label="空姐"></el-radio>
+        </el-radio-group>
+      </el-form-item>-->
+      <!-- <el-form-item label="性别">
+          <el-radio-group>
             <el-radio label="妹子"></el-radio>
             <el-radio label="汉子" disabled="true"></el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('ruleForm')">保存配置</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+      </el-form-item>-->
+      <el-form-item>
+        <el-button @click="updateListConfig">保存并开始</el-button>
+      </el-form-item>
+    </el-form>
+</el-dialog>
   </div>
 </template>
 
 <script>
 import { getSipderConfig } from '@/api/common'
+import { updateTaskConfig, distinctGirl } from '@/api/spider'
+
 export default {
   data() {
     return {
@@ -98,33 +89,26 @@ export default {
       height: [],
       education: [],
       marriage: [],
-      search: {
+      listConfigDialog: false,
+      detailConfigDialog: false,
+      listConfig: {
         area: '',
-        age: '',
-        height: '',
-        realUid: '',
-        status: ''
+        education: '',
+        marriage: ''
       },
-      ruleForm: {
-        cookie: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+      detailConfig: {
+        cookie: ''
       },
       rules: {
         cookie: [
           { required: true, message: '请输入Cookie', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 100, max: 500, message: '长度在 100 到 500 个字符', trigger: 'blur' }
         ],
-        pageRange: [
-          { required: true, message: '请输入Cookie', trigger: 'blur' }
+        area: [
+          { required: true, message: '  请选择区域', trigger: 'blur' },
         ]
       }
-    };
+    }
   },
   created() {
     getSipderConfig().then(rs => {
@@ -140,15 +124,47 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          alert('submit!')
         } else {
-          console.log('error submit!!');
+          console.log('error submit!!')
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    updateListConfig() {
+      this.$refs['listConfig'].validate((valid) => {
+        if (valid) {
+          this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          updateTaskConfig({ ...this.listConfig })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '任务已取消'
+          })
+        })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    distinct() {
+      this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+        }).then(() => {
+          distinctGirl()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '任务已取消'
+          })
+        })
     }
   }
 }

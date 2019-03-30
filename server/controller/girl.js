@@ -1,5 +1,5 @@
 // 处理girl表
-import GirlModel from '../model/allgirsl'
+import GirlModel from '../model/allgirls'
 import uniGirlModel from '../model/unigirls'
 import detailModel from '../model/details'
 import uidModel from '../model/uids'
