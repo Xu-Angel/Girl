@@ -3,7 +3,8 @@ const request = require('request')
 const userAgents = require('./userAgents')
 const fs = require('fs')
 let userAgent = userAgents[parseInt(Math.random() * userAgents.length)]
-module.exports = function (realUid) {
+module.exports = function (realUid, cookie) {
+  console.log(cookie, 'inner');
   return new Promise((resolve, reject) => {
     request({
       url: `http://www.jiayuan.com/${realUid}`,
@@ -12,7 +13,7 @@ module.exports = function (realUid) {
         'User-Agent': userAgent,
         // 'Cookie': 'accessID=20190309214241558161; ip_loc=45; stadate1=3471673; myloc=45%7C4401; myage=33; mysex=f; myuid=3471673; myincome=30; PHPSESSID=c3875d8c3d9c2060789b542ca4ce7315; user_access=1; main_search:200715830=%7C%7C%7C00; COMMON_HASH=cc6ec580692f7e2df42323b614bc63fd; last_login_time=1553315969; PROFILE=200715830%3A%25E5%2596%25B5%25E5%2596%25B5%3Af%3Aimages1.jyimg.com%2Fw4%2Fglobal%2Fi%3A0%3A%3A1%3Azwzp_f.jpg%3A1%3A1%3A50%3A10%3A3.0; is_searchv2=1; td_cookie=18446744069830179450; pop_avatar=1; RAW_HASH=VEmv-00D63-wNkfn0-BAwBX2nUaCItfEXaFrtHHEzFen9SqK9jG95cklrFRcCxXOG83NbEa6hzr81Aj1j4t5Fz8S%2A1FvQ96zc%2AEox9aiUnl59yA.; SESSION_HASH=a10029b896cd86adf0035c81923b4ee1e9030e94; pop_time=1553353756931'
         // 'Cookie': 'accessID=20190324140855593289; PHPSESSID=f33c7af0044c59feae8fed408cd6eafe; SESSION_HASH=5b388ece638a148fa5042c5b1d9bc09e81b6b2d7; user_access=1; stadate1=199815830; myloc=45%7C4401; myage=33; mysex=f; myuid=199815830; myincome=30; main_search:200715830=%7C%7C%7C00; COMMON_HASH=cc6ec580692f7e2df42323b614bc63fd; sl_jumper=%26cou%3D17%26omsg%3D0%26dia%3D0%26lst%3D1970-01-01; last_login_time=1553743152; PROFILE=200715830%3A%25E5%2596%25B5%25E5%2596%25B5%3Af%3Aimages1.jyimg.com%2Fw4%2Fglobal%2Fi%3A0%3A%3A1%3Azwzp_f.jpg%3A1%3A1%3A50%3A10%3A3.0; pop_avatar=1; RAW_HASH=DDRlqfkx6PDJeR7Xeun8nO4v0oGCYa4YLIlUeYNjN2Hq9Q5%2AgFajtwCQuCG-85dGkMKtoaDDB0liECd0Ic-WpsM7HyfLAbjWfja5Iln78w1d9P0.'
-        'Cookie': 'accessID=20190318154159216157; PHPSESSID=1431cf71f79fd2c174695d54184aca93; ip_loc=45; myuid=199775830; is_searchv2=1; main_search:200725830=%7C%7C%7C00; photo_scyd_200725830=yes; SESSION_HASH=7572e0158d359220fc3060d72b6a22260d656fd3; user_access=1; stadate1=199775830; myloc=45%7C4401; myage=33; mysex=f; myincome=30; COMMON_HASH=cc6ec580692f7e2df42323b614bc63fd; sl_jumper=%26cou%3D17%26omsg%3D0%26dia%3D0%26lst%3D1970-01-01; last_login_time=1553822854; PROFILE=200712830%3A%25E5%2596%25B5%25E5%2596%25B5%3Af%3Aimages1.jyimg.com%2Fw4%2Fglobal%2Fi%3A0%3A%3A1%3Azwzp_f.jpg%3A1%3A1%3A50%3A10%3A3.0; pop_avatar=1; RAW_HASH=dfqk6mpVMZVer30OIHdwYVJ8Jjl7HsWQAA49o8L6Aom45Ex9GtVtL8vWfRwSf1VgdENSTdyp7yr0JIT%2AHKUuZGh4TGvS8OGmLs-Pj8akq4ZKjxg.; pop_time=1553822885340'
+        'Cookie':cookie
       },
       // proxy: 'http://116.209.58.93:9999/'
     }, function (err, res, body) {

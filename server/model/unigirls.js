@@ -19,8 +19,12 @@ const girlSchema = new Schema({
   'helloUrl': String,
   'top': { type: Number, default: 0 },
   'hidden': { type: Boolean, default: false },
-  'status': {type: Boolean, default: false}
+  'status': { type: Boolean, default: false },
+  'createTime': {type: Date, default: new Date()},
+  'finishTime': {type: Date, default: new Date()}
 })
+
+girlSchema.index({ 'realUid': 1 })
 
 const uniGirl = mongoose.model('unigirl', girlSchema)
 

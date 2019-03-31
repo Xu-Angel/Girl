@@ -23,6 +23,7 @@ const detailSchema = new Schema({
   '经济实力': Object,
   '工作学习': Object,
   '婚姻观念': Object,
+  'createTime': {type: Date, default: new Date()}
 })
 
 detailSchema.index({ 'realUid': 1 })

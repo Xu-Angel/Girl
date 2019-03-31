@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, Notification } from 'element-ui'
 // import store from '../store'
 // import { getToken } from '@/utils/auth'
 
@@ -60,10 +60,11 @@ service.interceptors.response.use(
       return Promise.reject('error')
     } else {
       if (res.status === 400 && res.message) {
-        Message({
+        Notification({
+          title: '提醒',
           message: res.message,
           type: 'error',
-          duration: 5 * 1000
+          duration: 5000
         })
       }
       if (res.status === 200 && res.message) {
@@ -74,10 +75,11 @@ service.interceptors.response.use(
         })
       }
       if (res.status === 100 && res.message) {
-        Message({
+        Notification({
+          title: '提醒',
           message: res.message,
           type: 'warning',
-          duration: 3 * 1000
+          duration: 3000
         })
       }
       return response.data

@@ -1,15 +1,14 @@
 <template>
   <div class="app-container">
     <div class="search-container">
+      <div class="fl">
+        <span class="fl" style="margin-right:10px;">
+          <el-input v-model="pageRange" placeholder="爬取页数eg:1-20"></el-input>
+        </span>
+        <el-button type="primary" @click="spiIp">爬取</el-button>
+      </div>
       <div class="fr">
-        <el-select v-model="search.education" clearable style="width: 180px;" placeholder="请选择学历">
-          <el-option v-for="(item, key) in education" :key="key" :label="item" :value="item"></el-option>
-        </el-select>
-        <el-select v-model="search.marriage" clearable style="width: 180px;" placeholder="请选择状态">
-          <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="item"></el-option>
-        </el-select>
-        <el-input v-model="search.realUid" placeholder="请输入realUid" style="width: 180px;"></el-input>
-        <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+        <el-button type="primary" @click="distinctIp">IP池去重</el-button>
       </div>
     </div>
     <el-table
@@ -22,27 +21,16 @@
       style="width: 100%"
       @selection-change="selectionChange"
     >
-    <el-table-column type="selection" width="38"></el-table-column>
-      <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
-        <template slot-scope="scope">
-          <span @click="toDetailById(scope.row.realUid)">{{ scope.row.realUid }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
-      <el-table-column prop="randListTag" align="center" label="标签" width="200">
-        <template slot-scope="scope">
-          <div class="span" v-html="scope.row.randListTag"></div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="education" label="学历" align="center"></el-table-column>
-      <el-table-column align="center" prop="status" label="爬取状态" sortable>
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status ? '完成' : '待爬' }}</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column type="selection" width="38"></el-table-column>
+      <el-table-column prop="createTime" align="center" label="生成时间"></el-table-column>
+      <el-table-column prop="ip" align="center" label="IP"></el-table-column>
+      <el-table-column prop="ori" label="来源" align="center"></el-table-column>
+      <el-table-column prop="speed" label="速度" align="center"></el-table-column>
+      <el-table-column prop="address" label="地址" align="center"></el-table-column>
+      <el-table-column prop="type" label="类型" align="center"></el-table-column>
       <el-table-column align="center" prop="realUid" label="操作">
         <template slot-scope="scope">
-          <el-button @click="toDetailById(scope.row.realUid,currentPage)">查看</el-button>
+          <el-button :loading="false" @click="testIp(scope.row.ip, this)">测试</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,8 +49,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
-import { getSipderConfig } from '@/api/common'
+import { startSpiIp, getIpList, checkIp, distinct } from '@/api/ip'
 
 export default {
   filters: {
@@ -84,36 +71,11 @@ export default {
       currentPage: 1,
       total: 10000,
       pageSize: 10,
-      area: [],
-      search: {
-        area: '',
-        age: '',
-        height: '',
-        realUid: '',
-        status: ''
-      },
-      age: [],
-      height: [],
-      education: [],
-      marriage: [],
-      status: [true, false],
-      uid: 0
+      pageRange: ''
     }
   },
   created() {
-    const { uid, pageNum, ...params } = this.$route.query
-    this.currentPage = Number(pageNum) || 1
-    this.search = params || this.search
-    this.uid = uid
     this.fetchData()
-    getSipderConfig().then(rs => {
-      console.log(rs)
-      this.area = rs.data.area
-      this.height = rs.data.height
-      this.age = rs.data.age
-      this.education = rs.data.education
-      this.marriage = rs.data.marriage
-    })
   },
   methods: {
     handleSizeChange() { },
@@ -129,20 +91,17 @@ export default {
       })
       this.currentPage = changePage
       this.fetchData()
-      // 常规请求分页 不回到顶部
-      // this.$route.query.pageNum = changePage
-      // this.currentPage = changePage
-      // this.fetchData()
     },
     fetchData() {
       this.listLoading = true
-      getList({
+
+      getIpList({
         page: this.currentPage,
         pageSize: this.pageSize,
         ...this.search
       }).then(response => {
-        console.log(response)
         this.list = response.data.items
+        this.list.map(v => { v.createTime = new Date(v.createTime).toLocaleString() })
         this.total = response.data.total
         this.listLoading = false
       })
@@ -152,29 +111,38 @@ export default {
       this.currentPage = 1
       this.fetchData()
     },
-    toDetailById(uid, pageNum) {
-      this.$router.push({
-        path: '/girls/detail',
-        query: {
-          uid,
-          pageNum,
-          ...this.search
-        }
+    testIp(ip, t) {
+      console.log(t)
+      // TODO: 发起请求
+      console.log(ip)
+      this.listLoading = true
+      checkIp({
+        ip
+      }).then(rs => {
+        this.listLoading = false
+        this.fetchData()
+        console.log(rs)
       })
     },
-    tableRowClassName({ row, rowIndex }) {
-      if (row.realUid === Number(this.uid)) {
-        return 'success-row'
-      }
-      return ''
+    spiIp() {
+      startSpiIp({
+        start: Number(this.pageRange.split('-')[0]) || 1,
+        end: Number(this.pageRange.split('-')[1]) || 20
+      })
+    },
+    distinctIp() {
+      this.listLoading = true
+      distinct().then(rs => {
+        this.fetchData()
+      })
     }
   }
 }
 </script>
 <style>
- .el-table .success-row {
-    background: #f0f9eb;
-  }
+.el-table .success-row {
+  background: #f0f9eb;
+}
 .span span {
   height: 18px;
   line-height: 18px;
@@ -193,5 +161,4 @@ export default {
   margin-bottom: -3px;
   margin-left: 1px;
 }
-
 </style>

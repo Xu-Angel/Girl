@@ -8,11 +8,26 @@ export function updateTaskConfig(data = {}) {
   })
 }
 
-export function distinctGirl() {
+export function distinctGirl(data = {}) {
   return request({
     url: '/spider/distinctGirl',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 
+export function spiDetailByRealUid(data = {}) {
+  return request({
+    url: '/spider/spiDetailByRealUid',
+    method: 'post',
+    data
+  })
+}
 
+export function exportRealUid(data = {}) {
+  return request({
+    url: '/spider/exportRealUid',
+    method: 'post',
+    data
+  })
+}

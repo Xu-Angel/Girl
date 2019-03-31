@@ -2,85 +2,85 @@
   <div class="config-container">
     <el-row style="margin-bottom: 20px;">
       <el-button type="danger" @click="detailConfigDialog=true">详细页配置</el-button>
-    </el-row>
-            <el-dialog
-  :visible.sync="detailConfigDialog"
-  title="请谨慎操作"
-  width="50%"
-  :before-close="handleClose">
-    <el-form :model="detailConfig" :rules="rules" ref="detailConfig" label-width="100px">
-      <el-form-item label="Cookie" prop="cookie">
-        <el-input type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据" v-model="detailConfig.cookie"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="submitForm('detailConfig')">保存并开始</el-button>
-      </el-form-item>
-    </el-form>
-    </el-dialog>
-    <!-- 爬取列表页配置 -->
-    <el-row style="margin-bottom: 20px;">
+      <!-- <el-button type="danger" @click="spiDetail">爬取详细页数据</el-button> -->
+      <el-button type="danger" @click="genRealUid">生成Uid表</el-button>
       <el-button type="danger" @click="listConfigDialog=true">列表页配置</el-button>
       <el-button type="danger" @click="distinct">去重列表页数据</el-button>
     </el-row>
-        <el-dialog
-  :visible.sync="listConfigDialog"
-  title="请谨慎操作"
-  width="50%"
-  :before-close="handleClose">
-   <el-form :model="listConfig" ref="listConfig" :rules="rules" label-width="100px">
-      <el-form-item label="区域" prop="area">
-        <el-select style="width: 180px;" v-model="listConfig.area" placeholder="请选择爬取区域">
-          <el-option v-for="(item, key) in area" :key="key" :label="item" :value="item"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="学历">
-        <el-select
-          v-model="listConfig.education"
-          clearable
-          style="width: 180px;"
-          placeholder="请选择学历"
-        >
-          <el-option
-            v-for="(item, key) in education"
-            :key="key"
-            :label="item"
-            :value="(key + 1) * 10"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-select
-          v-model="listConfig.marriage"
-          clearable
-          style="width: 180px;"
-          placeholder="请选择状态"
-        >
-          <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="key + 1"></el-option>
-        </el-select>
-      </el-form-item>
-      <!-- <el-form-item label="标签">
+    <el-dialog :visible.sync="detailConfigDialog" title="请谨慎操作" width="50%">
+      <el-form ref="detailConfig" :model="detailConfig" :rules="rules" label-width="100px">
+        <el-form-item label="Cookie" prop="cookie">
+          <el-input v-model="detailConfig.cookie" type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="warning" @click="spiDetail">保存并开始</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <!-- 爬取列表页配置 -->
+    <el-dialog :visible.sync="listConfigDialog" title="请谨慎操作" width="50%">
+      <el-form ref="listConfig" :model="listConfig" :rules="rules" label-width="100px">
+        <el-form-item label="区域" prop="area">
+          <el-checkbox
+            :indeterminate="isIndeterminate"
+            v-model="checkAllArea"
+            @change="handleCheckAllChange"
+          >全选</el-checkbox>
+          <el-checkbox-group v-model="listConfig.area" @change="handleCheckedAreaChange">
+            <el-checkbox v-for="(city,key) in area" :label="city" :key="key">{{ city }}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="页码">
+          <el-input v-model="listConfig.page" style="width: 180px;" placeholder="eg:1-500"></el-input>
+        </el-form-item>
+        <el-form-item label="学历">
+          <el-select
+            v-model="listConfig.education"
+            clearable
+            style="width: 180px;"
+            placeholder="请选择学历"
+          >
+            <el-option
+              v-for="(item, key) in education"
+              :key="key"
+              :label="item"
+              :value="(key + 1) * 10"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select
+            v-model="listConfig.marriage"
+            clearable
+            style="width: 180px;"
+            placeholder="请选择状态"
+          >
+            <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="key + 1"></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="标签">
           <el-radio-group v-model="listConfig.type" size="medium">
             <el-radio border label="高级白领"></el-radio>
             <el-radio border label="空姐"></el-radio>
         </el-radio-group>
-      </el-form-item>-->
-      <!-- <el-form-item label="性别">
+        </el-form-item>-->
+        <!-- <el-form-item label="性别">
           <el-radio-group>
             <el-radio label="妹子"></el-radio>
             <el-radio label="汉子" disabled="true"></el-radio>
           </el-radio-group>
-      </el-form-item>-->
-      <el-form-item>
-        <el-button @click="updateListConfig">保存并开始</el-button>
-      </el-form-item>
-    </el-form>
-</el-dialog>
+        </el-form-item>-->
+        <el-form-item>
+          <el-button type="warning" @click="updateListConfig">保存并开始</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getSipderConfig } from '@/api/common'
-import { updateTaskConfig, distinctGirl } from '@/api/spider'
+import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid } from '@/api/spider'
 
 export default {
   data() {
@@ -89,10 +89,13 @@ export default {
       height: [],
       education: [],
       marriage: [],
+      checkAllArea: false,
+      area: [],
+      isIndeterminate: true,
       listConfigDialog: false,
       detailConfigDialog: false,
       listConfig: {
-        area: '',
+        area: ['广东'],
         education: '',
         marriage: ''
       },
@@ -102,10 +105,10 @@ export default {
       rules: {
         cookie: [
           { required: true, message: '请输入Cookie', trigger: 'blur' },
-          { min: 100, max: 500, message: '长度在 100 到 500 个字符', trigger: 'blur' }
+          { min: 100, max: 1000, message: '长度在 100 到 1000 个字符', trigger: 'blur' }
         ],
         area: [
-          { required: true, message: '  请选择区域', trigger: 'blur' },
+          { required: true, message: '  请选择区域', trigger: 'blur' }
         ]
       }
     }
@@ -121,50 +124,79 @@ export default {
     })
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false;
-        }
-      });
-    },
     updateListConfig() {
       this.$refs['listConfig'].validate((valid) => {
         if (valid) {
           this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          updateTaskConfig({ ...this.listConfig })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '任务已取消'
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            // console.log(this.listConfig)
+            // return
+            this.listConfig.startPage = Number(this.listConfig.page.split('-')[0])
+            this.listConfig.endPage = Number(this.listConfig.page.split('-')[1])
+            updateTaskConfig({ ...this.listConfig })
+            this.listConfigDialog = false
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '任务已取消'
+            })
           })
-        })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
+    spiDetail() {
+      this.$refs['detailConfig'].validate((valid) => {
+        if (valid) {
+          this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            spiDetailByRealUid({ ...this.detailConfig })
+            this.detailConfigDialog = false
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '任务已取消'
+            })
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    genRealUid() {
+      exportRealUid()
+    },
     distinct() {
       this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-        }).then(() => {
-          distinctGirl()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '任务已取消'
-          })
+      }).then(() => {
+        distinctGirl()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '任务已取消'
         })
+      })
+    },
+    handleCheckAllChange(val) {
+      this.listConfig.area = val ? this.area : []
+      this.isIndeterminate = false
+    },
+    handleCheckedAreaChange(value) {
+      const checkedCount = value.length
+      this.checkAllArea = checkedCount === this.area.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.area.length
     }
   }
 }
@@ -173,6 +205,10 @@ export default {
 <style scoped>
 .line {
   text-align: center;
+}
+.el-checkbox {
+  margin-right: 15px;
+  line-height: 15px;
 }
 </style>
 

@@ -14,11 +14,16 @@
         <el-select v-model="search.education" clearable style="width: 180px;" placeholder="请选择学历">
           <el-option v-for="(item, key) in education" :key="key" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select v-model="search.marriage" clearable style="width: 180px;" placeholder="请选择状态">
+        <el-select v-model="search.marriage" clearable style="width: 180px;" placeholder="请选择婚史">
           <el-option v-for="(item, key) in marriage" :key="key" :label="item" :value="item"></el-option>
         </el-select>
-        <el-select v-model="search.status" clearable style="width: 180px;" placeholder="请选择爬取状态">
-          <el-option v-for="(item, key) in status" :key="key" :label="item ? '完成' : '待爬'" :value="item"></el-option>
+        <el-select v-model="search.status" clearable style="width: 180px;" placeholder="请选择状态">
+          <el-option
+            v-for="(item, key) in status"
+            :key="key"
+            :label="item ? '完成' : '待爬'"
+            :value="item"
+          ></el-option>
         </el-select>
         <el-input v-model="search.realUid" placeholder="请输入realUid" style="width: 180px;"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
@@ -39,7 +44,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
-      <el-table-column prop="randListTag" align="center" label="标签" width="200">
+      <el-table-column prop="createTime" align="center" label="生成时间"></el-table-column>
+      <el-table-column prop="finishTime" align="center" label="完成时间"></el-table-column>
+      <el-table-column prop="randListTag" align="center" label="标签">
         <template slot-scope="scope">
           <div class="span" v-html="scope.row.randListTag"></div>
         </template>
@@ -57,14 +64,14 @@
           <div class="i" v-html="scope.row.userIcon"></div>
         </template>
       </el-table-column>
-      <el-table-column prop="height" label="身高" sortable align="center" ></el-table-column>
-      <el-table-column prop="marriage" class-name="status-col" label="状态" align="center" width="80">
+      <el-table-column prop="height" label="身高" sortable align="center"></el-table-column>
+      <el-table-column prop="marriage" class-name="status-col" label="婚史" align="center" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.marriage | statusFilter">{{ scope.row.marriage }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="age" label="年龄" sortable ></el-table-column>
-      <el-table-column align="center" prop="status" label="爬取状态" sortable>
+      <el-table-column align="center" prop="age" label="年龄" sortable></el-table-column>
+      <el-table-column align="center" prop="status" label="状态" sortable>
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status ? '完成' : '待爬' }}</el-tag>
         </template>
@@ -172,6 +179,8 @@ export default {
       }).then(response => {
         console.log(response)
         this.list = response.data.items
+        this.list.map(v => { v.createTime = new Date(v.createTime).toLocaleString() })
+        this.list.map(v => { v.finishTime = new Date(v.finishTime).toLocaleString() })
         this.total = response.data.total
         this.listLoading = false
       })
@@ -201,9 +210,9 @@ export default {
 }
 </script>
 <style>
- .el-table .success-row {
-    background: #f0f9eb;
-  }
+.el-table .success-row {
+  background: #f0f9eb;
+}
 .span span {
   height: 18px;
   line-height: 18px;

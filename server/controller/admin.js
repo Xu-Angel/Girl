@@ -74,6 +74,7 @@ class Admin extends Base {
           })
         } else {
           req.session.admin_id = admin.id;
+          req.session.role = admin.role;
           res.send({
             status: 200,
             message: '登录成功',
