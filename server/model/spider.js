@@ -47,7 +47,7 @@ for (let i = 18; i < 70; i++) {
 for (let i = 150; i < 190; i++) {
   height.push(i)
 }
-const education = ['高中中专及以下', '大专', '本科', '双学士', '博士', '硕士']
+const education = ['高中中专及以下', '大专', '本科', '双学士', '硕士', '博士']
 const marriage = ['未婚', '离异', '丧偶']
 
 const spiderSchema = new Schema({

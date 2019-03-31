@@ -21,6 +21,8 @@ export function spiIp(config) {
           console.log(pageNum, 'pageNum')
           cb(null, '')
         })
+      }).catch(err => {
+        reject(err)
       })
     }, function (err, rs) {
       console.log(rs, 'fianl')

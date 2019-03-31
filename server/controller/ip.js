@@ -71,13 +71,23 @@ class Ip extends Base {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
       try {
-        await spiIp(fields)
-        res.send({
-          status: 100,
-          message: `开启成功`
+        spiIp(fields).then(rs => {
+          res.send({
+            status: 100,
+            message: `开启成功`
+          })
+        }).catch(err => {
+          res.send({
+            status: 400,
+            message: `开启失败:${err}`
+          })
         })
+
       } catch (err) {
-        console.log(err)
+        res.send({
+          status: 400,
+          message: `开启失败:${err}`
+        })
       }
     })
   }
