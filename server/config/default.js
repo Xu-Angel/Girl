@@ -4,8 +4,8 @@ module.exports = {
   // url: 'mongodb://root:password123@127.0.0.1:27017/Girls?authSource=admin',
   // url: 'mongodb://root:password123@123.207.72.208:27017/girldatabase?authSource=admin',
   // url: 'mongodb://127.0.0.1:27017/girldatabase',
-  url: 'mongodb://127.0.0.1:27017/girldatabasev1?authSource=admin',
-  // url: 'mongodb://root:password123@123.207.72.208:27017/girldatabasev1?authSource=admin',
+  // url: 'mongodb://127.0.0.1:27017/girldatabasev1?authSource=admin',
+  url: 'mongodb://root:password123@123.207.72.208:27017/girldatabasev1?authSource=admin',
   session: {
     name: 'SID',
     secret: 'SID',

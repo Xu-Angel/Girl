@@ -45,7 +45,6 @@ class Admin extends Base {
       try {
         const admin = await AdminModel.findOne({ username })
         if (!admin) {
-          console.log(admin, 'admin')
           const role = status == 1 ? 1 : 2
           const admin_id = await this.getId('admin_id');
           const newAdmin = {
@@ -54,10 +53,11 @@ class Admin extends Base {
             id: admin_id,
             role
           }
-          await AdminModel.create(newAdmin)
+          let admin = await AdminModel.create(newAdmin)
+          console.log(admin, '58');
           res.send({
             status: 200,
-            success: '注册管理员成功',
+            message: '注册管理员成功',
             token: config.token,
             data: {
               role: admin.role,
@@ -102,7 +102,7 @@ class Admin extends Base {
       delete req.session.admin_id;
       res.send({
         status: 200,
-        success: '退出成功'
+        message: '退出成功'
       })
     } catch (err) {
       console.log('退出失败', err)
