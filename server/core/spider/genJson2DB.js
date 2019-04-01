@@ -1,7 +1,7 @@
-import {stc} from '../config'
+import { stc } from '../config'
 import GirlModel from '../../model/allgirls'
 const path = require('path')
-
+const fs = require('fs')
 /**
  * 将全部文件存入数据库
  * @param {*} config 
@@ -37,19 +37,22 @@ export function genAll2DB(config = {}) {
  * @param {*} I 
  */
 export function pushOne(area, I = 1) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const json = require(path.resolve(__dirname, `../../db/json/${area}/${I}.json`))
-      json.userInfo.forEach(async (v, i) => {
+      await json.userInfo.forEach(async (v, i) => {
         await new GirlModel({ ...v, area, createTime: new Date() }).save(function (err, data) {
           if (err) { console.log(err) } else {
             console.log(`地区 ${area} 第 ${I} 页 第 ${i} 条 写入数据库完成`)
           }
         })
       })
+      // await fs.unlinkSync(path.resolve(__dirname, `../../db/json/${area}/${I}.json`))
+      // console.log(`地区 ${area} 第 ${I} 页 JSON文件已删除`)
       resolve()
     } catch (error) {
       console.log(`数据库写入${area}/${I}.json-时候发生错误：${error}`)
+      fs.renameSync(path.resolve(__dirname, `../../db/json/${area}/${I}.json`), path.resolve(__dirname, `../../db/json/${area}/problem_${I}.json`))
     }
   })
 }

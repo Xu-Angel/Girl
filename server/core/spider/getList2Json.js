@@ -1,13 +1,13 @@
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
-let N = 0
 
 import {stc, userAgents} from '../config'
 import { pushOne } from './genJson2DB'
 
 export default function (config = {}) {
   return new Promise((reolve, reject) => {
+    let N = 0
     for (var key in stc) {
       // 根据area  进行任务分发 匹配stc
       if (config.area.includes(key) ) {
