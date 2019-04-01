@@ -1,9 +1,10 @@
 const cheerio = require('cheerio')
 const request = require('request')
-const userAgents = require('./userAgents')
+import { userAgents } from '../config'
+
 let userAgent = userAgents[parseInt(Math.random() * userAgents.length)]
-var proxys = []; //保存从网站上获取到的代理
-var useful = []; //保存检查过有效性的代理
+let proxys = [] //保存从网站上获取到的代理
+let useful = [] //保存检查过有效性的代理
 
 
 /**

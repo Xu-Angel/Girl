@@ -1,10 +1,11 @@
 const request = require('request')
-const userAgents = require('./userAgents')
 const fs = require('fs')
 const path = require('path')
-const stc = require('./area')
-import { pushOne } from './genJson2DB'
 let N = 0
+
+import {stc, userAgents} from '../config'
+import { pushOne } from './genJson2DB'
+
 export default function (config = {}) {
   return new Promise((reolve, reject) => {
     for (var key in stc) {
@@ -80,7 +81,7 @@ export default function (config = {}) {
         }
       }, async function (err, res, body) {
         try {
-          fs.writeFileSync(path.resolve(__dirname, `../../db/json/${key}/${n}.json`), unescape(body.replace(/\\u/g, '%u').replace(/##jiayser##\/\/$/g, '').replace(/\\/g, '').replace(/^##jiayser##/, '').replace(/゛/g, '').replace(//g, '').replace(/color="red"/g, '')))
+          fs.writeFileSync(path.resolve(__dirname, `../../db/json/${key}/${n}.json`), unescape(body.replace(/\\u/g, '%u').replace(/##jiayser##\/\/$/g, '').replace(/\\/g, '').replace(/^##jiayser##/, '').replace(/゛/g, '').replace(//g, '').replace(//g, '').replace(/color="red"/g, '').replace(//g, '')))
           console.log(`地区-${key}-页码-${n}已经转成JSON文件`)
           // 写入数据库
           await pushOne(key, n)
