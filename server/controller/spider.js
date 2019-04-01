@@ -1,14 +1,14 @@
-// 处理girl表
 import detailModel from '../model/details'
 import spiderModel from '../model/spider'
 import Base from './basePrototype'
 import uidModel from '../model/uids'
-import uniGirlModel from '../model/unigirls'
-import GirlModel from '../model/allgirls'
+import AllGirlModel from '../model/allgirls'
 import formidable from 'formidable'
 import getList2Json from '../core/spider/getList2Json'
-const getDetail = require('../getGirls/getdetail')
-const async = require('async')
+import getDetail from '../core/spider/getdetail'
+// const getDetail = require('../getGirls/getdetail')
+// const async = require('async')
+import async from 'async'
 
 // TODO:WSS
 
@@ -18,10 +18,16 @@ class Spider extends Base {
     this.spiDetailByRealUid = this.spiDetailByRealUid.bind(this) // 继承方法 绑定
     this.distinctGirl = this.distinctGirl.bind(this) // 继承方法 绑定
   }
+
+  /**
+   * 获取爬取的配置
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async getSipderConfig(req, res, next) {
     try {
-      let config = await spiderModel.find({})
-      // console.log(config)
+      const config = await spiderModel.find({})
       let area = []
       for (let key in config[0]['area']) {
         area.push(key)
@@ -45,11 +51,16 @@ class Spider extends Base {
     }
 
   }
-  // 手动路由方法
+
+  /**
+   * 根据UID爬取详情数据
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async spiDetailByRealUid(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
-      console.log(req.session.role)
       if (req.session.role !== 2) {
         res.send({
           status: 100,
@@ -65,13 +76,14 @@ class Spider extends Base {
         // let realUidArr = await uidModel.find({}, { realUid: 1, _id: 0 }) // 映射
         let realUidArr = await uidModel.distinct('realUid') // 映射
         let finUidArr = await detailModel.distinct('realUid')
+        await spiderModel.findOneAndUpdate({}, {$set: {cookie}})
         let realUids = null
         console.log(realUidArr, 'realUidArr')
         console.log(finUidArr, 'finUidArr')
         // 临时方法更新旧的列表数据状态
         // for (let key in finUidArr) {
         //   // uidModel.find({realUid:finUidArr[key]})
-        //   await uniGirlModel.findOneAndUpdate({ realUid: finUidArr[key] }, { $set: { status: true } })
+        //   await AllGirlModel.findOneAndUpdate({ realUid: finUidArr[key] }, { $set: { status: true } })
         // }
         // return
         if (finUidArr.length > 0) {
@@ -100,8 +112,8 @@ class Spider extends Base {
               rs['realUid'] = realUid
               detailModel.insertMany([rs], function (err, data) {
                 // 更新列表的状态
-                uniGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true } }).exec()
-                uniGirlModel.findOneAndUpdate({ realUid }, { $set: { finishTime: new Date() } }).exec()
+                AllGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true, finishTime: new Date() } }).exec()
+                // AllGirlModel.findOneAndUpdate({ realUid }, { $set: { finishTime: new Date() } }).exec()
                 remainLength--
                 console.log(`end-realUid:${realUid},usedtime:${(new Date().getTime() - cur) / 1000}seconds,remain-realUid-count：${remainLength}`)
                 cb(null, ' ') // 代表这个函数结束，传递出去
@@ -121,7 +133,12 @@ class Spider extends Base {
       }
     })
   }
-
+  /**
+   * 定义爬取列表页配置并开启任务
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async updateTaskConfig(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
@@ -132,11 +149,9 @@ class Spider extends Base {
         })
         return
       }
-      console.log(fields);
       if (err) {
         res.send({
           status: 100,
-          type: 'FORM_DATA_ERROR',
           message: '表单信息错误'
         })
         return
@@ -156,7 +171,12 @@ class Spider extends Base {
     })
   }
 
-  // 手动路由方法
+  /**
+   * WARRING: v0.1 去重方法  已废弃
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async distinctGirl(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
@@ -167,7 +187,6 @@ class Spider extends Base {
         })
         return
       }
-      console.log(req.session)
       try {
         console.log('接到请求')
         //let girl = await GirlModel.find({}) // 1. 整表取
@@ -176,7 +195,7 @@ class Spider extends Base {
         console.log('set length ', Array.from(new Set(uids)).length)
         // 去除已完成的uid
         // 切割uid 分布写入
-        let fin = await uniGirlModel.find({}, { realUid: 1, _id: 0 })
+        let fin = await AllGirlModel.find({}, { realUid: 1, _id: 0 })
         let finArr = []
         for (let K in fin) {
           // console.log(fin[K]['realUid'])
@@ -199,7 +218,7 @@ class Spider extends Base {
               GirlModel.find({ realUid: uids[key] }, function (err, data) {
                 // 一级赋值结构有问题  需要详细结构
                 const { realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden } = data[0]
-                new uniGirlModel({ realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden }).save(function (err, data) {
+                new AllGirlModel({ realUid, area, nickname, sex, marriage, height, education, work_location, age, image, randListTag, userIcon, shortnote, matchCondition, helloUrl, top, hidden }).save(function (err, data) {
                   if (err) {
                     // FIXME: 诡异数据库 catch err  需要重启server  否则uid数会出错
                     console.log('create', err)
@@ -221,7 +240,13 @@ class Spider extends Base {
       }
     })
   }
-  // 生成UID表
+
+  /**
+   * 导出UID,生成UID表
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async exportRealUid(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
@@ -234,14 +259,14 @@ class Spider extends Base {
       }
       try {
         // 可从总表distict
-        let realUids = await uniGirlModel.find({}, { realUid: 1, _id: 0 }) // 映射realUiD 1=Y 0=N (_id 默认也映射) 只导出realUid
+        let realUids = await AllGirlModel.find({}, { realUid: 1, _id: 0 }) // 映射realUiD 1=Y 0=N (_id 默认也映射) 只导出realUid
         // 重新排序 升序
         await realUids.sort(function (a, b) {
           return a['realUid'] - b['realUid']
         })
         // TODO: 不重复写入
         // return
-        await uidModel.remove({}) // 清空
+        // await uidModel.remove({}) // 清空 v0.1方法已废弃
         await uidModel.insertMany(realUids) // 重写
         res.send({
           status: 200,

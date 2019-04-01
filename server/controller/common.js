@@ -1,21 +1,24 @@
-// 处理girl表
+
 import detailModel from '../model/details'
-import spiderModel from '../model/spider'
 import Base from './basePrototype'
-import uidModel from '../model/uids'
-import uniGirlModel from '../model/unigirls'
-import config from 'config-lite'
+import allGirlModel from '../model/allgirls'
 import AdminModel from "../model/admins"
 
 class Common extends Base {
   constructor() {
     super()
   }
+  /**
+   * 获取统计数
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async getCounts(req, res, next) {
     try {
-      let girlCount = await uniGirlModel.count()
-      let finishedCount = await detailModel.count()
-      let userCount = await AdminModel.count()
+      const girlCount = await allGirlModel.count()  // 列表女性条数
+      const finishedCount = await detailModel.count()  // 女性详情完成条数
+      const userCount = await AdminModel.count()   // 用户数
       res.send({
         status: 200,
         data: {

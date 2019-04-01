@@ -8,7 +8,12 @@ class Ip extends Base {
   constructor() {
     super()
   }
-
+  /**
+   * 获取IP列表
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async getIpList(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
@@ -38,7 +43,7 @@ class Ip extends Base {
         res.send({
           status: 400,
           type: 'GET_ERROR_PARAM',
-          message: err.message,
+          message: err.message
         })
         return
       }
@@ -66,11 +71,23 @@ class Ip extends Base {
       }
     })
   }
-
+  /**
+   * 开启爬取IP任务
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async startSpiIp(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
       try {
+        if (req.session.role !== 2) {
+          res.send({
+            status: 100,
+            message: '对不起，你没有权限操作~'
+          })
+          return
+        }
         spiIp(fields).then(rs => {
           res.send({
             status: 100,
@@ -91,11 +108,14 @@ class Ip extends Base {
       }
     })
   }
-
+  /**
+   * 去重IP池
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async distinct(req, res, next) {
     try {
-      let ips = await ipSchema.distinct('ip') // 判断标志
-      console.log(ips.length, 'ips');
       let datas = await ipSchema.find({}) // 所有数据
       datas.forEach((V, i) => {
         datas.forEach((v, i) => {
@@ -114,15 +134,18 @@ class Ip extends Base {
       console.log(err)
     }
   }
-
+  /**
+   * 检查IP可用性
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async checkIp(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
       const { ip } = fields
-      console.log(ip)
       try {
         check(ip).then(rs => {
-          console.log(rs, 'ee')
           if (rs === 1) {
             res.send({
               status: 200,

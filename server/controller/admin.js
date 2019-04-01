@@ -9,10 +9,14 @@ class Admin extends Base {
   constructor() {
     super()
     this.login = this.login.bind(this)
-    // this.register = this.register.bind(this)
     this.encryption = this.encryption.bind(this)
-    // this.updateAvatar = this.updateAvatar.bind(this)
   }
+  /**
+   * 登录/注册接口
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async login(req, res, next) {
     const form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
@@ -20,7 +24,6 @@ class Admin extends Base {
       if (err) {
         res.send({
           status: 100,
-          type: 'FORM_DATA_ERROR',
           message: '表单信息错误'
         })
         return
@@ -33,11 +36,10 @@ class Admin extends Base {
           throw new Error('密码参数错误')
         }
       } catch (err) {
-        console.log(err.message, err);
+        console.log(err.message, err)
         res.send({
           status: 400,
-          type: 'GET_ERROR_PARAM',
-          message: err.message,
+          message: err.message
         })
         return
       }
@@ -54,7 +56,6 @@ class Admin extends Base {
             role
           }
           let admin = await AdminModel.create(newAdmin)
-          console.log(admin, '58');
           res.send({
             status: 200,
             message: '注册管理员成功',
@@ -66,15 +67,14 @@ class Admin extends Base {
             }
           })
         } else if (newpassword.toString() != admin.password.toString()) {
-          console.log('管理员登录密码错误');
+          console.log('管理员登录密码错误')
           res.send({
             status: 400,
-            type: 'ERROR_PASSWORD',
-            message: '该用户已存在，密码输入错误',
+            message: '该用户已存在，密码输入错误'
           })
         } else {
-          req.session.admin_id = admin.id;
-          req.session.role = admin.role;
+          req.session.admin_id = admin.id
+          req.session.role = admin.role
           res.send({
             status: 200,
             message: '登录成功',
@@ -90,13 +90,17 @@ class Admin extends Base {
         console.log('登录管理员失败', err);
         res.send({
           status: 400,
-          type: 'LOGIN_ADMIN_FAILED',
-          message: '登录管理员失败',
+          message: '登录管理员失败'
         })
       }
     })
   }
-
+  /**
+   * 退出登录
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async logout(req, res, next) {
     try {
       delete req.session.admin_id;
@@ -142,12 +146,18 @@ class Admin extends Base {
   //     return
   //   }
   // }
+  /**
+   * 获取管理员信息
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
   async getAdminInfo(req, res, next) {
     console.log('getinfo api')
     const admin_id = req.session.admin_id;
-    console.log(admin_id, 'id');
+    console.log(admin_id, 'id')
     if (!admin_id || !Number(admin_id)) {
-      console.log('获取管理员信息的session失效');
+      console.log('获取管理员信息的session失效')
       res.send({
         status: 400,
         type: 'ERROR_SESSION',
@@ -156,7 +166,7 @@ class Admin extends Base {
       return
     }
     try {
-      const info = await AdminModel.findOne({ id: admin_id }, '-_id -__v -password');
+      const info = await AdminModel.findOne({ id: admin_id }, '-_id -__v -password')
       if (!info) {
         throw new Error('未找到当前管理员')
       } else {
@@ -175,12 +185,12 @@ class Admin extends Base {
     }
   }
   encryption(password) {
-    const newpassword = this.Md5(this.Md5(password).substr(2, 7) + this.Md5(password));
+    const newpassword = this.Md5(this.Md5(password).substr(2, 7) + this.Md5(password))
     return newpassword
   }
   Md5(password) {
-    const md5 = crypto.createHash('md5');
-    return md5.update(password).digest('base64');
+    const md5 = crypto.createHash('md5')
+    return md5.update(password).digest('base64')
   }
 }
 
