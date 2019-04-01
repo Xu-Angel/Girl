@@ -6,7 +6,8 @@ const adminSchema = new Schema({
   'password': String,
   'id': Number,
   'avatar': { type: String, default: '/img/default_avatar.png' },
-  'role': Number,  //1:普通管理、 2:超级管理员
+  'role': Number, //1:普通管理、 2:超级管理员
+  'createTime': { type: Date, default: new Date() }
 })
 
 adminSchema.index({ id: 1 });

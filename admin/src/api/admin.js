@@ -22,3 +22,19 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getList(data = {}) {
+  return request({
+    url: '/admin/getList',
+    method: 'post',
+    data
+  })
+}
+
+export function delAdmin(data = {}) {
+  return request({
+    url: '/admin/delAdmin',
+    method: 'post',
+    data
+  })
+}

@@ -116,6 +116,7 @@ export const constantRouterMap = [
       {
         path: 'role',
         name: 'Role',
+        hidden: true,
         component: () => import('@/views/permission/role/index'),
         meta: { title: '角色列表', icon: 'role' }
       }
