@@ -165,11 +165,10 @@ export default {
       getDetail(uid).then(rs => {
         console.log(rs)
         const { detail } = rs.data
-        const { uid, 学历, 身高, 购车, 月薪, 住房, 体重, 星座, 民族, 属相, 血型, 概要, 择偶要求, 生活方式, 经济实力, 工作学习, 婚姻观念, 爱情DNA, 自我介绍, 情感故事 } = detail
+        const { 学历, 身高, 购车, 月薪, 住房, 体重, 星座, 民族, 属相, 血型, 概要, 择偶要求, 生活方式, 经济实力, 工作学习, 婚姻观念, 爱情DNA, 自我介绍, 情感故事 } = detail
 
         this.carousel = detail.照片.small
         this.bigImg = detail.照片.big
-        this.uid = uid
         this['about'] = 概要
         this.selfMsg['学历'] = 学历
         this.selfMsg['身高'] = 身高
