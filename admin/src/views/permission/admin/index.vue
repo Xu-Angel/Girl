@@ -84,7 +84,7 @@ export default {
       this.fetchData()
     },
     del(username) {
-      delAdmin({username}).then(rs => {
+      delAdmin({ username }).then(rs => {
         if (rs.status === 200) {
           setTimeout(() => {
             this.fetchData()
@@ -100,6 +100,7 @@ export default {
         ...this.search
       }).then(response => {
         this.list = response.data.items
+        /* eslint-disable */
         this.list.map(v => v.createTime = new Date(v.createTime).toLocaleString())
         this.list.map(v => v.avatar = /^[a-z][a-z0-9+.-]*:/.test(v.avatar) ? v.avatar : process.env.BASE_API + v.avatar)
         this.total = response.data.total

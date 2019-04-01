@@ -21,6 +21,8 @@ baseUrl: http://localhost:8088
 [13、去重女性列表数据](#13去重女性列表数据)<br/>
 [14、配置并开启爬取列表页任务](#14配置并开启爬取列表页任务)<br/>
 [15、导出UID到UID表](#15导出UID到UID表)<br/>
+[16、更改管理员头像以外的信息](#更改管理员头像以外的信息)<br/>
+[17、更改管理员头像](#更改管理员头像)<br/>
 ## 接口列表：
 ### 1、登录注册
 - [x] 状态 请求URL:  
@@ -231,5 +233,15 @@ eg: http://localhost:8088/spider/updateTaskConfig
 - [x] 状态 请求URL：
 ```
 eg: http://localhost:8088/spider/exportRealUid
+```
+### 16、更改管理员头像以外的信息
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/spider/updateInfo
+```
+### 17、更改管理员头像
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/spider/updateAvatar
 ```
 

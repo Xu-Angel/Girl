@@ -38,3 +38,11 @@ export function delAdmin(data = {}) {
     data
   })
 }
+
+export function updateInfo(data = {}) {
+  return request({
+    url: '/admin/updateInfo',
+    method: 'post',
+    data
+  })
+}

@@ -1,8 +1,20 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">当前用户:{{ name }}</div>
-    <div class="dashboard-text">角色等级:<span v-for="role in roles" :key="role">{{ role }}</span></div>
-    <PanelGroup :girl-count="girlCount" :user-count="userCount" :finished-count="finishedCount" :visit-count="visitCount"/>
+    <div class="dashboard-text">你好,管理员:{{ name }}</div>
+    <div class="dashboard-text">
+      角色:
+      <span>{{ role == 1 ? '普通管理员' : '超级管理员' }}</span>
+    </div>
+    <div class="dashboard-text">
+      注册时间:
+      <span>{{ new Date(createTime).toLocaleString() }}</span>
+    </div>
+    <PanelGroup
+      :girl-count="girlCount"
+      :user-count="userCount"
+      :finished-count="finishedCount"
+      :visit-count="visitCount"
+    />
   </div>
 </template>
 
@@ -26,13 +38,13 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'roles'
+      'roles',
+      'createTime'
     ])
   },
   created() {
     getCounts().then(rs => {
       const { finishedCount, girlCount, userCount } = rs.data
-      console.log(finishedCount)
       this.finishedCount = finishedCount
       this.girlCount = girlCount
       this.userCount = userCount

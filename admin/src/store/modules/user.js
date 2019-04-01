@@ -6,7 +6,9 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    id: '',
+    createTime: ''
   },
 
   mutations: {
@@ -21,6 +23,12 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_ID: (state, id) => {
+      state.id = id
+    },
+    SET_CREATETIME: (state, createTime) => {
+      state.createTime = createTime
     }
   },
 
@@ -30,7 +38,6 @@ const user = {
       const { username, password } = userInfo
       return new Promise((resolve, reject) => {
         login({ username, password }).then(response => {
-          console.log(response, 33)
           if (response.status === 200) {
             setToken(response.token) // 通过session 会话 可忽略token
             commit('SET_TOKEN', response.token)
@@ -65,6 +72,8 @@ const user = {
             reject('getInfo: roles must be a non-null array !')
           }
           commit('SET_NAME', data.username)
+          commit('SET_ID', data.id)
+          commit('SET_CREATETIME', data.createTime)
           commit('SET_AVATAR', /^[a-z][a-z0-9+.-]*:/.test(data.avatar) ? data.avatar : process.env.BASE_API + data.avatar)
           resolve(response)
         }).catch(error => {

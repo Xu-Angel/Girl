@@ -8,6 +8,8 @@ class Admin extends Base {
     super()
     this.login = this.login.bind(this)
     this.encryption = this.encryption.bind(this)
+    this.updateAvatar = this.updateAvatar.bind(this)
+    this.updateInfo = this.updateInfo.bind(this)
   }
   /**
    * 登录/注册接口
@@ -55,6 +57,7 @@ class Admin extends Base {
             createTime: new Date()
           }
           let admin = await AdminModel.create(newAdmin)
+          req.session.admin_id = admin.id
           res.send({
             status: 200,
             message: '注册管理员成功',
@@ -63,7 +66,8 @@ class Admin extends Base {
               role: admin.role,
               avatar: admin.avatar,
               name: admin.username,
-              createTime: admin.createTime
+              createTime: admin.createTime,
+              id: admin_id,
             }
           })
         } else if (newpassword.toString() != admin.password.toString()) {
@@ -115,36 +119,71 @@ class Admin extends Base {
       })
     }
   }
-  // async updateAvatar(req, res, next) {
-  //   const admin_id = req.params.admin_id;
-  //   if (!admin_id || !Number(admin_id)) {
-  //     console.log('admin_id参数错误', admin_id)
-  //     res.send({
-  //       status: 0,
-  //       type: 'ERROR_ADMINID',
-  //       message: 'admin_id参数错误',
-  //     })
-  //     return
-  //   }
-
-  //   try {
-  //     const image_path = await this.getPath(req);
-  //     await AdminModel.findOneAndUpdate({ id: admin_id }, { $set: { avatar: image_path } });
-  //     res.send({
-  //       status: 1,
-  //       image_path,
-  //     })
-  //     return
-  //   } catch (err) {
-  //     console.log('上传图片失败', err);
-  //     res.send({
-  //       status: 0,
-  //       type: 'ERROR_UPLOAD_IMG',
-  //       message: '上传图片失败'
-  //     })
-  //     return
-  //   }
-  // }
+  /**
+   * 更新管理员头像
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async updateAvatar(req, res, next) {
+    try {
+      const data = await this.getPath(req)
+      if (!data.fields.id) {
+        res.send({
+          status: 400,
+          message: '缺少管理员ID'
+        })
+        return
+      }
+      await AdminModel.findOneAndUpdate({ id: data.fields.id }, { $set: { avatar: data.fullName } })
+      res.send({
+        status: 200,
+        message: '更新头像成功',
+        avatar: data.fullName
+      })
+    } catch (err) {
+      console.log('上传图片失败', err)
+      res.send({
+        status: 400,
+        message: `上传图片失败${err}`
+      })
+      return
+    }
+  }
+  /**
+   * 更新管理员头像以外信息
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async updateInfo(req, res, next) {
+    try {
+      const form = new formidable.IncomingForm()
+      form.parse(req, async (err, fields, files) => {
+        const { oldPass, newPass, name, id } = fields
+        const admin = await AdminModel.findOne({ id })
+        console.log(admin)
+        const oldpassword = this.encryption(oldPass)
+        if (oldpassword.toString() != admin.password.toString()) {
+          res.send({
+            status: 100,
+            message: '旧密码错误~'
+          })
+          return
+        }
+        await AdminModel.findOneAndUpdate({ id }, { $set: { password: this.encryption(newPass), username: name } })
+        res.send({
+          status: 200,
+          message: '更新信息成功~',
+        })
+      })
+    } catch (error) {
+      res.send({
+        status: 400,
+        message: `发生错误~${error}`,
+      })
+    }
+  }
   /**
    * 获取管理员列表数据
    * @param {*} req 

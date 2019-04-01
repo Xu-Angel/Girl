@@ -1,9 +1,8 @@
-
 import detailModel from '../model/details'
 import Base from './basePrototype'
 import allGirlModel from '../model/allgirls'
 import AdminModel from "../model/admins"
-
+import formidable from 'formidable'
 class Common extends Base {
   constructor() {
     super()
@@ -16,9 +15,9 @@ class Common extends Base {
    */
   async getCounts(req, res, next) {
     try {
-      const girlCount = await allGirlModel.count()  // 列表女性条数
-      const finishedCount = await detailModel.count()  // 女性详情完成条数
-      const userCount = await AdminModel.count()   // 用户数
+      const girlCount = await allGirlModel.count() // 列表女性条数
+      const finishedCount = await detailModel.count() // 女性详情完成条数
+      const userCount = await AdminModel.count() // 用户数
       res.send({
         status: 200,
         data: {
