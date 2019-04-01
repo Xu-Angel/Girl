@@ -180,7 +180,7 @@ export default {
         console.log(response)
         this.list = response.data.items
         this.list.map(v => { v.createTime = new Date(v.createTime).toLocaleString() })
-        this.list.map(v => { v.finishTime = new Date(v.finishTime).toLocaleString() })
+        this.list.map(v => { v.finishTime = v.finishTime ? new Date(v.finishTime).toLocaleString() : '------' })
         this.total = response.data.total
         this.listLoading = false
       })

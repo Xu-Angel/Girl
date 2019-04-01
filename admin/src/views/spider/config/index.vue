@@ -10,7 +10,7 @@
     <el-dialog :visible.sync="detailConfigDialog" title="请谨慎操作" width="50%">
       <el-form ref="detailConfig" :model="detailConfig" :rules="rules" label-width="100px">
         <el-form-item label="Cookie" prop="cookie">
-          <el-input v-model="detailConfig.cookie" type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据"></el-input>
+          <el-input v-model="detailConfig.cookie" :rows="8" type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="warning" @click="spiDetail">保存并开始</el-button>
@@ -30,7 +30,7 @@
             <el-checkbox v-for="(city,key) in area" :label="city" :key="key">{{ city }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="页码">
+        <el-form-item label="页码" prop="page">
           <el-input v-model="listConfig.page" style="width: 180px;" placeholder="eg:1-500"></el-input>
         </el-form-item>
         <el-form-item label="学历">
@@ -109,6 +109,9 @@ export default {
         ],
         area: [
           { required: true, message: '  请选择区域', trigger: 'blur' }
+        ],
+        page: [
+          { required: true, message: '  请选择输入页码', trigger: 'blur' }
         ]
       }
     }
@@ -121,6 +124,7 @@ export default {
       this.age = rs.data.age
       this.education = rs.data.education
       this.marriage = rs.data.marriage
+      this.detailConfig.cookie = rs.data.cookie
     })
   },
   methods: {
@@ -176,6 +180,12 @@ export default {
       exportRealUid()
     },
     distinct() {
+      this.$message({
+        message: 'v0.1版本，此脚本已废除',
+        type: 'warning'
+      })
+      /* eslint-disable */
+      return
       this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
