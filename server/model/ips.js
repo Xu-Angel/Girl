@@ -10,6 +10,8 @@ const ipSchema = new Schema({
   createTime: { type: Date, default: new Date() },
 })
 
+ipSchema.index({ 'ip': 1, }, { unique: true })
+
 const ips = mongoose.model('ips', ipSchema)
 
 export default ips

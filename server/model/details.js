@@ -26,7 +26,7 @@ const detailSchema = new Schema({
   'createTime': {type: Date, default: new Date()}
 })
 
-detailSchema.index({ 'realUid': 1 })
+detailSchema.index({'realUid': 1,},{unique: true})
 
 const Detail = mongoose.model('details', detailSchema)
 

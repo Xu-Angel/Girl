@@ -19,10 +19,12 @@ const girlSchema = new Schema({
   'helloUrl': String,
   'top': { type: Number, default: 0 },
   'hidden': { type: Boolean, default: false },
-  'createTime': {type: Date, default: new Date()}
+  'status': { type: Boolean, default: false },
+  'createTime': Date,
+  'finishTime': Date
 })
-
-girlSchema.index({ 'realUid': 1 })
+girlSchema.index({ 'realUid': 1, }, { unique: true })
+// girlSchema.index({ 'realUid': 1 })
 
 const Girl = mongoose.model('allgirl', girlSchema)
 
