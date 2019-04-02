@@ -140,7 +140,26 @@ class Spider extends Base {
         }
         //! 前台连接任务开启 TODO:停止任务
         IO.of('/socket/start/getDetail').on('connect', (socket) => {
-          let task = TASK(socket)
+          let task = null
+          socket.on('start', (data) => {
+            console.log(data)
+            task = TASK(socket)
+          })
+          socket.on('disconnecting', (reason) => {
+            console.log(reason)
+            task = null
+            socket.disconnect(true)
+          })
+          socket.on('disconnect', (reason) => {
+            console.log(reason)
+            task = null
+            socket.disconnect(true)
+          })
+          socket.on('stop', (data) => {
+            console.log(data)
+            socket.disconnect(true)
+            task = null
+          })
         })
       } catch (err) {
         console.log(err)

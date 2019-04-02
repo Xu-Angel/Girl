@@ -31,11 +31,12 @@
       </ul>
       <el-button type="primary" @click="startDetail">
         开启
-        <i class="el-icon-upload el-icon--right"></i>
+        <i class="el-icon-success el-icon--right"></i>
       </el-button>
-      <!-- <el-button type="primary" @click="stopDetail">
-        停止连接
-      </el-button>-->
+      <el-button type="danger" @click="stopDetail">
+        停止
+        <i class="el-icon-warning el-icon--right"></i>
+      </el-button>
     </el-card>
     <el-card>
       <span>列表页爬取任务:</span>
@@ -53,16 +54,20 @@
             <span style="margin-left: 20px;color: darkgreen;">{{ item.text }}</span>
           </li>
         </ul>
-        <ul v-if="errorPage">
-          <li v-for="(item, key) in errorPage" :key="key">
-            <span>错 误：</span>
-            <span style="margin-left: 20px;color: crimson;">{{ item.text }}</span>
-          </li>
-        </ul>
       </div>
+      <ul v-if="errorPage">
+        <li v-for="(item, key) in errorPage" :key="key">
+          <span>错 误：</span>
+          <span style="margin-left: 20px;color: crimson;">{{ item.text }}</span>
+        </li>
+      </ul>
       <el-button type="primary" @click="startList">
         开启
-        <i class="el-icon-upload el-icon--right"></i>
+        <i class="el-icon-success el-icon--right"></i>
+      </el-button>
+      <el-button type="danger" @click="stopList">
+        停止
+        <i class="el-icon-warning el-icon--right"></i>
       </el-button>
     </el-card>
   </div>
@@ -84,10 +89,10 @@ export default {
   },
   created() {
     // 页面进来直接请求进行进度展示
-    this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
-    this.startDetail()
-    this.socketLsit = io(`${process.env.BASE_API}/start/getList`)
-    this.startList()
+    // this.startDetail()
+    // this.startList()
+    // this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
+    // this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
   },
   methods: {
     testSocket(socket) {
@@ -100,6 +105,7 @@ export default {
     },
     startDetail() {
       // this.testSocket(this.sockteDetail)
+      this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
       this.sockteDetail.on('connect', () => {
         this.sockteDetail.emit('start', { text: '赶紧给我开始爬详细页' })
         // 进度事件
@@ -119,10 +125,10 @@ export default {
         })
         // cookie错误事件
         this.sockteDetail.on('cookieErr', data => {
-          console.log(data, 'ccoke')
+          // console.log(data, 'ccoke')
           this.cookieErr.push(data)
-          if (this.cookieErr.length === 10) {
-            this.cookieErr.splice(0, 1)
+          if (this.cookieErr.length === parseInt(Math.random() * 3) + 10) {
+            this.cookieErr.splice(0, parseInt(Math.random() * 3))
           }
         })
       })
@@ -130,9 +136,10 @@ export default {
     startList() {
       // 当可以连接的时候 说明有任务在做 可以命令开始
       // this.testSocket(this.socketLsit)
-
+      // emit 一次
+      this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
       this.socketLsit.on('connect', () => {
-        console.log(this.socketLsit) // true
+        // console.log(this.socketLsit) // true
         this.socketLsit.emit('start', { text: '赶紧给我开始爬列表页' })
         // 进度事件
         this.socketLsit.on('rate', data => {
@@ -144,12 +151,23 @@ export default {
         // 异常页事件
         this.socketLsit.on('pageErr', data => {
           this.errorPage.push(data)
-          console.log(this.errorUid, data)
           if (this.errorPage.length === 10) {
             this.errorPage.splice(0, 1)
           }
         })
       })
+    },
+    stopDetail() {
+      console.log('clos')
+      this.socketDetail.emit('stop', { text: '赶紧给我停止' })
+      this.socketDetail.close()
+      console.log('e')
+    },
+    stopList() {
+      console.log('clos')
+      this.socketLsit.emit('stop', { text: '赶紧给我停止' })
+      this.socketLsit.close()
+      console.log('e')
     }
   }
 }

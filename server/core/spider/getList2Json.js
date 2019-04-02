@@ -10,7 +10,26 @@ export default function (config = {}) {
     console.log('dd')
     //! 前台连接任务开启 TODO:停止任务
     IO.of('/socket/start/getList').on('connect', (socket) => {
-      let task = TASK(config, socket)
+      let task = null
+      socket.on('start', (data) => {
+        task = TASK(config, socket)
+        console.log(data)
+      })
+      socket.on('stop', (data) => {
+        console.log(data)
+        socket.disconnect(true)
+        task = null
+      })
+      socket.on('disconnecting', (reason) => {
+        console.log(reason)
+        task = null
+        socket.disconnect(true)
+      })
+      socket.on('disconnect', (reason) => {
+        console.log(reason)
+        task = null
+        socket.disconnect(true)
+      })
     })
 
     const TASK = function (config, socket) {
@@ -83,8 +102,7 @@ export default function (config = {}) {
           'listStyle': 'bigPhoto',
           'pri_uid': 0,
           'jsversion': 'v5'
-        },
-        proxy: 'http://47.93.56.0:3128'
+        }
       }, async function (err, res, body) {
         try {
           fs.writeFileSync(path.resolve(__dirname, `../../db/json/${key}/${n}.json`), unescape(body.replace(/\\u/g, '%u').replace(/##jiayser##\/\/$/g, '').replace(/\\/g, '').replace(/^##jiayser##/, '').replace(/゛/g, '').replace(//g, '').replace(//g, '').replace(/color="red"/g, '').replace(//g, '')))

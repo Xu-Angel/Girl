@@ -21,8 +21,10 @@ baseUrl: http://localhost:8088
 [13、去重女性列表数据](#13去重女性列表数据)<br/>
 [14、配置并开启爬取列表页任务](#14配置并开启爬取列表页任务)<br/>
 [15、导出UID到UID表](#15导出UID到UID表)<br/>
-[16、更改管理员头像以外的信息](#更改管理员头像以外的信息)<br/>
-[17、更改管理员头像](#更改管理员头像)<br/>
+[16、更改管理员头像以外的信息](#16更改管理员头像以外的信息)<br/>
+[17、更改管理员头像](#17更改管理员头像)<br/>
+[18、websocket-详情页脚本](#18websocket-详情页脚本)<br/>
+[19、websocket-列表页脚本](#19websocket-列表页脚本)<br/>
 ## 接口列表：
 ### 1、登录注册
 - [x] 状态 请求URL:  
@@ -243,5 +245,15 @@ eg: http://localhost:8088/spider/updateInfo
 - [x] 状态 请求URL：
 ```
 eg: http://localhost:8088/spider/updateAvatar
+```
+### 18、websocket-详情页脚本
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/socket/start/getDetail
+```
+### 19、websocket-列表页脚本
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/socket/start/getList
 ```
 
