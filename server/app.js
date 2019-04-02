@@ -3,11 +3,13 @@ import router from './routes/index.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import connectMongo from 'connect-mongo'
-import config from 'config-lite'  // 1.V 版本调用方式
+import config from 'config-lite' // 1.V 版本调用方式
 import chalk from 'chalk'
 import history from 'connect-history-api-fallback'
-
+import http from 'http'
+// import { IO } from './io/index'
 import db from './mongodb/db.js' // 链接数据库
+// import { emitDetail } from './io/index'
 
 const app = express()
 
@@ -44,7 +46,21 @@ router(app)
 
 app.use(history())
 app.use(express.static('./public'))
-app.listen(config.port, () => {
+
+const server = http.createServer(app)
+// IO(server)
+const IO = require('socket.io')(server)
+export { IO }
+// global.IO = IO
+// IO.on('connect', (socket) => {
+  // console.log('fuwudu')
+  // emitDetail(socket)
+  // socket.on('even', data => {
+  //   console.log(data)
+  // })
+// })
+
+server.listen(config.port, () => {
   console.log(
     chalk.green(`成功监听端口：${config.port}`)
   )

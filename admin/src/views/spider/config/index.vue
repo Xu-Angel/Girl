@@ -10,10 +10,15 @@
     <el-dialog :visible.sync="detailConfigDialog" title="请谨慎操作" width="50%">
       <el-form ref="detailConfig" :model="detailConfig" :rules="rules" label-width="100px">
         <el-form-item label="Cookie" prop="cookie">
-          <el-input v-model="detailConfig.cookie" :rows="8" type="textarea" placeholder="用于模拟登陆状态爬取详细页的隐私数据"></el-input>
+          <el-input
+            v-model="detailConfig.cookie"
+            :rows="8"
+            type="textarea"
+            placeholder="用于模拟登陆状态爬取详细页的隐私数据"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="warning" @click="spiDetail">保存并开始</el-button>
+          <el-button type="warning" @click="spiDetail">保存配置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -71,7 +76,7 @@
           </el-radio-group>
         </el-form-item>-->
         <el-form-item>
-          <el-button type="warning" @click="updateListConfig">保存并开始</el-button>
+          <el-button type="warning" @click="updateListConfig">保存配置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -81,7 +86,7 @@
 <script>
 import { getSipderConfig } from '@/api/common'
 import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid } from '@/api/spider'
-
+import io from 'socket.io-client'
 export default {
   data() {
     return {
@@ -131,6 +136,14 @@ export default {
     updateListConfig() {
       this.$refs['listConfig'].validate((valid) => {
         if (valid) {
+          const socket = io(`${process.env.BASE_API}/start/getList`)
+          if (socket.connected) {
+            this.$message({
+              type: 'error',
+              message: '当前脚本有任务在跑哦，请耐心等待完成~'
+            })
+            return
+          }
           this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -157,6 +170,14 @@ export default {
     spiDetail() {
       this.$refs['detailConfig'].validate((valid) => {
         if (valid) {
+          const socket = io(`${process.env.BASE_API}/start/getDetail`)
+          if (socket.connected) {
+            this.$message({
+              type: 'error',
+              message: '当前脚本有任务在跑哦，请耐心等待完成~'
+            })
+            return
+          }
           this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

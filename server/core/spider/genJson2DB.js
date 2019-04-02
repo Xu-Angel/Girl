@@ -36,13 +36,18 @@ export function genAll2DB(config = {}) {
  * @param {*} area 
  * @param {*} I 
  */
-export function pushOne(area, I = 1) {
+export function pushOne(area, I = 1, socket, endPage) {
   return new Promise(async (resolve, reject) => {
     try {
       const json = require(path.resolve(__dirname, `../../db/json/${area}/${I}.json`))
       await json.userInfo.forEach(async (v, i) => {
         await new GirlModel({ ...v, area, createTime: new Date() }).save(function (err, data) {
-          if (err) { console.log(err) } else {
+          if (err) {
+            console.log(err)
+            socket.emit('pageErr', { 'text': `数据库写入${area}/${I}.json的第${i}条数据-时候发生错误：${err}` })
+          } else {
+            // 进度事件
+            socket.emit('rate', { 'text': `地区 ${area} 第 ${I} 页 第 ${i} 条 写入数据库完成`, 'percent': (I / endPage) * 100 })
             console.log(`地区 ${area} 第 ${I} 页 第 ${i} 条 写入数据库完成`)
           }
         })
@@ -52,6 +57,8 @@ export function pushOne(area, I = 1) {
       resolve()
     } catch (error) {
       console.log(`数据库写入${area}/${I}.json-时候发生错误：${error}`)
+      // 错误事件
+      socket.emit('pageErr', { 'text': `数据库写入${area}/${I}.json-时候发生错误：${error}` })
       fs.renameSync(path.resolve(__dirname, `../../db/json/${area}/${I}.json`), path.resolve(__dirname, `../../db/json/${area}/problem_${I}.json`))
     }
   })

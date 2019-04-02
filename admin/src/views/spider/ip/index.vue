@@ -14,7 +14,6 @@
     <el-table
       v-loading="listLoading"
       :data="list"
-      :row-class-name="tableRowClassName"
       element-loading-text="Loading"
       border
       fit
