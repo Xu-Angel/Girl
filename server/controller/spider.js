@@ -119,6 +119,9 @@ class Spider extends Base {
                 cb(null, ' ') // 代表这个函数结束，传递出去
               })
             }
+          }).catch(err => {
+            console.log(err)
+            cb(null, ' ')
           })
         }, (err, data) => {
           console.log(`所有任务完成：${data}`)
