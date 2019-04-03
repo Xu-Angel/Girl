@@ -67,6 +67,7 @@ module.exports = {
      * In most cases please use '/' !!!
      */
     assetsPublicPath: '/',
+    assetsPublicPath: '/admin/',  // 修改为admin/index.html 访问
 
     /**
      * Source Maps
