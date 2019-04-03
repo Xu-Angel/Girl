@@ -2,14 +2,51 @@
 
 闲暇时间XJBG的一个项目，作为单身汪，一个下午突发奇想想看看相亲网上的妹子，造福广大兄弟，于是这个项目诞生了。整个项目暂时分为两个部分，后台管理系统，数据服务端。Vue技术栈的管理系统，express的数据服务端，基于node的爬虫，利用pm2和nginx 进行运维。
 
+**欢迎Start✨✨**
+
 **个人的力量是渺小的，希望众人拾材火焰高，如有问题请直接在 Issues 中提，或者您发现问题并有非常好的解决方案，欢迎 PR 👍**
 
 [线上地址: http://girl.xutianshi.top/admin/index.html](http://girl.xutianshi.top/admin/index.html)
 
 ## 版本
 
-v-1.1 公开版本
+v-1.0 版本
 
+- 配置化开启任务
+- 通过`socket.io`进行脚本状态展示
+- 列表页展示搜索
+- 详情页数据展示，查看大图
+- 管理员管理、信息更改
+- 图片上传
+- 登录注册
+- pm2 + nginx 运维
+- 部署上线
+
+## 运行
+
+本地运行需要安装有MongoDB
+```
+# 克隆项目
+git clone https://github.com/Xu-Angel/Girl.git
+
+## 开启server服务端
+进入server的config文件下更改你的MongoDB的url
+开启MongoBD
+
+# 安装依赖包开启调试
+npm i
+npm run dev
+
+## 开启admin管理台
+
+# 安装依赖包开启调试
+npm i
+npm run dev
+
+## 开启系统并使用
+
+几秒后浏览器会打开系统
+```
 ## 技术栈
 
 nodejs + express + mongodb + mongoose + es6/7 + vue + element-ui
