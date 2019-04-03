@@ -140,25 +140,24 @@ class Spider extends Base {
         }
         //! 前台连接任务开启 TODO:停止任务
         IO.of('/socket/start/getDetail').on('connect', (socket) => {
-          let task = null
           socket.on('start', (data) => {
+             global.task = TASK(socket)
             console.log(data)
-            task = TASK(socket)
           })
-          socket.on('disconnecting', (reason) => {
-            console.log(reason)
-            task = null
-            socket.disconnect(true)
-          })
-          socket.on('disconnect', (reason) => {
-            console.log(reason)
-            task = null
-            socket.disconnect(true)
-          })
+          // socket.on('disconnecting', (reason) => {
+          //   console.log(reason)
+          //   task = null
+          //   socket.disconnect(true)
+          // })
+          // socket.on('disconnect', (reason) => {
+          //   console.log(reason)
+          //   task = null
+          //   socket.disconnect(true)
+          // })
           socket.on('stop', (data) => {
             console.log(data)
             socket.disconnect(true)
-            task = null
+            global.task = null
           })
         })
       } catch (err) {
@@ -304,7 +303,7 @@ class Spider extends Base {
         })
         // TODO: 不重复写入
         // return
-        // await uidModel.remove({}) // 清空 v0.1方法已废弃
+        await uidModel.remove({}) // 清空
         await uidModel.insertMany(realUids) // 重写
         res.send({
           status: 200,

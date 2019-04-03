@@ -58,6 +58,7 @@ class Admin extends Base {
           }
           let admin = await AdminModel.create(newAdmin)
           req.session.admin_id = admin.id
+          req.session.role = role
           res.send({
             status: 200,
             message: '注册管理员成功',
@@ -106,7 +107,7 @@ class Admin extends Base {
    */
   async logout(req, res, next) {
     try {
-      delete req.session.admin_id
+      delete req.session
       res.send({
         status: 200,
         message: '退出成功'
@@ -263,9 +264,7 @@ class Admin extends Base {
    * @param {*} next 
    */
   async getAdminInfo(req, res, next) {
-    console.log('getinfo api')
-    const admin_id = req.session.admin_id;
-    console.log(admin_id, 'id')
+    const admin_id = req.session.admin_id
     if (!admin_id || !Number(admin_id)) {
       console.log('获取管理员信息的session失效')
       res.send({

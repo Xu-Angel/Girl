@@ -10,26 +10,25 @@ export default function (config = {}) {
     console.log('dd')
     //! 前台连接任务开启 TODO:停止任务
     IO.of('/socket/start/getList').on('connect', (socket) => {
-      let task = null
       socket.on('start', (data) => {
-        task = TASK(config, socket)
+        global.taskList = TASK(config, socket)
         console.log(data)
       })
       socket.on('stop', (data) => {
         console.log(data)
         socket.disconnect(true)
-        task = null
+        global.taskList = null
       })
-      socket.on('disconnecting', (reason) => {
-        console.log(reason)
-        task = null
-        socket.disconnect(true)
-      })
-      socket.on('disconnect', (reason) => {
-        console.log(reason)
-        task = null
-        socket.disconnect(true)
-      })
+      // socket.on('disconnecting', (reason) => {
+      //   console.log(reason)
+      //   task = null
+      //   socket.disconnect(true)
+      // })
+      // socket.on('disconnect', (reason) => {
+      //   console.log(reason)
+      //   task = null
+      //   socket.disconnect(true)
+      // })
     })
 
     const TASK = function (config, socket) {

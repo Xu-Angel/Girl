@@ -1,0 +1,26 @@
+{
+  "apps": {
+    "name": "server",
+    "script": "./index",
+    "cwd": "./",
+    "args": "",
+    "interpreter": "",
+    "interpreter_args": "",
+    "watch": true,
+    "ignore_watch": [
+      "node_modules",
+      "logs",
+      "db"
+    ],
+    "exec_mode": "cluster_mode",
+    "error_file": "./logs/app-err.log",
+    "out_file": "./logs/app-out.log",
+    "merge_logs": false,
+    "log_date_format": "YYYY-MM-DD HH:mm:ss",
+    "min_uptime": "600s",
+    "max_restarts": 30,
+    "autorestart": true,
+    "cron_restart": "",
+    "restart_delay": 10
+  }
+}

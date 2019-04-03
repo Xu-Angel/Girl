@@ -84,15 +84,19 @@ export default {
       sockteList: null,
       errorUid: [],
       errorPage: [],
-      cookieErr: []
+      cookieErr: [],
+      sockteDetailStatus: false,
+      socketLsitStatus: false
     }
   },
   created() {
     // 页面进来直接请求进行进度展示
     // this.startDetail()
     // this.startList()
-    // this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
-    // this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
+    this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
+    // this.socketLsitStatus = this.socketLsit.connected
+    this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
+    // this.sockteDetailStatus = this.sockteDetail.connected
   },
   methods: {
     testSocket(socket) {
@@ -104,6 +108,10 @@ export default {
       })
     },
     startDetail() {
+      // if (this.sockteDetailStatus) {
+      //   console.log('还有任务在炮')
+      //   return
+      // }
       // this.testSocket(this.sockteDetail)
       this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
       this.sockteDetail.on('connect', () => {
@@ -127,16 +135,20 @@ export default {
         this.sockteDetail.on('cookieErr', data => {
           // console.log(data, 'ccoke')
           this.cookieErr.push(data)
-          if (this.cookieErr.length === parseInt(Math.random() * 3) + 10) {
-            this.cookieErr.splice(0, parseInt(Math.random() * 3))
+          if (this.cookieErr.length === 10) {
+            this.cookieErr.splice(0, 1)
           }
         })
       })
     },
     startList() {
       // 当可以连接的时候 说明有任务在做 可以命令开始
-      // this.testSocket(this.socketLsit)
       // emit 一次
+      // if (this.sockteListStatus) {
+      //   console.log('还有任务在炮')
+      //   return
+      // }
+      // this.testSocket(this.socketLsit)
       this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
       this.socketLsit.on('connect', () => {
         // console.log(this.socketLsit) // true

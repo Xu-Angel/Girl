@@ -3,7 +3,7 @@
     <div class="dashboard-text">你好,管理员:{{ name }}</div>
     <div class="dashboard-text">
       角色:
-      <span>{{ role == 1 ? '普通管理员' : '超级管理员' }}</span>
+      <span>{{ roles == 1 ? '普通管理员' : '超级管理员' }}</span>
     </div>
     <div class="dashboard-text">
       注册时间:

@@ -18,7 +18,6 @@ class Girl extends Base {
   async getList(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
-      console.log(fields);
       if (err) {
         res.send({
           status: 100,
