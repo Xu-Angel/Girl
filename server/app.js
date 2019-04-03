@@ -7,25 +7,30 @@ import config from 'config-lite' // 1.V 版本调用方式
 import chalk from 'chalk'
 import history from 'connect-history-api-fallback'
 import http from 'http'
+import mongoose from 'mongoose'
 // import { IO } from './io/index'
 import db from './mongodb/db.js' // 链接数据库
 // import { emitDetail } from './io/index'
 
 const app = express()
 
-app.all('*', (req, res, next) => { // 跨域处理
-  const { origin, Origin, referer, Referer } = req.headers
-  const allowOrigin = origin || Origin || referer || Referer || '*'
-  res.header("Access-Control-Allow-Origin", allowOrigin)
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
-  res.header("Access-Control-Allow-Credentials", true) //可以带cookies
-  res.header("X-Powered-By", 'Express')
-  // res.header("X-Token", config.token)
-  if (req.method == 'OPTIONS') {
-    res.sendStatus(200)
-  } else {
-    next()
+app.all('*', (req, res, next) => {
+  if (!['localhost:8088'].includes(req.headers.host)) {
+    res.send(`${req.headers.host}在${new Date()}访问，已被拦截,总有刁民想害朕，锦衣卫护驾`)
+  } else { // 跨域处理
+    const { origin, Origin, referer, Referer } = req.headers
+    const allowOrigin = origin || Origin || referer || Referer || '*'
+    res.header("Access-Control-Allow-Origin", allowOrigin)
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+    res.header("Access-Control-Allow-Credentials", true) //可以带cookies
+    res.header("X-Powered-By", 'Express')
+    // res.header("X-Token", config.token)
+    if (req.method == 'OPTIONS') {
+      res.sendStatus(200)
+    } else {
+      next()
+    }
   }
 })
 
@@ -39,7 +44,7 @@ app.use(session({ // 使用session
   saveUninitialized: false,
   cookie: config.session.cookie,
   store: new MongoStore({
-    url: config.url
+    mongooseConnection: mongoose.connection
   })
 }))
 router(app)
