@@ -1,10 +1,14 @@
 # 关于
 
-闲暇时间XJBG的一个项目，作为单身汪，一个下午突发奇想想看看相亲网上的妹子，造福广大兄弟，于是这个项目诞生了。整个项目暂时分为两个部分，后台管理系统，数据服务端。Vue技术栈的管理系统，express的数据服务端，基于node的爬虫。
+闲暇时间XJBG的一个项目，作为单身汪，一个下午突发奇想想看看相亲网上的妹子，造福广大兄弟，于是这个项目诞生了。整个项目暂时分为两个部分，后台管理系统，数据服务端。Vue技术栈的管理系统，express的数据服务端，基于node的爬虫，利用pm2和nginx 进行运维。
 
 **个人的力量是渺小的，希望众人拾材火焰高，如有问题请直接在 Issues 中提，或者您发现问题并有非常好的解决方案，欢迎 PR 👍**
 
-[线上地址: http://girl.xutianshi.top](http://girl.xutianshi.top) 直接登录即可
+[线上地址: http://girl.xutianshi.top/admin/index.html](http://girl.xutianshi.top/admin/index.html)
+
+## 版本
+
+v-1.1 公开版本
 
 ## 技术栈
 
