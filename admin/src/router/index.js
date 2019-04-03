@@ -221,6 +221,14 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [{
+      path: 'https://github.com/Xu-Angel/Girl',
+      meta: { title: '查看Github', icon: 'link' }
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

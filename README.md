@@ -1,4 +1,4 @@
-# 关于
+# 感谢开源
 
 闲暇时间XJBG的一个项目，作为单身汪，一个下午突发奇想想看看相亲网上的妹子，造福广大兄弟，于是这个项目诞生了。整个项目暂时分为两个部分，后台管理系统，数据服务端。Vue技术栈的管理系统，express的数据服务端，基于node的爬虫，利用pm2和nginx 进行运维。
 
@@ -10,12 +10,12 @@
 
 ## 版本
 
-v-1.0 版本
+v1.0 版本
 
 - 配置化开启任务
-- 通过`socket.io`进行脚本状态展示
+- 脚本状态展示
 - 列表页展示搜索
-- 详情页数据展示，查看大图
+- 详情页数据展示，查看
 - 管理员管理、信息更改
 - 图片上传
 - 登录注册
@@ -25,28 +25,37 @@ v-1.0 版本
 ## 运行
 
 本地运行需要安装有MongoDB
-```
+```bash
 # 克隆项目
 git clone https://github.com/Xu-Angel/Girl.git
 
-## 开启server服务端
-进入server的config文件下更改你的MongoDB的url
-开启MongoBD
-
-# 安装依赖包开启调试
+# 开启MongoBD
+# 进入server文件夹安装依赖包开启调试
 npm i
 npm run dev
 
-## 开启admin管理台
-
-# 安装依赖包开启调试
+# 进入admin文件夹安装依赖包开启调试
 npm i
 npm run dev
 
-## 开启系统并使用
-
-几秒后浏览器会打开系统
+# 开启系统并使用
 ```
+**注意**  管理员注册默认是普通管理员，需要数据库更改role字段，重新登录系统才可以使用爬取功能
+
+## 部分截图
+
+### 进入系统
+![控制面板](./screenshot/dashboard.jpg)
+
+### 参数配置
+
+**进行配置参数后就可以点击开始爬取**
+
+![参数配置](./screenshot/spiderconfig.jpg)
+
+### 列表展示
+![列表展示](./screenshot/list.jpg)
+
 ## 技术栈
 
 nodejs + express + mongodb + mongoose + es6/7 + vue + element-ui
@@ -177,10 +186,10 @@ api文档>: [api文档](./api.md)
     |   |-- spider.js
     |-- core                        爬虫脚本
     |   |-- schedule.js
+    |-- db                          JSON文件存放处
     |-- getGirls                    爬虫草稿
-    |   |-- xsls                    存放Excel
-    |-- ipProxy                     爬虫草稿
-    |   |-- app.js
+    |-- io                          websocket方法
+    |-- logs                        日志文件夹
     ├── middleware                  中间件
     │   ├── check.js                权限验证
     │   └── statistic.js            API数据统计
@@ -195,3 +204,9 @@ api文档>: [api文档](./api.md)
     |-- routes                      路由配置
         |-- ...
 ```
+
+# License
+
+[MIT](./LICENSE) license.
+
+Copyright (c) 2019-present Xu-Angel
