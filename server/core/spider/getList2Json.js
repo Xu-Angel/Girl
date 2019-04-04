@@ -1,38 +1,11 @@
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
-
+let G = global
 import { stc, userAgents } from '../config'
 import { pushOne } from './genJson2DB'
-import { IO } from '../../app'
 export default function (config = {}) {
   return new Promise((reolve, reject) => {
-    console.log('dd')
-    //! 前台连接任务开启 TODO:停止任务
-    IO.of('/socket/start/getList').on('connect', (socket) => {
-      socket.on('start', (data) => {
-        global.taskList = TASK(config, socket)
-        console.log(data)
-      })
-      socket.on('stop', (data) => {
-        console.log(data)
-        socket.disconnect(true)
-        global.taskList = null
-      })
-      // socket.on('disconnecting', (reason) => {
-      //   console.log(reason)
-      //   task = null
-      //   socket.disconnect(true)
-      // })
-      // socket.on('disconnect', (reason) => {
-      //   console.log(reason)
-      //   task = null
-      //   socket.disconnect(true)
-      // })
-    })
-
-    const TASK = function (config, socket) {
-      console.log('ddddd')
       let N = 0
       for (var key in stc) {
         // 根据area  进行任务分发 匹配stc
@@ -66,7 +39,7 @@ export default function (config = {}) {
               let n = config.startPage
               let t = 1000 * config.speed
               let timer = setInterval(() => {
-                getJsonP(n, stc, userAgent, key, socket)
+                getJsonP(n, stc, userAgent, key)
                 n++
                 if (n === config.endPage + 1) {
                   console.log(`地区${key}任务已经结束`)
@@ -78,10 +51,9 @@ export default function (config = {}) {
           N = N + 1000 * config.endPage * (config.speed + 0.2) // 跑一个地区时间
           console.log(key, N)
         }
-      }
     }
 
-    function getJsonP(n, stc, userAgent, key, socket) {
+    function getJsonP(n, stc, userAgent, key) {
       return request({
         url: 'http://search.jiayuan.com/v2/search_v2.php',
         method: 'POST',
@@ -107,12 +79,13 @@ export default function (config = {}) {
           fs.writeFileSync(path.resolve(__dirname, `../../db/json/${key}/${n}.json`), unescape(body.replace(/\\u/g, '%u').replace(/##jiayser##\/\/$/g, '').replace(/\\/g, '').replace(/^##jiayser##/, '').replace(/゛/g, '').replace(//g, '').replace(//g, '').replace(/color="red"/g, '').replace(//g, '')))
           console.log(`地区-${key}-页码-${n}已经转成JSON文件`)
           // 进度事件
-          socket.emit('rate', { 'text': `地区-${key}-页码-${n}已经转成JSON文件`, 'percent': (n / config.endPage) * 100 })
+          G.ListStatusRate = { 'text': `地区-${key}-页码-${n}已经转成JSON文件`, 'percent': (n / config.endPage) * 100 }
+
           // 写入数据库
-          await pushOne(key, n, socket, config.endPage)
+          await pushOne(key, n, config.endPage)
         } catch (error) {
           // 错误事件
-          socket.emit('pageErr', { 'text': `爬取列表页的时候发生错误:${error}` })
+          G.ListStatuspageErr = { 'text': `爬取列表页的时候发生错误:${error}` }
           console.log(`爬取列表页的时候发生错误:${error}`)
         }
       })

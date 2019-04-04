@@ -7,8 +7,7 @@ import formidable from 'formidable'
 import getList2Json from '../core/spider/getList2Json'
 import getDetail from '../core/spider/getdetail'
 import async from 'async'
-import { IO } from '../app'
-
+let G = global
 // TODO:WSS
 class Spider extends Base {
   constructor() {
@@ -99,67 +98,44 @@ class Spider extends Base {
 
         //! 建立socket 通信 等待前台启用爬虫任务
 
-        const TASK = function (socket) {
-          async.mapLimit(realUids, 2, async function (realUid, cb) {
-            let cur = new Date().getTime()
-            getDetail(realUid, cookie).then(rs => {
 
-              // 判断当前用户是否是空资料(未审核通过||关闭||隐藏)
-              if (rs['学历'] === '' && rs['身高'] === '') {
-                remainLength--
-                // 异常UID事件
-                socket.emit('uidErr', { 'text': `异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 })
-                // console.log(`异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`)
-                cb(null, realUid) // 结束本次函数 抛出本次异常realUid
-              } else {
-                // 判断当前的数据有没有薪资 如果没有，说明cookie过期 需要重新拿TODO:停止爬取任务 发送邮件更新cookie
-                if (rs['经济实力']['月薪'] === '登录后可见' || rs['经济实力']['购车'] === '登录后可见') {
-                  //cookie错误事件
-                  socket.emit('cookieErr', { 'text': `请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}` })
-                  cb(null, ' ') // 代表这个函数结束，传递出去
-                  throw new Error(`请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}`)
-                } else {
-                  rs['realUid'] = realUid
-                  detailModel.insertMany([rs], function (err, data) {
-                    // 更新列表的状态
-                    AllGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true, finishTime: new Date() } }).exec()
-                    remainLength--
-                    // 进度事件
-                    socket.emit('rate', { 'text': `end-realUid:${realUid},usedtime:${(new Date().getTime() - cur) / 1000}seconds,remain-realUid-count：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 })
-                    cb(null, ' ') // 代表这个函数结束，传递出去
-                  })
-                }
+        async.mapLimit(realUids, 2, async function (realUid, cb) {
+          let cur = new Date().getTime()
+          getDetail(realUid, cookie).then(rs => {
+
+            // 判断当前用户是否是空资料(未审核通过||关闭||隐藏)
+            if (rs['学历'] === '' && rs['身高'] === '') {
+              remainLength--
+              // 异常UID事件
+              socket.emit('uidErr', { 'text': `异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 })
+              // console.log(`异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`)
+              cb(null, realUid) // 结束本次函数 抛出本次异常realUid
+            } else {
+              // 判断当前的数据有没有薪资 如果没有，说明cookie过期 需要重新拿TODO:停止爬取任务 发送邮件更新cookie
+              if (rs['经济实力']['月薪'] === '登录后可见' || rs['经济实力']['购车'] === '登录后可见') {
+                //cookie错误事件
+                G.DetailStatusCookieErr = { 'text': `传送时间:${new Date()}--请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}` }
+                throw new Error(`请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}`)
               }
-            }).catch(err => {
-              console.log(err)
-              cb(null, ' ')
-            })
-          }, (err, data) => {
-            console.log(`所有任务完成：${data}`)
+                rs['realUid'] = realUid
+                detailModel.insertMany([rs], function (err, data) {
+                  // 更新列表的状态
+                  AllGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true, finishTime: new Date() } }).exec()
+                  remainLength--
+                  // 进度事件
+                  G.DetailStatusRate = { 'text': `传送时间:${new Date()}--end-realUid:${realUid},usedtime:${(new Date().getTime() - cur) / 1000}seconds,remain-realUid-count：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 }
+                  cb(null, ' ') // 代表这个函数结束，传递出去
+                })
+              
+            }
+          }).catch(err => {
+            console.log(err)
+            cb(null, ' ')
           })
-        }
-        //! 前台连接任务开启 TODO:停止任务
-        IO.of('/socket/start/getDetail').on('connect', (socket) => {
-          socket.on('start', (data) => {
-             global.task = TASK(socket)
-            console.log(data)
-          })
-          // socket.on('disconnecting', (reason) => {
-          //   console.log(reason)
-          //   task = null
-          //   socket.disconnect(true)
-          // })
-          // socket.on('disconnect', (reason) => {
-          //   console.log(reason)
-          //   task = null
-          //   socket.disconnect(true)
-          // })
-          socket.on('stop', (data) => {
-            console.log(data)
-            socket.disconnect(true)
-            global.task = null
-          })
+        }, (err, data) => {
+          console.log(`所有任务完成：${data}`)
         })
+
       } catch (err) {
         console.log(err)
         // 发送邮件 报错
@@ -197,7 +173,7 @@ class Spider extends Base {
         await getList2Json({ startPage: 1, endPage: 150, speed: 1, marriage: 1, education: 30, ...fields })
         res.send({
           status: 100,
-          message: `爬取列表页配置已保存~`
+          message: `爬取列表页已开始~`
         })
       } catch (err) {
         res.send({

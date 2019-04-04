@@ -30,11 +30,11 @@
         </li>
       </ul>
       <el-button type="primary" @click="startDetail">
-        开启
+        开启查看
         <i class="el-icon-success el-icon--right"></i>
       </el-button>
-      <el-button type="danger" @click="stopDetail">
-        停止
+      <el-button type="danger" @click="stop('Detail')">
+        停止查看
         <i class="el-icon-warning el-icon--right"></i>
       </el-button>
     </el-card>
@@ -62,11 +62,11 @@
         </li>
       </ul>
       <el-button type="primary" @click="startList">
-        开启
+        开启查看
         <i class="el-icon-success el-icon--right"></i>
       </el-button>
-      <el-button type="danger" @click="stopList">
-        停止
+      <el-button type="danger" @click="stop('List')">
+        停止查看
         <i class="el-icon-warning el-icon--right"></i>
       </el-button>
     </el-card>
@@ -80,23 +80,21 @@ export default {
     return {
       detailItems: [],
       listItems: [],
-      sockteDetail: null,
-      sockteList: null,
+      socketDetail: null,
+      socketList: null,
       errorUid: [],
       errorPage: [],
-      cookieErr: [],
-      sockteDetailStatus: false,
-      socketLsitStatus: false
+      cookieErr: []
     }
   },
   created() {
     // 页面进来直接请求进行进度展示
-    // this.startDetail()
-    // this.startList()
-    this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
-    // this.socketLsitStatus = this.socketLsit.connected
-    this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
-    // this.sockteDetailStatus = this.sockteDetail.connected
+    setTimeout(() => {
+      this.startDetail()
+    }, 10)
+    setTimeout(() => {
+      this.startList()
+    }, 1500)
   },
   methods: {
     testSocket(socket) {
@@ -108,23 +106,25 @@ export default {
       })
     },
     startDetail() {
-      // if (this.sockteDetailStatus) {
-      //   console.log('还有任务在炮')
-      //   return
-      // }
-      // this.testSocket(this.sockteDetail)
-      this.sockteDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
-      this.sockteDetail.on('connect', () => {
-        this.sockteDetail.emit('start', { text: '赶紧给我开始爬详细页' })
+      this.socketDetail = io(`${process.env.BASE_API}/socket/start/getDetail`)
+      this.socketDetail.on('connect', () => {
+        this.socketDetail.emit('start', { text: '赶紧给我开始爬详细页' })
         // 进度事件
-        this.sockteDetail.on('rate', data => {
+        this.socketDetail.on('rate', data => {
           this.detailItems.push(data)
           if (this.detailItems.length === 10) {
             this.detailItems.splice(0, 1)
           }
         })
+        // 无任务事件
+        this.socketDetail.on('noTask', data => {
+          this.$message({
+            type: 'error',
+            message: data.text
+          })
+        })
         // 异常UID事件
-        this.sockteDetail.on('uidErr', data => {
+        this.socketDetail.on('uidErr', data => {
           this.errorUid.push(data)
           console.log(this.errorUid, data)
           if (this.errorUid.length === 10) {
@@ -132,7 +132,7 @@ export default {
           }
         })
         // cookie错误事件
-        this.sockteDetail.on('cookieErr', data => {
+        this.socketDetail.on('cookieErr', data => {
           // console.log(data, 'ccoke')
           this.cookieErr.push(data)
           if (this.cookieErr.length === 10) {
@@ -142,44 +142,38 @@ export default {
       })
     },
     startList() {
-      // 当可以连接的时候 说明有任务在做 可以命令开始
-      // emit 一次
-      // if (this.sockteListStatus) {
-      //   console.log('还有任务在炮')
-      //   return
-      // }
-      // this.testSocket(this.socketLsit)
-      this.socketLsit = io(`${process.env.BASE_API}/socket/start/getList`)
-      this.socketLsit.on('connect', () => {
-        // console.log(this.socketLsit) // true
-        this.socketLsit.emit('start', { text: '赶紧给我开始爬列表页' })
+      this.socketList = io(`${process.env.BASE_API}/socket/start/getList`)
+      this.socketList.on('connect', () => {
+        this.socketList.emit('start', { text: '赶紧给我开始爬列表页' })
         // 进度事件
-        this.socketLsit.on('rate', data => {
+        this.socketList.on('rate', data => {
           this.listItems.push(data)
           if (this.listItems.length === 10) {
             this.listItems.splice(0, 1)
           }
         })
         // 异常页事件
-        this.socketLsit.on('pageErr', data => {
+        this.socketList.on('pageErr', data => {
           this.errorPage.push(data)
           if (this.errorPage.length === 10) {
             this.errorPage.splice(0, 1)
           }
         })
+        // 无任务事件
+        this.socketList.on('noTask', data => {
+          this.$message({
+            type: 'error',
+            message: data.text
+          })
+        })
       })
     },
-    stopDetail() {
-      console.log('clos')
-      this.socketDetail.emit('stop', { text: '赶紧给我停止' })
-      this.socketDetail.close()
-      console.log('e')
-    },
-    stopList() {
-      console.log('clos')
-      this.socketLsit.emit('stop', { text: '赶紧给我停止' })
-      this.socketLsit.close()
-      console.log('e')
+    stop(type) {
+      this.$data[`socket${type}`].emit('stop', { text: '赶紧给我停止' })
+      this.$data[`socket${type}`].close()
+      this.$message({
+        message: `已断开socket连接`
+      })
     }
   }
 }

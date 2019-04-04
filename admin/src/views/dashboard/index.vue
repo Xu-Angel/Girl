@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <div class="dashboard-text">当前版本V1.0</div>
     <div class="dashboard-text">你好,管理员:{{ name }}</div>
     <div class="dashboard-text">
       角色:

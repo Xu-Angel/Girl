@@ -8,9 +8,9 @@ import chalk from 'chalk'
 import history from 'connect-history-api-fallback'
 import http from 'http'
 import mongoose from 'mongoose'
-// import { IO } from './io/index'
+import { default as IO } from 'socket.io'
+import socket from './socket/index'
 import db from './mongodb/db.js' // 链接数据库
-// import { emitDetail } from './io/index'
 
 const app = express()
 
@@ -53,17 +53,9 @@ app.use(history())
 app.use(express.static('./public'))
 
 const server = http.createServer(app)
-// IO(server)
-const IO = require('socket.io')(server)
-export { IO }
-// global.IO = IO
-// IO.on('connect', (socket) => {
-  // console.log('fuwudu')
-  // emitDetail(socket)
-  // socket.on('even', data => {
-  //   console.log(data)
-  // })
-// })
+const io = IO(server)
+socket(io)
+
 
 server.listen(config.port, () => {
   console.log(

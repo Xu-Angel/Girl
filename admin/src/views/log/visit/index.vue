@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div>
-      cookie配置
+      TODO:V1.1 - visit
     </div>
   </div>
 </template>

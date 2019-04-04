@@ -18,7 +18,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="warning" @click="spiDetail">保存配置</el-button>
+          <el-button type="warning" @click="spiDetail">保存并开始</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -76,7 +76,7 @@
           </el-radio-group>
         </el-form-item>-->
         <el-form-item>
-          <el-button type="warning" @click="updateListConfig">保存配置</el-button>
+          <el-button type="warning" @click="updateListConfig">保存并开始</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
