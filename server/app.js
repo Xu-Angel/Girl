@@ -15,7 +15,7 @@ import db from './mongodb/db.js' // 链接数据库
 const app = express()
 
 app.all('*', (req, res, next) => {
-  if (!['localhost:8088'].includes(req.headers.host)) {
+  if (!['localhost:8088', 'girl.xutianshi.top','localhost:9529'].includes(req.headers.host)) {
     res.send(`${req.headers.host}在${new Date()}访问，已被拦截,总有刁民想害朕，锦衣卫护驾`)
   } else { // 跨域处理
     const { origin, Origin, referer, Referer } = req.headers
