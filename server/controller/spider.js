@@ -96,9 +96,6 @@ class Spider extends Base {
           data: `查询耗时：${(new Date().getTime() - Cur) / 1000},剩余爬取数为${remainLength}`
         })
 
-        //! 建立socket 通信 等待前台启用爬虫任务
-
-
         async.mapLimit(realUids, 2, async function (realUid, cb) {
           let cur = new Date().getTime()
           getDetail(realUid, cookie).then(rs => {
@@ -107,7 +104,7 @@ class Spider extends Base {
             if (rs['学历'] === '' && rs['身高'] === '') {
               remainLength--
               // 异常UID事件
-              socket.emit('uidErr', { 'text': `异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 })
+              G.DetailStatusUidErr = { 'text': `异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 }
               // console.log(`异常-realUid:${realUid},花费时间:${(new Date().getTime() - cur) / 1000}seconds,剩余realUid数量：${remainLength}`)
               cb(null, realUid) // 结束本次函数 抛出本次异常realUid
             } else {

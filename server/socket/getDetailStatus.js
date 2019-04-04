@@ -18,6 +18,9 @@ export default function socketGetDetailStatus(IO, G) {
         G.DetailStatuspageErr && setInterval(() => {
           socket.emit('pageErr', { ...G.DetailStatuspageErr })
         }, 1000)
+        G.DetailStatusUidErr && setInterval(() => {
+          socket.emit('uidErr', { ...G.DetailStatusUidErr })
+        }, 1000)
         socket.on('stop', (data) => { // 客户端提出关闭
           console.log(data)
           socket.disconnect(true)
