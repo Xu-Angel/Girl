@@ -12,7 +12,7 @@
       "logs",
       "db"
     ],
-    "exec_mode": "cluster_mode",
+    "exec_mode": "fork_mode",
     "error_file": "./logs/app-err.log",
     "out_file": "./logs/app-out.log",
     "merge_logs": false,
