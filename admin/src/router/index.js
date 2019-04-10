@@ -135,12 +135,12 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: () => import('@/views/log/visit/index'),
-        name: 'Index',
+        name: 'LogIndex',
         meta: { title: '访问日志', icon: 'visit' }
       },
       {
         path: 'error',
-        name: 'Error',
+        name: 'LogError',
         component: () => import('@/views/log/error/index'),
         meta: { title: '错误日志', icon: 'error' }
       }
@@ -149,7 +149,7 @@ export const constantRouterMap = [
   {
     path: '/center',
     component: Layout,
-    redirect: '/center/index',
+    // redirect: '/center/index',
     name: 'Center',
     meta: {
       title: '个人中心',
@@ -159,8 +159,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: () => import('@/views/center/index'),
-        name: 'Index'
-        // meta: { title: '个人中心', icon: 'list' },
+        name: 'InfoIndex',
+        meta: { title: '我的信息', icon: 'center' },
       }
     ]
   },
