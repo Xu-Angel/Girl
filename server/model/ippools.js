@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const ipPool = new Schema({
   type: String,
-  host: Number,
+  host: String,
   port: Number,
   type: String,
   anonymity: { type:String, default: '未知' },
