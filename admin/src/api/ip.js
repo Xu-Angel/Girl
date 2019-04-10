@@ -7,6 +7,13 @@ export function startSpiIp(data = {}) {
     data
   })
 }
+export function startSpiIpPool(data = {}) {
+  return request({
+    url: '/ip/startSpiIpPool',
+    method: 'post',
+    data
+  })
+}
 
 export function getIpList(data = {}) {
   return request({

@@ -1,8 +1,9 @@
 const async = require('async')
 const getXici = require('./getproxy')
+const test = require('./getIpPool')
 const request = require('request')
 import ipSchema from '../../model/ips'
-
+import ippoolSchema from '../../model/ippools'
 export function spiIp(config) {
   console.log(config, '777');
   return new Promise((resolve, reject) => {
@@ -27,6 +28,33 @@ export function spiIp(config) {
     }, function (err, rs) {
       console.log(rs, 'fianl')
     })
+    resolve()
+  })
+
+}
+
+export function getIpPool() {
+  return new Promise(async(resolve, reject) => {
+    const data = await test()
+    let numArr = []
+    for (let i = 0; i < data.length; i++) {
+      numArr.push(i)
+    }
+    try {
+      async.mapLimit(numArr, 5, function (num, cb) {
+        console.log({...data[num]})
+        ippoolSchema.create({...data[num]}).then((err, data) => {
+            console.log(data, err)
+            cb(null, '')
+        }).catch(err => {
+            console.log(err)
+          })
+      }, function (err, rs) {
+        console.log(rs, 'fianl')
+      })
+    } catch (error) {
+      console.log(error)
+    }
     resolve()
   })
 

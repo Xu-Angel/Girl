@@ -9,6 +9,7 @@
       </div>
       <div class="fr">
         <el-button type="primary" @click="distinctIp">IP池去重</el-button>
+        <el-button type="primary" @click="spiIpPool">IP池</el-button>
       </div>
     </div>
     <el-table
@@ -48,7 +49,7 @@
 </template>
 
 <script>
-import { startSpiIp, getIpList, checkIp, distinct } from '@/api/ip'
+import { startSpiIp, getIpList, checkIp, distinct, startSpiIpPool } from '@/api/ip'
 
 export default {
   filters: {
@@ -128,6 +129,9 @@ export default {
         start: Number(this.pageRange.split('-')[0]) || 1,
         end: Number(this.pageRange.split('-')[1]) || 20
       })
+    },
+    spiIpPool() {
+      startSpiIpPool()
     },
     distinctIp() {
       this.listLoading = true

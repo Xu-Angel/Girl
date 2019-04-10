@@ -160,7 +160,7 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/center/index'),
         name: 'InfoIndex',
-        meta: { title: '我的信息', icon: 'center' },
+        meta: { title: '我的信息', icon: 'center' }
       }
     ]
   },
@@ -233,7 +233,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  // mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

@@ -1,5 +1,5 @@
 import Base from './basePrototype'
-import { spiIp, check } from '../core/ip/index'
+import { spiIp, check, getIpPool } from '../core/ip/index'
 import ipSchema from '../model/ips'
 import formidable from 'formidable'
 // TODO:WSS
@@ -89,6 +89,44 @@ class Ip extends Base {
           return
         }
         spiIp(fields).then(rs => {
+          res.send({
+            status: 100,
+            message: `开启成功`
+          })
+        }).catch(err => {
+          res.send({
+            status: 400,
+            message: `开启失败:${err}`
+          })
+        })
+
+      } catch (err) {
+        res.send({
+          status: 400,
+          message: `开启失败:${err}`
+        })
+      }
+    })
+  }
+
+  /**
+   * 开启爬取IP池任务
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async startSpiIpPool(req, res, next) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      try {
+        if (req.session.role !== 2) {
+          res.send({
+            status: 100,
+            message: '对不起，你没有权限操作~'
+          })
+          return
+        }
+        getIpPool().then(rs => {
           res.send({
             status: 100,
             message: `开启成功`
