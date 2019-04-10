@@ -20,7 +20,8 @@
       <el-table-column prop="username" label="名字" align="center"></el-table-column>
       <el-table-column prop="avatar" label="头像" align="center">
         <template slot-scope="scope">
-          <img :src="scope.row.avatar" style="width: 50px; height: 50px;">
+          <img v-if="scope.row.avatar" :src="scope.row.avatar" style="width: 50px; height: 50px;">
+          <div v-else :style="scope.row.username | getColor">{{ scope.row.username.substr(0,1) }}</div>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="realUid" label="操作">
@@ -103,6 +104,7 @@ export default {
         /* eslint-disable */
         this.list.map(v => v.createTime = new Date(v.createTime).toLocaleString())
         this.list.map(v => v.avatar = /^[a-z][a-z0-9+.-]*:/.test(v.avatar) ? v.avatar : process.env.BASE_API + v.avatar)
+        this.list.map(v => v.avatar = /default_avatar/.test(v.avatar) ? '' : v.avatar)
         this.total = response.data.total
         this.listLoading = false
       })

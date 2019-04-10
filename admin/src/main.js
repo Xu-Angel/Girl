@@ -30,6 +30,15 @@ import '@/permission' // permission control
 
 Vue.config.productionTip = false
 
+// 用户默认头像
+Vue.filter('getColor', function(name) {
+  let str = ''
+  for (let i = 0; i < name.length; i++) {
+    str += parseInt(name[i].charCodeAt(0), 10).toString(16)
+  }
+  return `margin:0 auto;text-align:center;font-size:20px;color:white;line-height:50px;width: 50px; height: 50px;background:#${str.slice(1, 5)}`
+})
+
 new Vue({
   el: '#app',
   router,

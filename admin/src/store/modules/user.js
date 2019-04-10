@@ -74,7 +74,7 @@ const user = {
           commit('SET_NAME', data.username)
           commit('SET_ID', data.id)
           commit('SET_CREATETIME', data.createTime)
-          commit('SET_AVATAR', /^[a-z][a-z0-9+.-]*:/.test(data.avatar) ? data.avatar : process.env.BASE_API + data.avatar)
+          commit('SET_AVATAR', !/^[a-z][a-z0-9+.-]*:/.test(data.avatar) && !/default_avatar/.test(data.avatar) ? process.env.BASE_API + data.avatar : '')
           resolve(response)
         }).catch(error => {
           reject(error)
