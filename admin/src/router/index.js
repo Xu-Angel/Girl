@@ -78,7 +78,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'status',
-        name: 'Status',
+        name: 'SpiderStatus', // 命中vue文件名字 进行缓存 （socket页-保活）
         component: () => import('@/views/spider/index'),
         meta: { title: '爬取状态', icon: 'status' }
       },

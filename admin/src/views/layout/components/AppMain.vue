@@ -1,9 +1,9 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <!-- or name="fade" -->
-      <!-- <router-view :key="key"></router-view> -->
-      <router-view/>
+      <keep-alive :include="cachedViews"><!-- https://panjiachen.github.io/vue-element-admin-site/zh/guide/essentials/tags-view.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9 -->
+        <router-view :key="key"/>
+      </keep-alive>
     </transition>
   </section>
 </template>
@@ -12,9 +12,12 @@
 export default {
   name: 'AppMain',
   computed: {
-    // key() {
-    //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
-    // }
+    cachedViews() {
+      return this.$store.state.tagsView.cachedViews
+    },
+    key() {
+      return this.$route.fullPath
+    }
   }
 }
 </script>
