@@ -36,7 +36,7 @@ export function spiIp(config) {
 /**
  * 爬取代理池IP入库
  */
-export function getIpPool() {
+export async function getIpPool() {
   return new Promise(async (resolve, reject) => {
     try {
       await getText()

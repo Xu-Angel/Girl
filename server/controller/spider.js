@@ -163,8 +163,6 @@ class Spider extends Base {
       }
       try {
         await getList2Json({ startPage: 1, endPage: 150, speed: 1, marriage: 1, education: 30, ...fields })
-        // 记录任务开始
-        await spiderModel.findOneAndUpdate({}, { $set: { listStatus: 1 } })
         res.send({
           status: 100,
           message: `爬取列表页已开始~`

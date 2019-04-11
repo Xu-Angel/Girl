@@ -12,6 +12,8 @@ import { default as IO } from 'socket.io'
 import socket from './socket/index'
 import db from './mongodb/db.js' // 链接数据库
 import fs from 'fs'
+import task from './core/schedule/index'
+
 const app = express()
 
 app.all('*', (req, res, next) => {
@@ -69,3 +71,5 @@ server.listen(config.port, () => {
     chalk.green(`成功监听端口：${config.port}`)
   )
 })
+
+task()
