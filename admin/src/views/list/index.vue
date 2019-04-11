@@ -38,12 +38,17 @@
       fit
       style="width: 100%"
     >
-      <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
+      <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
+      <el-table-column prop="marriage" class-name="status-col" label="婚史" align="center" width="80">
         <template slot-scope="scope">
-          <span @click="toDetailById(scope.row.realUid)">{{ scope.row.realUid }}</span>
+          <el-tag :type="scope.row.marriage | statusFilter">{{ scope.row.marriage }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
+      <el-table-column align="center" prop="status" label="状态" sortable>
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status ? '完成' : '待爬' }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="createTime" align="center" label="生成时间"></el-table-column>
       <el-table-column prop="finishTime" align="center" label="完成时间"></el-table-column>
       <el-table-column prop="randListTag" align="center" label="标签">
@@ -65,21 +70,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="height" label="身高" sortable align="center"></el-table-column>
-      <el-table-column prop="marriage" class-name="status-col" label="婚史" align="center" width="80">
+      <el-table-column prop="realUid" align="center" label="realUid" sortable width="95">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.marriage | statusFilter">{{ scope.row.marriage }}</el-tag>
+          <span @click="toDetailById(scope.row.realUid)">{{ scope.row.realUid }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="age" label="年龄" sortable></el-table-column>
-      <el-table-column align="center" prop="status" label="状态" sortable>
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status ? '完成' : '待爬' }}</el-tag>
-        </template>
-      </el-table-column>
       <!-- <el-table-column prop="shortnote"  label="短语" align="center">
       </el-table-column>-->
       <!-- <el-table-column align="center" prop="matchCondition" label="择偶要求"></el-table-column> -->
-      <el-table-column align="center" prop="realUid" label="操作">
+      <el-table-column align="center" prop="realUid" label="操作" width="90px" fixed="right">
         <template slot-scope="scope">
           <el-button @click="toDetailById(scope.row.realUid,currentPage)">查看</el-button>
         </template>

@@ -13,7 +13,7 @@ const ipPool = new Schema({
   createTime: Date
 })
 
-ipPool.index({ 'host': 1, }, { unique: true })
+ipPool.index({ host: 1 }, { unique: true })
 
 const ipPools = mongoose.model('ipPools', ipPool)
 

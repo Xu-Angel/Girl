@@ -52,12 +52,13 @@ export async function getIpPool() {
         const ip = tempData['type'] + '://' + tempData['host'] + ':' + tempData['port'] + '/'
         // 入库筛选 检测当前IP有效性
         check(ip).then(async (rs) => {
-          console.log(rs, 'rs');
           if (rs.code === 1) {
-            await ippoolSchema.create({ ...tempData, createTime: new Date() }).then((err, data) => {
-              G.IpStatusRate = { 'text': `第${num}条IP-${ip}成功入库`, 'percent': (num / len) * 100 }
-            }).catch(err => {
-              G.IpStatusIpErr = { 'text': `入库的时候发生错误:${err}` }
+            await new ippoolSchema({ ...tempData, createTime: new Date() }).save((err, data) => {
+              if (err) {
+                G.IpStatusIpErr = { 'text': `入库的时候发生错误:${err}` }
+              } else {
+                G.IpStatusRate = { 'text': `第${num}条IP-${ip}成功入库`, 'percent': (num / len) * 100 }
+              }
             })
           } else if (rs.code === 2) {
             // IP 无效

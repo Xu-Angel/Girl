@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="search-container">
       <div class="fr">
-        <el-button :loading="buttonLoading" type="primary" @click="distinctIp">IP池去重</el-button>
+        <el-button type="primary" @click="distinctIp">IP池去重</el-button>
         <el-button :loading="buttonLoading" type="primary" @click="spiIpPool">更新IP池</el-button>
       </div>
     </div>
@@ -13,9 +13,7 @@
       border
       fit
       style="width: 100%"
-      @selection-change="selectionChange"
     >
-      <el-table-column type="selection" width="38"></el-table-column>
       <el-table-column prop="createTime" align="center" label="生成时间"></el-table-column>
       <el-table-column prop="host" align="center" label="IP"></el-table-column>
       <el-table-column prop="port" align="center" label="端口"></el-table-column>
