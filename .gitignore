@@ -8,5 +8,6 @@ server/getGirls/jsonGirl/
 server/getGirls/db/json/
 
 server/db/json/*/*.json
+server/db/*.json
 
 server/logs/

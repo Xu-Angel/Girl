@@ -1,21 +1,21 @@
 const cheerio = require('cheerio')
 const request = require('request')
-import { userAgents } from '../config'
 import spiderModel from '../../model/spider'
 let userAgent = userAgents[parseInt(Math.random() * userAgents.length)]
+
+import { userAgents } from '../config'
 
 /**
  * 爬取女性详情页
  * @param {*} realUid 女性对应的UID，必须
  * @param {*} cookie 用于爬取隐私,必须
  */
-export default function (realUid, cookie) {
+export default function (realUid, cookie, ip) {
+  console.log(ip)
 
   if (!cookie) {
     cookie = spiderModel.find('cookie').exec()
-    console.log(cookie)
   }
-
   return new Promise((resolve, reject) => {
     try {
       request({
@@ -25,12 +25,11 @@ export default function (realUid, cookie) {
           'User-Agent': userAgent,
           'Cookie': cookie
         },
-        // proxy: 'http://116.209.58.93:9999/'
+        proxy: ip
       }, function (err, res, body) {
         if (err) reject(err)
         try {
           const $ = cheerio.load(body)
-          // console.log(err,res,body)
           const all = {}
           const infoLis = $('.member_info_list li')
           all['概要'] = $('.member_name').text()

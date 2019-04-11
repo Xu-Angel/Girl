@@ -7,13 +7,13 @@ import formidable from 'formidable'
 import getList2Json from '../core/spider/getList2Json'
 import getDetail from '../core/spider/getdetail'
 import async from 'async'
+import { getipList } from '../core/config'
 let G = global
-// TODO:WSS
 class Spider extends Base {
   constructor() {
     super()
     this.spiDetailByRealUid = this.spiDetailByRealUid.bind(this) // 继承方法 绑定
-    this.distinctGirl = this.distinctGirl.bind(this) // 继承方法 绑定
+    this.distinctGirl = this.distinctGirl.bind(this)
   }
 
   /**
@@ -65,24 +65,15 @@ class Spider extends Base {
         })
         return
       }
-      // return
       const { cookie } = fields
-      console.log(cookie, 'cookie')
       try {
         let Cur = new Date().getTime()
-        // let realUidArr = await uidModel.find({}, { realUid: 1, _id: 0 }) // 映射
         let realUidArr = await uidModel.distinct('realUid') // 映射
         let finUidArr = await detailModel.distinct('realUid')
+        const ipList = await getipList()
         await spiderModel.findOneAndUpdate({}, { $set: { cookie } })
         let realUids = null
-        console.log(realUidArr, 'realUidArr')
-        console.log(finUidArr, 'finUidArr')
-        // 临时方法更新旧的列表数据状态
-        // for (let key in finUidArr) {
-        //   // uidModel.find({realUid:finUidArr[key]})
-        //   await AllGirlModel.findOneAndUpdate({ realUid: finUidArr[key] }, { $set: { status: true } })
-        // }
-        // return
+
         if (finUidArr.length > 0) {
           realUids = this.difference(realUidArr, finUidArr)
         } else {
@@ -92,13 +83,17 @@ class Spider extends Base {
         const Length = realUidArr.length
         res.send({
           status: 200,
-          message: `爬取详细页任务配置已保存`,
+          message: `爬取详细页任务已开始`,
           data: `查询耗时：${(new Date().getTime() - Cur) / 1000},剩余爬取数为${remainLength}`
         })
-
+        // 记录任务开始
+        await spiderModel.findOneAndUpdate({}, { $set: { detailStatus: 1 } })
         async.mapLimit(realUids, 2, async function (realUid, cb) {
+          //way-1 详细任务开始 直接拿一波已有IP进行随机  每次请求都随机一个代理IP
+          const row = ipList[parseInt(Math.random() * ipList.length)]
+          const ip = `${row.type}://${row.host}:${row.port}/`
           let cur = new Date().getTime()
-          getDetail(realUid, cookie).then(rs => {
+          getDetail(realUid, cookie, ip).then(rs => {
 
             // 判断当前用户是否是空资料(未审核通过||关闭||隐藏)
             if (rs['学历'] === '' && rs['身高'] === '') {
@@ -114,22 +109,22 @@ class Spider extends Base {
                 G.DetailStatusCookieErr = { 'text': `传送时间:${new Date()}--请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}` }
                 throw new Error(`请更新cookie以爬取私密信息,剩余realUid数量：${remainLength}`)
               }
-                rs['realUid'] = realUid
-                detailModel.insertMany([rs], function (err, data) {
-                  // 更新列表的状态
-                  AllGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true, finishTime: new Date() } }).exec()
-                  remainLength--
-                  // 进度事件
-                  G.DetailStatusRate = { 'text': `传送时间:${new Date()}--end-realUid:${realUid},usedtime:${(new Date().getTime() - cur) / 1000}seconds,remain-realUid-count：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 }
-                  cb(null, ' ') // 代表这个函数结束，传递出去
-                })
-              
+              rs['realUid'] = realUid
+              detailModel.insertMany([rs], function (err, data) {
+                // 更新列表的状态
+                AllGirlModel.findOneAndUpdate({ realUid }, { $set: { status: true, finishTime: new Date() } }).exec()
+                remainLength--
+                // 进度事件
+                G.DetailStatusRate = { 'text': `传送时间:${new Date()}--end-realUid:${realUid},usedtime:${(new Date().getTime() - cur) / 1000}seconds,remain-realUid-count：${remainLength}`, 'percent': ((Length - remainLength) / Length) * 100 }
+                cb(null, ' ') // 代表这个函数结束，传递出去
+              })
+
             }
           }).catch(err => {
             console.log(err)
             cb(null, ' ')
           })
-        }, (err, data) => {
+        }, async (err, data) => {
           console.log(`所有任务完成：${data}`)
         })
 

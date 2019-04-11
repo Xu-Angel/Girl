@@ -1,8 +1,8 @@
 import Base from './basePrototype'
-import { spiIp, check } from '../core/ip/index'
+import { spiIp, check, getIpPool } from '../core/ip/index'
 import ipSchema from '../model/ips'
+import ippoolSchema from '../model/ippools'
 import formidable from 'formidable'
-// TODO:WSS
 
 class Ip extends Base {
   constructor() {
@@ -21,7 +21,6 @@ class Ip extends Base {
       if (err) {
         res.send({
           status: 100,
-          type: 'FORM_DATA_ERROR',
           message: '表单信息错误'
         })
         return
@@ -48,12 +47,12 @@ class Ip extends Base {
         return
       }
       try {
-        const total = await ipSchema.count({ ...params })
+        const total = await ippoolSchema.count({ ...params })
         let ipList = null
         if (total < 10) {
-          ipList = await ipSchema.find({ ...params }).sort({ '_id': 1 })
+          ipList = await ippoolSchema.find({ ...params }).sort({ '_id': 1 })
         } else {
-          ipList = await ipSchema.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ '_id': 1 })
+          ipList = await ippoolSchema.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ '_id': 1 })
         }
         res.send({
           status: 200,
@@ -108,6 +107,44 @@ class Ip extends Base {
       }
     })
   }
+
+  /**
+   * 开启爬取IP池任务
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async startSpiIpPool(req, res, next) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      try {
+        if (req.session.role !== 2) {
+          res.send({
+            status: 100,
+            message: '对不起，你没有权限操作~'
+          })
+          return
+        }
+        getIpPool().then(rs => {
+          res.send({
+            status: 100,
+            message: `开启成功`
+          })
+        }).catch(err => {
+          res.send({
+            status: 400,
+            message: `开启失败:${err}`
+          })
+        })
+
+      } catch (err) {
+        res.send({
+          status: 400,
+          message: `开启失败:${err}`
+        })
+      }
+    })
+  }
   /**
    * 去重IP池
    * @param {*} req 
@@ -116,16 +153,16 @@ class Ip extends Base {
    */
   async distinct(req, res, next) {
     try {
-      let datas = await ipSchema.find({}) // 所有数据
+      let datas = await ippoolSchema.find({}) // 所有数据
       datas.forEach((V, i) => {
         datas.forEach((v, i) => {
-          if (v['ip'] === V['ip'] && V['_id'] !== v['_id']) {
+          if (v['host'] === V['host'] && V['_id'] !== v['_id']) {
             datas.splice(i, 1)
-            ipSchema.findOneAndDelete({ _id: v['_id'] }).exec()
+            ippoolSchema.findOneAndDelete({ _id: v['_id'] }).exec()
           }
         })
       })
-      let data = await ipSchema.find({})
+      let data = await ippoolSchema.find({})
       res.send({
         status: 100,
         message: `去重成功,现在条数:${data.length}`
@@ -146,7 +183,7 @@ class Ip extends Base {
       const { ip } = fields
       try {
         check(ip).then(rs => {
-          if (rs === 1) {
+          if (rs.code === 1) {
             res.send({
               status: 200,
               message: `IP请求成功-状态有效`

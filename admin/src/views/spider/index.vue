@@ -70,6 +70,39 @@
         <i class="el-icon-warning el-icon--right"></i>
       </el-button>
     </el-card>
+    <!-- IP池状态 -->
+    <el-card>
+      <span>IP池爬取状态:</span>
+      <div v-if="ipItems[ipItems.length-1]">
+        进度--
+        <el-progress
+          :text-inside="true"
+          :stroke-width="18"
+          :percentage="ipItems[ipItems.length-1].percent"
+          status="success"
+        ></el-progress>
+        <ul>
+          <li v-for="(item, key) in ipItems" :key="key">
+            <span>已完成：{{ item.percent }}%</span>
+            <span style="margin-left: 20px;color: darkgreen;">{{ item.text }}</span>
+          </li>
+        </ul>
+      </div>
+      <ul v-if="errorIp">
+        <li v-for="(item, key) in errorIp" :key="key">
+          <span>错 误：</span>
+          <span style="margin-left: 20px;color: crimson;">{{ item.text }}</span>
+        </li>
+      </ul>
+      <el-button type="primary" @click="startIp">
+        开启查看
+        <i class="el-icon-success el-icon--right"></i>
+      </el-button>
+      <el-button type="danger" @click="stop('Ip')">
+        停止查看
+        <i class="el-icon-warning el-icon--right"></i>
+      </el-button>
+    </el-card>
   </div>
 </template>
 
@@ -81,10 +114,13 @@ export default {
     return {
       detailItems: [],
       listItems: [],
+      ipItems: [],
       socketDetail: null,
       socketList: null,
+      socketIp: null,
       errorUid: [],
       errorPage: [],
+      errorIp: [],
       cookieErr: []
     }
   },
@@ -96,6 +132,9 @@ export default {
     setTimeout(() => {
       this.startList()
     }, 1500)
+    setTimeout(() => {
+      this.startIp()
+    }, 3000)
   },
   methods: {
     testSocket(socket) {
@@ -162,6 +201,33 @@ export default {
         })
         // 无任务事件
         this.socketList.on('noTask', data => {
+          this.$message({
+            type: 'error',
+            message: data.text
+          })
+        })
+      })
+    },
+    startIp() {
+      this.socketIp = io(`${process.env.BASE_API}/socket/start/getIp`)
+      this.socketIp.on('connect', () => {
+        this.socketIp.emit('start', { text: '赶紧给我查看Ip池状态' })
+        // 进度事件
+        this.socketIp.on('rate', data => {
+          this.ipItems.push(data)
+          if (this.ipItems.length === 10) {
+            this.ipItems.splice(0, 1)
+          }
+        })
+        // 异常事件
+        this.socketIp.on('ipErr', data => {
+          this.errorIp.push(data)
+          if (this.errorIp.length === 10) {
+            this.errorIp.splice(0, 1)
+          }
+        })
+        // 无任务事件
+        this.socketIp.on('noTask', data => {
           this.$message({
             type: 'error',
             message: data.text

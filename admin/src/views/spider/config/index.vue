@@ -86,7 +86,6 @@
 <script>
 import { getSipderConfig } from '@/api/common'
 import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid } from '@/api/spider'
-import io from 'socket.io-client'
 export default {
   data() {
     return {
@@ -136,64 +135,67 @@ export default {
     updateListConfig() {
       this.$refs['listConfig'].validate((valid) => {
         if (valid) {
-          const socket = io(`${process.env.BASE_API}/start/getList`)
-          if (socket.connected) {
-            this.$message({
-              type: 'error',
-              message: '当前脚本有任务在跑哦，请耐心等待完成~'
-            })
-            return
-          }
-          this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            // console.log(this.listConfig)
-            // return
-            this.listConfig.startPage = Number(this.listConfig.page.split('-')[0])
-            this.listConfig.endPage = Number(this.listConfig.page.split('-')[1])
-            updateTaskConfig({ ...this.listConfig })
-            this.listConfigDialog = false
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '任务已取消'
+          getSipderConfig().then(rs => {
+            if (rs.data.listStatus === 1) {
+              this.$message({
+                type: 'error',
+                message: '当前脚本有任务在跑哦，请耐心等待完成~'
+              })
+              return
+            }
+            this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              // console.log(this.listConfig)
+              // return
+              this.listConfig.startPage = Number(this.listConfig.page.split('-')[0])
+              this.listConfig.endPage = Number(this.listConfig.page.split('-')[1])
+              updateTaskConfig({ ...this.listConfig })
+              this.listConfigDialog = false
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '任务已取消'
+              })
             })
           })
-        } else {
-          console.log('error submit!!')
-          return false
         }
       })
     },
     spiDetail() {
       this.$refs['detailConfig'].validate((valid) => {
         if (valid) {
-          const socket = io(`${process.env.BASE_API}/start/getDetail`)
-          if (socket.connected) {
-            this.$message({
-              type: 'error',
-              message: '当前脚本有任务在跑哦，请耐心等待完成~'
-            })
-            return
-          }
-          this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            spiDetailByRealUid({ ...this.detailConfig })
-            this.detailConfigDialog = false
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '任务已取消'
+          getSipderConfig().then(rs => {
+            if (rs.data.detailStatus === 1) {
+              this.$message({
+                type: 'error',
+                message: '当前脚本有任务在跑哦，请耐心等待完成~'
+              })
+              return
+            }
+            this.$confirm('此任务开始后不可停止, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              spiDetailByRealUid({ ...this.detailConfig }).then(rs => {
+                setTimeout(() => {
+                  this.$message({
+                    type: 'success',
+                    message: rs.data
+                  })
+                }, 2000)
+              })
+              this.detailConfigDialog = false
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '任务已取消'
+              })
             })
           })
-        } else {
-          console.log('error submit!!')
-          return false
         }
       })
     },

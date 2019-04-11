@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
     <div class="search-container">
-      <div class="fl">
-        <span class="fl" style="margin-right:10px;">
-          <el-input v-model="pageRange" placeholder="爬取页数eg:1-20"></el-input>
-        </span>
-        <el-button type="primary" @click="spiIp">爬取</el-button>
-      </div>
       <div class="fr">
         <el-button type="primary" @click="distinctIp">IP池去重</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="spiIpPool">更新IP池</el-button>
       </div>
     </div>
     <el-table
@@ -18,18 +13,18 @@
       border
       fit
       style="width: 100%"
-      @selection-change="selectionChange"
     >
-      <el-table-column type="selection" width="38"></el-table-column>
       <el-table-column prop="createTime" align="center" label="生成时间"></el-table-column>
-      <el-table-column prop="ip" align="center" label="IP"></el-table-column>
-      <el-table-column prop="ori" label="来源" align="center"></el-table-column>
-      <el-table-column prop="speed" label="速度" align="center"></el-table-column>
-      <el-table-column prop="address" label="地址" align="center"></el-table-column>
+      <el-table-column prop="host" align="center" label="IP"></el-table-column>
+      <el-table-column prop="port" align="center" label="端口"></el-table-column>
+      <el-table-column prop="from" label="来源" align="center"></el-table-column>
+      <el-table-column prop="response_time" label="响应时间" align="center"></el-table-column>
+      <el-table-column prop="country" label="地址" align="center"></el-table-column>
       <el-table-column prop="type" label="类型" align="center"></el-table-column>
+      <el-table-column prop="anonymity" label="匿名性" align="center"></el-table-column>
       <el-table-column align="center" prop="realUid" label="操作">
         <template slot-scope="scope">
-          <el-button :loading="false" @click="testIp(scope.row.ip, this)">测试</el-button>
+          <el-button :loading="false" @click="testIp(scope.row, this)">测试</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,21 +43,9 @@
 </template>
 
 <script>
-import { startSpiIp, getIpList, checkIp, distinct } from '@/api/ip'
+import { getIpList, checkIp, startSpiIpPool, distinct } from '@/api/ip'
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        未婚: 'success',
-        // draft: 'gray',
-        离异: 'danger',
-        false: 'gray',
-        true: 'success'
-      }
-      return statusMap[status]
-    }
-  },
   data() {
     return {
       list: null,
@@ -70,7 +53,8 @@ export default {
       currentPage: 1,
       total: 10000,
       pageSize: 10,
-      pageRange: ''
+      pageRange: '',
+      buttonLoading: false
     }
   },
   created() {
@@ -82,22 +66,14 @@ export default {
 
     },
     handleCurrentChange(changePage) {
-      // 重新请求本路由页 回到顶部
-      this.$router.push({
-        query: {
-          pageNum: changePage
-        }
-      })
       this.currentPage = changePage
       this.fetchData()
     },
     fetchData() {
       this.listLoading = true
-
       getIpList({
         page: this.currentPage,
-        pageSize: this.pageSize,
-        ...this.search
+        pageSize: this.pageSize
       }).then(response => {
         this.list = response.data.items
         this.list.map(v => { v.createTime = new Date(v.createTime).toLocaleString() })
@@ -105,28 +81,21 @@ export default {
         this.listLoading = false
       })
     },
-    handleSearch() {
-      console.log(this.search)
-      this.currentPage = 1
-      this.fetchData()
-    },
-    testIp(ip, t) {
-      console.log(t)
-      // TODO: 发起请求
-      console.log(ip)
+    testIp(row, t) {
       this.listLoading = true
       checkIp({
-        ip
+        ip: `${row.type}://${row.host}:${row.port}/`
       }).then(rs => {
         this.listLoading = false
-        this.fetchData()
-        console.log(rs)
+        setTimeout(() => {
+          this.fetchData()
+        }, 1500)
       })
     },
-    spiIp() {
-      startSpiIp({
-        start: Number(this.pageRange.split('-')[0]) || 1,
-        end: Number(this.pageRange.split('-')[1]) || 20
+    spiIpPool() {
+      this.buttonLoading = true
+      startSpiIpPool().then(rs => {
+        this.buttonLoading = false
       })
     },
     distinctIp() {
