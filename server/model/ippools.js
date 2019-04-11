@@ -10,7 +10,7 @@ const ipPool = new Schema({
   country: { type: String, default: '未知' },
   response_time: { type: Number, default: 0 },
   from: { type: String, default: '未知' },
-  createTime: { type: Date, default: new Date() }
+  createTime: Date
 })
 
 ipPool.index({ 'host': 1, }, { unique: true })

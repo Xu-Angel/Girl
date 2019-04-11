@@ -54,7 +54,7 @@ export async function getIpPool() {
         check(ip).then(async (rs) => {
           console.log(rs, 'rs');
           if (rs.code === 1) {
-            await ippoolSchema.create({ ...tempData }).then((err, data) => {
+            await ippoolSchema.create({ ...tempData, createTime: new Date() }).then((err, data) => {
               G.IpStatusRate = { 'text': `第${num}条IP-${ip}成功入库`, 'percent': (num / len) * 100 }
             }).catch(err => {
               G.IpStatusIpErr = { 'text': `入库的时候发生错误:${err}` }

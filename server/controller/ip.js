@@ -153,16 +153,16 @@ class Ip extends Base {
    */
   async distinct(req, res, next) {
     try {
-      let datas = await ipSchema.find({}) // 所有数据
+      let datas = await ippoolSchema.find({}) // 所有数据
       datas.forEach((V, i) => {
         datas.forEach((v, i) => {
-          if (v['ip'] === V['ip'] && V['_id'] !== v['_id']) {
+          if (v['host'] === V['host'] && V['_id'] !== v['_id']) {
             datas.splice(i, 1)
-            ipSchema.findOneAndDelete({ _id: v['_id'] }).exec()
+            ippoolSchema.findOneAndDelete({ _id: v['_id'] }).exec()
           }
         })
       })
-      let data = await ipSchema.find({})
+      let data = await ippoolSchema.find({})
       res.send({
         status: 100,
         message: `去重成功,现在条数:${data.length}`

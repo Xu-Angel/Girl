@@ -2,6 +2,7 @@
   <div class="app-container">
     <div class="search-container">
       <div class="fr">
+        <el-button :loading="buttonLoading" type="primary" @click="distinctIp">IP池去重</el-button>
         <el-button :loading="buttonLoading" type="primary" @click="spiIpPool">更新IP池</el-button>
       </div>
     </div>
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { getIpList, checkIp, startSpiIpPool } from '@/api/ip'
+import { getIpList, checkIp, startSpiIpPool, distinct } from '@/api/ip'
 
 export default {
   data() {
@@ -67,33 +68,20 @@ export default {
 
     },
     handleCurrentChange(changePage) {
-      // 重新请求本路由页 回到顶部
-      this.$router.push({
-        query: {
-          pageNum: changePage
-        }
-      })
       this.currentPage = changePage
       this.fetchData()
     },
     fetchData() {
       this.listLoading = true
-
       getIpList({
         page: this.currentPage,
-        pageSize: this.pageSize,
-        ...this.search
+        pageSize: this.pageSize
       }).then(response => {
         this.list = response.data.items
         this.list.map(v => { v.createTime = new Date(v.createTime).toLocaleString() })
         this.total = response.data.total
         this.listLoading = false
       })
-    },
-    handleSearch() {
-      console.log(this.search)
-      this.currentPage = 1
-      this.fetchData()
     },
     testIp(row, t) {
       this.listLoading = true
@@ -110,6 +98,12 @@ export default {
       this.buttonLoading = true
       startSpiIpPool().then(rs => {
         this.buttonLoading = false
+      })
+    },
+    distinctIp() {
+      this.listLoading = true
+      distinct().then(rs => {
+        this.fetchData()
       })
     }
   }
