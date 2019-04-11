@@ -7,6 +7,10 @@ import ipSchema from '../../model/ips'
 import ippoolSchema from '../../model/ippools'
 let G = global
 
+/**
+ * 爬取西刺代理的IP v1.0版本
+ * @param {Object} config 
+ */
 export function spiIp(config) {
   return new Promise((resolve, reject) => {
     let pageArr = []
@@ -22,13 +26,16 @@ export function spiIp(config) {
         reject(err)
       })
     }, function (err, rs) {
-      console.log(rs, 'fianl')
+      console.log(rs, '所有任务完成')
     })
     resolve()
   })
 
 }
 
+/**
+ * 爬取代理池IP入库
+ */
 export function getIpPool() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -56,13 +63,13 @@ export function getIpPool() {
             // IP 无效
             G.IpStatusIpErr = { 'text': `无效IP${rs.ip}，已过滤` }
           }
-          cb(null, '')
+          cb(null, '-')
         }).catch(err => {
-          cb(null, '')
+          cb(null, '|')
           G.IpStatusIpErr = { 'text': `requrest错误${err.error}，已过滤` }
         })
       }, function (err, rs) {
-        console.log(rs, 'fianl')
+        console.log(rs, '所有任务完成')
       })
     } catch (error) {
       console.log(error)

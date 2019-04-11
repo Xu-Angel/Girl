@@ -1,5 +1,8 @@
 import ippoolSchema from '../model/ippools'
 
+/**
+ * 获取数据库中的IP池
+ */
 export async function getipList() {
   try {
     const ipList = await ippoolSchema.find({})

@@ -8,7 +8,7 @@ let userAgent = userAgents[parseInt(Math.random() * userAgents.length)]
 
 
 /**
- * 获取国外IP池
+ * 获取国外IP池,生成JSON文件
  */
 module.exports = function getText() {
   return new Promise((resolve, reject) => {

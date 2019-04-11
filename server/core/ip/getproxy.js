@@ -8,7 +8,7 @@ let useful = [] //保存检查过有效性的代理
 
 
 /**
- * 获取www.xicidaili.com提供的免费代理
+ * 获取www.xicidaili.com提供的免费代理 v1.0版本 现在暂时弃用
  */
 module.exports = function getXici(pageNum) {
   return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ module.exports = function getXici(pageNum) {
       url,
       method: "GET",
       headers: { 'User-Agent': userAgent },
-      // proxy: 'http://27.29.44.220:9999/'  //TODO:使用代理爬取
+      // proxy: 'http://27.29.44.220:9999/'
     }, async function (error, response, body) {
       if (!error) {
         const $ = cheerio.load(body);

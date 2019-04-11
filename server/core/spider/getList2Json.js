@@ -5,6 +5,10 @@ let G = global
 import { pushOne } from './genJson2DB'
 import { stc, userAgents, getipList } from '../config'
 
+/**
+ * 批量任务：爬取列表页数据转成json文件
+ * @param {Object} config 
+ */
 export default function (config = {}) {
   return new Promise(async (reolve, reject) => {
     //way-1 任务开始 直接拿一波已有IP进行随机  每次请求都随机一个代理IP

@@ -3,7 +3,6 @@ import { spiIp, check, getIpPool } from '../core/ip/index'
 import ipSchema from '../model/ips'
 import ippoolSchema from '../model/ippools'
 import formidable from 'formidable'
-// TODO:WSS
 
 class Ip extends Base {
   constructor() {
