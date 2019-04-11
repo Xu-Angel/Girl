@@ -62,6 +62,7 @@ export default function (config = {}) {
     function getJsonP(n, stc, userAgent, key, ipList) {
       const row = ipList[parseInt(Math.random() * ipList.length)]
       const ip = `${row.type}://${row.host}:${row.port}/`
+      console.log(`${stc},23:1,${config.education}${config.marriage}`)
       return request({
         url: 'http://search.jiayuan.com/v2/search_v2.php',
         method: 'POST',
