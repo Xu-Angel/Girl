@@ -13,17 +13,12 @@ import socket from './socket/index'
 import db from './mongodb/db.js' // 链接数据库
 import fs from 'fs'
 import task from './core/schedule/index'
+import { LogReq } from './core/log/index'
 
 const app = express()
 
 app.all('*', (req, res, next) => {
-  //追加方法
-  fs.appendFile("./json.txt", '\r\n' + req.url, function (error) {
-    if (error)
-      console.log('追加文件失败' + error.message)
-    else
-      console.log('追加成功：' + req.url)
-  });
+  LogReq(req)
   if (!['localhost:8088', 'girl.xutianshi.top', 'localhost:9529'].includes(req.headers.host)) {
     res.send(`${req.headers.host}在${new Date()}访问，已被拦截,总有刁民想害朕，锦衣卫护驾`)
   } else { // 跨域处理
