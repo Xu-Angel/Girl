@@ -35,7 +35,9 @@ Spider.findOne((err, data) => {
       'age': age,
       'height': height,
       'education': education,
-      'marriage': marriage
+      'marriage': marriage,
+      'listStatus':0,
+      'detailStatus':0
     });
     newSpider.save()
   }

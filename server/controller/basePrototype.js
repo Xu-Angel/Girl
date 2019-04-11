@@ -75,11 +75,11 @@ export default class BaseComponent {
       })
     })
   }
-   /**
-    * 取数组不同值
-    * @param {*} l 长数组
-    * @param {*} s 短数组
-    */
+  /**
+   * 取数组不同值
+   * @param {*} l 长数组
+   * @param {*} s 短数组
+   */
   difference(l, s) {
     const S = new Set(s)
     return l.filter(v => !S.has(v))

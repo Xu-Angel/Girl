@@ -1,26 +1,21 @@
 const async = require('async')
 const getXici = require('./getproxy')
-const test = require('./getIpPool')
+const getText = require('./getIpPool')
 const request = require('request')
 const path = require('path')
 import ipSchema from '../../model/ips'
 import ippoolSchema from '../../model/ippools'
+let G = global
+
 export function spiIp(config) {
-  console.log(config, '777');
   return new Promise((resolve, reject) => {
-    let pageArr = [] //TODO: 设置爬取页数
+    let pageArr = []
     for (let i = config.start; i < config.end + 1; i++) {
       pageArr.push(i)
     }
-    console.log('task start')
     async.mapLimit(pageArr, 2, function (pageNum, cb) {
-      console.log(pageNum, '14');
       getXici(pageNum).then(rs => {
-        console.log(rs)
-        // throw new Error('etst')
         ipSchema.insertMany(rs).then((err, data) => {
-          console.log(data, err)
-          console.log(pageNum, 'pageNum')
           cb(null, '')
         })
       }).catch(err => {
@@ -35,27 +30,37 @@ export function spiIp(config) {
 }
 
 export function getIpPool() {
-  return new Promise(async(resolve, reject) => {
-    // const json = await test()
-    const json = require(path.resolve(__dirname, `../../db/ipPool.json`))
-    console.log(json.data)
-    // return  
-    const data = json.data
-    console.log(data);
-    let numArr = []
-    for (let i = 0; i < data.length; i++) {
-      numArr.push(i)
-    }
+  return new Promise(async (resolve, reject) => {
     try {
-      async.mapLimit(numArr, 5, function (num, cb) {
-        console.log(data[num])
-        ippoolSchema.create({...data[num]}).then((err, data) => {
-            console.log(data, err)
-            cb(null, '')
+      await getText()
+      const json = require(path.resolve(__dirname, `../../db/ipPool.json`))
+      const data = json.data
+      let numArr = []
+      const len = data.length
+      for (let i = 0; i < len; i++) {
+        numArr.push(i)
+      }
+      async.mapLimit(numArr, 50, function (num, cb) {
+        const tempData = data[num]
+        const ip = tempData['type'] + '://' + tempData['host'] + ':' + tempData['port'] + '/'
+        // 入库筛选 检测当前IP有效性
+        check(ip).then(async (rs) => {
+          console.log(rs, 'rs');
+          if (rs.code === 1) {
+            await ippoolSchema.create({ ...tempData }).then((err, data) => {
+              G.IpStatusRate = { 'text': `第${num}条IP-${ip}成功入库`, 'percent': (num / len) * 100 }
+            }).catch(err => {
+              G.IpStatusIpErr = { 'text': `入库的时候发生错误:${err}` }
+            })
+          } else if (rs.code === 2) {
+            // IP 无效
+            G.IpStatusIpErr = { 'text': `无效IP${rs.ip}，已过滤` }
+          }
+          cb(null, '')
         }).catch(err => {
           cb(null, '')
-            console.log(err)
-          })
+          G.IpStatusIpErr = { 'text': `requrest错误${err.error}，已过滤` }
+        })
       }, function (err, rs) {
         console.log(rs, 'fianl')
       })
@@ -79,19 +84,26 @@ export function check(ip) {
         timeout: 5000 //5s没有返回则视为代理不行
       }, function (error, response, body) {
         if (error) {
-          reject(error)
+          reject({
+            code: 3,
+            error
+          })
         }
-        console.log(response);
         if (!error) {
           if (response.statusCode == 200) {
-            resolve(1)
+            resolve({
+              code: 1
+            })
           } else {
             resolve(0)
           }
         }
       })
     } catch (error) {
-      reject(error)
+      resolve({
+        code: 2,
+        ip
+      })
     }
   })
 }

@@ -6,7 +6,7 @@ export default function socketGetDetailStatus(IO, G) {
     try {
       IO.of('/socket/start/getDetail').on('connect', (socket) => {
         socket.on('start', (data) => {
-          !G.DetailStatusRate && socket.emit('noTask', { text: `请求时间${new Date()}---详细页Socket---暂无任务进行中` })
+          (!G.DetailStatusRate && !G.DetailStatusCookieErr && !G.DetailStatuspageErr && !G.DetailStatusUidErr) && socket.emit('noTask', { text: `请求时间${new Date()}---详细页Socket---暂无任务进行中` })
           console.log(data)
         })
         G.DetailStatusRate && setInterval(() => {

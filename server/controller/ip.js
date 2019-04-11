@@ -1,6 +1,7 @@
 import Base from './basePrototype'
 import { spiIp, check, getIpPool } from '../core/ip/index'
 import ipSchema from '../model/ips'
+import ippoolSchema from '../model/ippools'
 import formidable from 'formidable'
 // TODO:WSS
 
@@ -21,7 +22,6 @@ class Ip extends Base {
       if (err) {
         res.send({
           status: 100,
-          type: 'FORM_DATA_ERROR',
           message: '表单信息错误'
         })
         return
@@ -48,12 +48,12 @@ class Ip extends Base {
         return
       }
       try {
-        const total = await ipSchema.count({ ...params })
+        const total = await ippoolSchema.count({ ...params })
         let ipList = null
         if (total < 10) {
-          ipList = await ipSchema.find({ ...params }).sort({ '_id': 1 })
+          ipList = await ippoolSchema.find({ ...params }).sort({ '_id': 1 })
         } else {
-          ipList = await ipSchema.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ '_id': 1 })
+          ipList = await ippoolSchema.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ '_id': 1 })
         }
         res.send({
           status: 200,
@@ -184,7 +184,7 @@ class Ip extends Base {
       const { ip } = fields
       try {
         check(ip).then(rs => {
-          if (rs === 1) {
+          if (rs.code === 1) {
             res.send({
               status: 200,
               message: `IP请求成功-状态有效`

@@ -1,3 +1,14 @@
+import ippoolSchema from '../model/ippools'
+
+export async function getipList() {
+  try {
+    const ipList = await ippoolSchema.find({})
+    return ipList
+  } catch (error) {
+    return error
+  }
+}
+
 export const stc = {
   '北京': '1:11',
   '天津': '1:12',
@@ -58,26 +69,3 @@ export const userAgents = [
   'Opera/9.25 (Windows NT 5.1; U; en), Lynx/2.8.5rel.1 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/1.2.9',
   'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
 ]
-
-// const stc = {
-//   '甘肃': "1:62",
-//   // '国外': "1:99",
-// }
-// 黑龍江 24)
-// 上海 8)
-// 江西 18,25,63)
-// 湖北 7,21)
-// 湖南 59,88)
-// 广东 67)
-// 四川 19)
-// 贵州 9)
-// 云南 13)
-// 西藏 48]
-// 甘肃 79)
-// 台湾 24]
-// 香港 66]
-// 澳门 17]
-// 美国 59]
-// const stc = {
-//   '云南': "1:31",
-// }

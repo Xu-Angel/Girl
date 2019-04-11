@@ -1,19 +1,19 @@
 /**
- * 列表页Socket
+ * Ip池Socket
  */
-export default function socketGetListStatus(IO, G) {
+export default function socketGetIpStatus(IO, G) {
   return new Promise((resolve, reject) => {
     try {
-      IO.of('/socket/start/getList').on('connect', (socket) => {
+      IO.of('/socket/start/getIp').on('connect', (socket) => {
         socket.on('start', (data) => {
-          (!G.ListStatusRate && ! G.ListStatuspageErr) && socket.emit('noTask', { text: `请求时间${new Date()}---列表页Socket---暂无任务进行中` })
+          (!G.IpStatusRate && ! G.IpStatusIpErr) && socket.emit('noTask', { text: `请求时间${new Date()}---Ip池Socket---暂无任务进行中` })
           console.log(data)
         })
-        G.ListStatusRate && setInterval(() => {
-          socket.emit('rate', { ...G.ListStatusRate })
+        G.IpStatusRate && setInterval(() => {
+          socket.emit('rate', { ...G.IpStatusRate })
         }, 1000)
-        G.ListStatuspageErr && setInterval(() => {
-          socket.emit('pageErr', { ...G.ListStatuspageErr })
+        G.IpStatusIpErr && setInterval(() => {
+          socket.emit('ipErr', { ...G.IpStatusIpErr })
         }, 1000)
         socket.on('stop', (data) => { // 客户端提出关闭
           console.log(data)
