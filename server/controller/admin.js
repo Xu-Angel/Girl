@@ -222,7 +222,7 @@ class Admin extends Base {
         return
       }
       try {
-        const total = await AdminModel.count({ ...params })
+        const total = await AdminModel.estimatedDocumentCount({ ...params })
         let admin = null
         if (total < 10) {
           admin = await AdminModel.find({ ...params }).sort({ 'id': -1 })

@@ -48,7 +48,7 @@ class Girl extends Base {
         return
       }
       try {
-        const total = await AllGirlModel.count({ ...params })
+        const total = await AllGirlModel.estimatedDocumentCount({ ...params })
         let girl = null
         if (total < 10) { //TODO: 优先展示排序规则  1-最新完成爬取页的在前面 2-没完成的话就根据最新创建时间在前面
           girl = await AllGirlModel.find({ ...params }).sort({ 'finishTime': -1, 'createTime': -1 })

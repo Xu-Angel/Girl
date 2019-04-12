@@ -32,7 +32,7 @@ class Log extends Base {
           })
           return
         }
-        const total = await reqLogsScheam.count({ ...params })
+        const total = await reqLogsScheam.estimatedDocumentCount({ ...params })
         let items = null
         if (total < 10) {
           items = await reqLogsScheam.find({ ...params }).sort({ "_id": -1 })
