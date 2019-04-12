@@ -13,8 +13,8 @@
       "db"
     ],
     "exec_mode": "fork_mode",
-    "error_file": "./logs/app-err.log",
-    "out_file": "./logs/app-out.log",
+    "error_file": "./logs/pm2/err.log",
+    "out_file": "./logs/pm2/out.log",
     "merge_logs": false,
     "log_date_format": "YYYY-MM-DD HH:mm:ss",
     "min_uptime": "600s",

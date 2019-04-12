@@ -20,7 +20,7 @@ export function LogReq(req) {
   const referer = req.headers.referer
   const host = req.headers.host
   const url = req.url
-  fs.appendFile(path.resolve(__dirname, '../../logs/req.log'), `\r\n时间:'${time}'----请求的origin:'${origin}'----请求的浏览器:'${ua}'----请求的referer:'${referer}'----请求的主机:'${host}'----请求URL:'${url}'`, function (error) {
+  fs.appendFile(path.resolve(__dirname, `../../logs/req/req-${moment().format('YYYY-MM-DD-HH')}.log`), `\r\n时间:'${time}'----请求的origin:'${origin}'----请求的浏览器:'${ua}'----请求的referer:'${referer}'----请求的主机:'${host}'----请求URL:'${url}'`, function (error) {
     if (error) {
       console.log('追加文件失败' + error.message)
     } else {

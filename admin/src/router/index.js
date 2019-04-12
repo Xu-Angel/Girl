@@ -141,8 +141,15 @@ export const constantRouterMap = [
       {
         path: 'error',
         name: 'LogError',
+        hidden: true,
         component: () => import('@/views/log/error/index'),
         meta: { title: '错误日志', icon: 'error' }
+      },
+      {
+        path: 'file',
+        name: 'LogFile',
+        component: () => import('@/views/log/file/index'),
+        meta: { title: '日志文件', icon: 'log_file' }
       }
     ]
   },
