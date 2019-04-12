@@ -5,7 +5,6 @@ const ipPool = new Schema({
   type: String,
   host: String,
   port: Number,
-  type: String,
   anonymity: { type:String, default: '未知' },
   country: { type: String, default: '未知' },
   response_time: { type: Number, default: 0 },

@@ -47,7 +47,7 @@ class Ip extends Base {
         return
       }
       try {
-        const total = await ippoolSchema.count({ ...params })
+        const total = await ippoolSchema.estimatedDocumentCount({ ...params })
         let ipList = null
         if (total < 10) {
           ipList = await ippoolSchema.find({ ...params }).sort({ '_id': 1 })

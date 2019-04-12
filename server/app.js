@@ -14,11 +14,14 @@ import db from './mongodb/db.js' // 链接数据库
 import fs from 'fs'
 import task from './core/schedule/index'
 import { LogReq } from './core/log/index'
-
+import log4 from './core/log/log4'
+import path from 'path'
+import serveStatic from 'serve-static'
 const app = express()
 
-app.all('*', (req, res, next) => {
-  LogReq(req)
+app.all('*', async (req, res, next) => {
+  const start = new Date()
+  let ms
   if (!['localhost:8088', 'girl.xutianshi.top', 'localhost:9529'].includes(req.headers.host)) {
     res.send(`${req.headers.host}在${new Date()}访问，已被拦截,总有刁民想害朕，锦衣卫护驾`)
   } else { // 跨域处理
@@ -33,7 +36,14 @@ app.all('*', (req, res, next) => {
     if (req.method == 'OPTIONS') {
       res.sendStatus(200)
     } else {
-      next()
+      LogReq(req)
+      try {
+        await next()
+        ms = new Date() - start
+        log4.i(req, ms)
+      } catch (error) {
+        log4.e(req, error, ms)
+      }
     }
   }
 })
@@ -54,7 +64,8 @@ app.use(session({ // 使用session
 router(app)
 
 app.use(history())
-app.use(express.static('./public'))
+app.use(serveStatic(path.resolve(__dirname, './public')))   // 静态根目录
+app.use('/logs', serveStatic(path.resolve(__dirname, './logs')))  // 日志文件夹
 
 const server = http.createServer(app)
 const io = IO(server)

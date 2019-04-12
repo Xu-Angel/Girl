@@ -9,8 +9,7 @@
 |user_id      |Y       |Number  |- |用户id |
 |upload_id      |Y       |Number |-  |上传图片id |
 
-#### ip ip表
-管理数据的唯一性
+#### ip ip表 v1.1.0已废弃
 
 |键|是否必选|类型|默认|说明|
 |:-----|:-------:|:-----|:-----|:-----|
@@ -20,6 +19,29 @@
 |type      |Y       |String |-  |类型 |
 |speed      |Y       |String |-  |速度 |
 |createTime      |Y       |String |-  |数据入库时间 |
+
+#### ipPool ip池表 v1.1.0
+
+|键|是否必选|类型|默认|说明|
+|:-----|:-------:|:-----|:-----|:-----|
+|type      |Y       |String  |- |来源 |
+|host      |Y       |String  |- |IP 唯一索引|
+|port      |Y       |String |-  |端口 |
+|anonymity      |Y       |String |-  |类型 |
+|country      |Y       |String |-  |国家 |
+|response_time      |Y       |String |-  |响应时间 |
+|from      |Y       |String |-  |来源 |
+|createTime      |Y       |String |-  |数据入库时间 |
+
+#### reqLog 请求日志表 v1.1.0
+
+|键|是否必选|类型|默认|说明|
+|:-----|:-------:|:-----|:-----|:-----|
+|time      |Y       |Date  |- |请求时间 |
+|origin      |Y       |String  |- |origin|
+|ua      |Y       |String |-  |ua |
+|host      |Y       |String |-  |host |
+|url      |Y       |String |-  |url |
 
 #### uid 女性uid表
 
@@ -92,7 +114,7 @@
 
 |键|是否必选|类型|默认|说明|
 |:-----|:-------:|:-----|:-----|:-----|
-|realUid      |Y       |Number  |- |女性uid |
+|realUid      |Y       |Number  |- |女性uid 唯一索引|
 |area      |Y       |String  |- |爬取时所在地区 |
 |nickname      |Y       |Number  |- |女性昵称 |
 |sex      |Y       |String  |- |性别 |
@@ -112,7 +134,7 @@
 |createTime      |Y       |Date  |- |数据入库时间 |
 |finishTime      |N       |Date  |- |对应详细数据完成时间 |
 
-#### unigirl 女性概要表
+#### unigirl 女性概要表 v0.1版本废弃
 
 净数据存放 混合索引 搜索表   v0.1版本,已废除
 
@@ -141,7 +163,7 @@
 
 |键|是否必选|类型|默认|说明|
 |:-----|:-------:|:-----|:-----|:-----|
-|realUid      |Y       |Number  |- |女性realUid |
+|realUid      |Y       |Number  |- |女性realUid 唯一索引|
 |概要      |Y       |String  |- |概要 |
 |学历      |Y       |String  |- |学历 |
 |身高      |Y       |String  |- |身高 |

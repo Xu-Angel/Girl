@@ -10,4 +10,9 @@ server/getGirls/db/json/
 server/db/json/*/*.json
 server/db/*.json
 
-server/logs/
+server/logs/pm2/
+server/logs/error/
+server/logs/req/
+server/logs/response/
+
+server/public/img/

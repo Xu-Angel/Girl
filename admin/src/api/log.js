@@ -15,3 +15,19 @@ export function delReq(data = {}) {
     data
   })
 }
+
+export function delFile(data = {}) {
+  return request({
+    url: '/log/delFile',
+    method: 'post',
+    data
+  })
+}
+
+export function getFile(data = {}) {
+  return request({
+    url: '/log/getFile',
+    method: 'post',
+    data
+  })
+}

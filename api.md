@@ -25,6 +25,11 @@ baseUrl: http://localhost:8088
 [17、更改管理员头像](#17更改管理员头像)<br/>
 [18、websocket-详情页脚本](#18websocket-详情页脚本)<br/>
 [19、websocket-列表页脚本](#19websocket-列表页脚本)<br/>
+[20、websocket-IP池脚本](#20websocket-IP池脚本)<br/>
+[21、路由访问列表](#21路由访问列表)<br/>
+[22、删除某条路由访问记录](#22删除某条路由访问记录)<br/>
+[23、删除日志文件](#23删除日志文件)<br/>
+[24、获取日志文件列表](#24获取日志文件列表)<br/>
 ## 接口列表：
 ### 1、登录注册
 - [x] 状态 请求URL:  
@@ -188,10 +193,10 @@ eg: http://localhost:8088/common/getCounts
 }
 ```
 
-### 9、开启IP爬取任务
+### 9、开启IP池爬取任务
 - [x] 状态 请求URL：
 ```
-eg: http://localhost:8088/ip/startSpiIp
+eg: http://localhost:8088/ip/startSpiIpPool
 ```
 #### POST
 #### 返回示例：
@@ -255,5 +260,30 @@ eg: http://localhost:8088/socket/start/getDetail
 - [x] 状态 请求URL：
 ```
 eg: http://localhost:8088/socket/start/getList
+```
+### 20、websocket-IP池脚本
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/socket/start/getIp
+```
+### 21、路由访问列表
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/log/getVisit
+```
+### 22、删除某条路由访问记录
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/log/delReq
+```
+### 23、删除日志文件
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/log/delFile
+```
+### 24、获取日志文件列表
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/log/getFile
 ```
 
