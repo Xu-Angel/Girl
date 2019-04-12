@@ -27,9 +27,14 @@
       </el-row>
       <div>
         <el-card>
-          <div v-for="(item, key, index) in carousel" :key="index" class="img-container">
-            <img :src="item" class="image" @click="showAdvImage(key)">
-          </div>
+          <Viewer ref="viewer" :images="carousel" class="img-container" >
+            <img
+              v-for="(item, key, index) in carousel"
+              :key="index"
+              :src="item"
+              style="width: 80px; height: 80px;margin: 0 auto;"
+            >
+          </Viewer>
         </el-card>
         <!-- 图片end -->
         <!-- </el-col> -->
@@ -108,9 +113,13 @@
 
 <script>
 import { getDetail } from '@/api/table'
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer/src/component.vue'
 
 export default {
-
+  components: {
+    Viewer
+  },
   data() {
     return {
       isloading: true,

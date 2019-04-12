@@ -45,7 +45,7 @@
           @click.native.prevent="handleLogin"
         >登录/注册</el-button>
       </el-form-item>
-      <div class="tips">当前版本1.0</div>
+      <div class="tips">当前版本v1.1.0</div>
     </el-form>
   </div>
 </template>
