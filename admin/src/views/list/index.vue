@@ -158,11 +158,11 @@ export default {
     handleSizeChange() { },
     handleCurrentChange(changePage) {
       // 重新请求本路由页 回到顶部
-      this.$router.push({
-        query: {
-          pageNum: changePage
-        }
-      })
+      // this.$router.push({
+      //   query: {
+      //     pageNum: changePage
+      //   }
+      // })
       this.currentPage = changePage
       this.fetchData()
       // 常规请求分页 不回到顶部

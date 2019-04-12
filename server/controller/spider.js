@@ -88,7 +88,7 @@ class Spider extends Base {
         })
         // 记录任务开始
         await spiderModel.findOneAndUpdate({}, { $set: { detailStatus: 1 } })
-        async.mapLimit(realUids, 2, async function (realUid, cb) {
+        async.mapLimit(realUids, 100, async function (realUid, cb) {
           //way-1 详细任务开始 直接拿一波已有IP进行随机  每次请求都随机一个代理IP
           const row = ipList[parseInt(Math.random() * ipList.length)]
           const ip = `${row.type}://${row.host}:${row.port}/`
