@@ -31,7 +31,7 @@ export default function (config = {}) {
           config.education = `4:${config.education}.0,28:0,`
         }
         if (config.marriage) {
-          config.marriage = `6:${config.marriage},`
+          config.marriage = `6:${config.marriage}`
         }
 
         if (!fs.existsSync(path.resolve(__dirname, `../../db/json/${key}`))) {
@@ -74,7 +74,7 @@ export default function (config = {}) {
         formData: {
           'sex': 'f',
           'key': '',
-          'stc': `${stc},23:1,${config.education}${config.marriage}`,
+          'stc': `${stc},23:1,${config.education}${config.marriage}`, // FIXME:
           'sn': 'default',
           'sv': 1,
           'p': n,
