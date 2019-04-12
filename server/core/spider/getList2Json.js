@@ -27,11 +27,16 @@ export default function (config = {}) {
         // 6:1 未婚
         // 6:2 离异
         // 6:3 丧偶
-        if (config.education) {
-          config.education = `4:${config.education}.0,28:0,`
-        }
-        if (config.marriage) {
-          config.marriage = `6:${config.marriage}`
+        if (!config.task) { //不是定时任务的话
+          if (config.education) {
+            config.education = `,4:${config.education}.0,28:0,`
+          }
+          if (config.marriage) {
+            config.marriage = `6:${config.marriage}`
+          }
+        } else {
+          config.education = ''
+          config.marriage = ''
         }
 
         if (!fs.existsSync(path.resolve(__dirname, `../../db/json/${key}`))) {
@@ -74,7 +79,7 @@ export default function (config = {}) {
         formData: {
           'sex': 'f',
           'key': '',
-          'stc': `${stc},23:1,${config.education}${config.marriage}`, // FIXME:
+          'stc': `${stc},23:1${config.education}${config.marriage}`, // FIXME:
           'sn': 'default',
           'sv': 1,
           'p': n,
