@@ -27,9 +27,9 @@
       </el-row>
       <div>
         <el-card>
-          <Viewer ref="viewer" :images="carousel" class="img-container" >
+          <Viewer ref="viewer" :images="bigImg" class="img-container" >
             <img
-              v-for="(item, key, index) in carousel"
+              v-for="(item, key, index) in bigImg"
               :key="index"
               :src="item"
               style="width: 80px; height: 80px;margin: 0 auto;"
@@ -211,7 +211,7 @@ export default {
 @import './dna.scss';
 .img-container {
   width: 100px;
-  height: 100px;
+  // height: 100px;
   margin: 10px 0;
 }
 .el-card {

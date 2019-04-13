@@ -25,7 +25,8 @@ export default function (realUid, cookie, ip) {
           'User-Agent': userAgent,
           'Cookie': cookie
         },
-        proxy: ip
+        proxy: ip,
+        timeout: 10000 // 十秒断开
       }, function (err, res, body) {
         if (err) reject(err)
         try {

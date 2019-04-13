@@ -277,7 +277,7 @@ class Spider extends Base {
           status: 200,
           message: '成功导出realUid到uids表中',
           data: {
-            'uids': realUids
+            'length': realUids.length // FIXME:不传给前台
           }
         })
       } catch (err) {

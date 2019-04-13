@@ -1,23 +1,13 @@
 import log4js from 'log4js'
 import path from 'path'
-import fs from "fs"
+import Tool from '../../tool/index'
 const basePath = path.resolve(__dirname, "../../logs")
-
 const errorPath = basePath + "/error/"
 const resPath = basePath + "/response/"
 
 const errorFilename = errorPath + "/error"
 const resFilename = resPath + "/response"
 
-/**
- * 确定目录是否存在，如果不存在则创建目录
- */
-const confirmPath = function(pathStr) {
-  if (!fs.existsSync(pathStr)) {
-    fs.mkdirSync(pathStr)
-    console.log("createPath: " + pathStr)
-  }
-}
 log4js.configure({
   appenders: {
     errorLog: {
@@ -46,10 +36,10 @@ log4js.configure({
 })
 //创建log的根目录'logs'
 if (basePath) {
-  confirmPath(basePath)
+  Tool.confirmPath(basePath)
   //根据不同的logType创建不同的文件目录
-  confirmPath(errorPath)
-  confirmPath(resPath)
+  Tool.confirmPath(errorPath)
+  Tool.confirmPath(resPath)
 }
 
 export default log4js
