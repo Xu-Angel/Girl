@@ -200,6 +200,12 @@ export default {
       })
     },
     genRealUid() {
+      this.$message({
+        message: 'v1.1.0版本，此脚本已废除',
+        type: 'warning'
+      })
+      /* eslint-disable */
+      return
       exportRealUid()
     },
     distinct() {

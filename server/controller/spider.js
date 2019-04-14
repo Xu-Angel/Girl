@@ -68,10 +68,9 @@ class Spider extends Base {
       const { cookie } = fields
       try {
         let Cur = new Date().getTime()
-        let realUidArr = await uidModel.distinct('realUid') // 映射
+        //V1.1.0使用总表
+        let realUidArr = await AllGirlModel.distinct('realUid') // 映射
         let finUidArr = await detailModel.distinct('realUid')
-        const ipList = await getipList()
-        await spiderModel.findOneAndUpdate({}, { $set: { cookie } })
         let realUids = null
 
         if (finUidArr.length > 0) {
@@ -86,8 +85,9 @@ class Spider extends Base {
           message: `爬取详细页任务已开始`,
           data: `查询耗时：${(new Date().getTime() - Cur) / 1000},剩余爬取数为${remainLength}`
         })
+        const ipList = await getipList()
+        await spiderModel.findOneAndUpdate({}, { $set: { cookie } })
         // 记录任务开始
-        await spiderModel.findOneAndUpdate({}, { $set: { detailStatus: 1 } })
         async.mapLimit(realUids, 100, async function (realUid, cb) {
           //way-1 详细任务开始 直接拿一波已有IP进行随机  每次请求都随机一个代理IP
           const row = ipList[parseInt(Math.random() * ipList.length)]
@@ -246,7 +246,7 @@ class Spider extends Base {
     })
   }
 
-  /**
+  /** WARRING: v0.1 去重方法  已废弃
    * 导出UID,生成UID表
    * @param {*} req 
    * @param {*} res 
