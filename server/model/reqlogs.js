@@ -7,7 +7,8 @@ const reqLogSchema = new Schema({
   ua: String,
   host: String,
   referer: String,
-  url: String
+  url: String,
+  ip: String
 })
 
 const reqLogs = mongoose.model('reqLogs', reqLogSchema)

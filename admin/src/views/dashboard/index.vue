@@ -14,7 +14,7 @@
       :girl-count="girlCount"
       :user-count="userCount"
       :finished-count="finishedCount"
-      :visit-count="visitCount"
+      :ip-count="ipCount"
     />
   </div>
 </template>
@@ -33,7 +33,8 @@ export default {
       visitCount: parseInt(Math.random() * 10000),
       finishedCount: 0,
       girlCount: 0,
-      userCount: 0
+      // userCount: 0,
+      ipCount: 0
     }
   },
   computed: {
@@ -45,10 +46,11 @@ export default {
   },
   created() {
     getCounts().then(rs => {
-      const { finishedCount, girlCount, userCount } = rs.data
+      const { finishedCount, girlCount, userCount, ipCount } = rs.data
       this.finishedCount = finishedCount
       this.girlCount = girlCount
       this.userCount = userCount
+      this.ipCount = ipCount
     })
   },
   methods: {

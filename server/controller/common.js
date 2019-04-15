@@ -2,6 +2,7 @@ import detailModel from '../model/details'
 import Base from './basePrototype'
 import allGirlModel from '../model/allgirls'
 import AdminModel from "../model/admins"
+import ipPoolModel from '../model/ippools'
 import formidable from 'formidable'
 class Common extends Base {
   constructor() {
@@ -18,12 +19,14 @@ class Common extends Base {
       const girlCount = await allGirlModel.estimatedDocumentCount() // 列表女性条数
       const finishedCount = await detailModel.estimatedDocumentCount() // 女性详情完成条数
       const userCount = await AdminModel.estimatedDocumentCount() // 用户数
+      const ipCount = await ipPoolModel.estimatedDocumentCount() // ip池条数
       res.send({
         status: 200,
         data: {
           girlCount,
           finishedCount,
-          userCount
+          userCount,
+          ipCount
         }
       })
     } catch (error) {

@@ -41,6 +41,7 @@
 |origin      |Y       |String  |- |origin|
 |ua      |Y       |String |-  |ua |
 |host      |Y       |String |-  |host |
+|ip      |Y       |String |-  |ip |
 |url      |Y       |String |-  |url |
 
 #### uid 女性uid表

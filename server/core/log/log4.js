@@ -1,4 +1,5 @@
 import log4js from './log4.config'
+import Tool from '../../tool/index'
 const errorLog = log4js.getLogger("errorLog") //此处使用category的值
 const resLog = log4js.getLogger("responseLog") //此处使用category的值
 
@@ -18,13 +19,7 @@ log4.e = function(ctx, error, resTime) {
 //格式化请求日志
 const formatReqLog = function(req, resTime) {
 
-  let getClientIp = function (req) {
-    return req.ip || req.headers['x-forwarded-for'] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress || ''
-  }
-  let ip = getClientIp(req).match(/\d+.\d+.\d+.\d+/)
+  let ip = Tool.getClientIp(req).match(/\d+.\d+.\d+.\d+/)
 
   let logText = new String()
   //访问方法

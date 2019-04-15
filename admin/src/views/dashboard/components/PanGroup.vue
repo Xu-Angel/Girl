@@ -36,11 +36,11 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-visitor">
-          <svg-icon icon-class="visitor" class-name="card-panel-icon" />
+          <svg-icon icon-class="ip_count" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">访问总数</div>
-          <count-to :start-val="0" :end-val="visitCount" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-text">IP池数量</div>
+          <count-to :start-val="0" :end-val="ipCount" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -58,7 +58,8 @@ export default {
     girlCount: { type: Number, default: 0 },
     userCount: { type: Number, default: 0 },
     finishedCount: { type: Number, default: 0 },
-    visitCount: { type: Number, default: 0 }
+    // visitCount: { type: Number, default: 0 },
+    ipCount: { type: Number, default: 0 }
   },
   methods: {
   }

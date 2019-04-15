@@ -23,10 +23,17 @@ const Tool = {
       fs.mkdirSync(pathStr)
       console.log("createPath: " + pathStr)
     }
+  },
+  /**
+   * 获取外网client的IP
+   * @param {request} req
+   */
+  getClientIp(req) {
+    return (req.ip || req.headers['x-forwarded-for'] ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      req.connection.socket.remoteAddress || '')
   }
-
 }
-
-
 
 export default Tool 

@@ -10,6 +10,7 @@
     >
       <el-table-column prop="time" align="center" label="访问时间"></el-table-column>
       <el-table-column prop="host" align="center" label="主机"></el-table-column>
+      <el-table-column prop="ip" align="center" label="IP"></el-table-column>
       <el-table-column prop="origin" align="center" label="origin"></el-table-column>
       <el-table-column prop="referer" label="referer" align="center"></el-table-column>
       <el-table-column prop="ua" label="ua" align="center"></el-table-column>

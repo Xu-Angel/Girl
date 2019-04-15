@@ -18,7 +18,7 @@ import log4 from './core/log/log4'
 import path from 'path'
 import serveStatic from 'serve-static'
 const app = express()
-
+app.set('trust proxy', 'loopback') // 获取外网IP
 app.all('*', async (req, res, next) => {
   const start = new Date()
   let ms
