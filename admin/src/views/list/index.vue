@@ -145,13 +145,18 @@ export default {
     ])
   },
   created() {
+    if (!this.$route.query.pageNum) {
+      this.$router.push({
+        path: '/girls/list',
+        query: {
+          area: this.region.province.substr(0, this.region.province.length - 1)
+        }
+      })
+    }
     const { uid, pageNum, ...params } = this.$route.query
     this.currentPage = Number(pageNum) || 1
     this.search = params || this.search
     this.uid = uid
-    if (!this.search.area && this.region) {
-      this.search.area = this.region.province
-    }
     this.fetchData()
     getSipderConfig().then(rs => {
       this.area = rs.data.area
