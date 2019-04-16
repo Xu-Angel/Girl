@@ -29,6 +29,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- e -->
+    <el-tree
+      ref="tree"
+      :data="data2"
+      show-checkbox
+      node-key="id"
+      :props="defaultProps"
+      @check="showNode"
+    ></el-tree>
+    <!-- t -->
     <div class="pagination-container">
       <el-pagination
         :total="total"
@@ -45,7 +55,8 @@
 
 <script>
 import { getList, delAdmin } from '@/api/admin'
-
+import { constantRouterMap } from '@/router/index'
+let newArr = []
 export default {
   filters: {
     statusFilter(status) {
@@ -63,15 +74,87 @@ export default {
       listLoading: true,
       currentPage: 1,
       total: 10000,
-      pageSize: 10
+      pageSize: 10,
+      data2: null,
+      defaultProps: {
+        children: 'children',
+        label: function (data, node) {
+          return data.meta.title || name
+        }
+      },
+      newArr: []
     }
   },
   created() {
-    this.fetchData()
+    const arr = []
+    console.log(constantRouterMap, '89')
+    constantRouterMap.forEach((v, id) => {
+      let ID = id + 1
+      v.id = ID
+      if (v.children) {
+        v.children.forEach((v, id) => {
+          v.id = ID * 10 + 1 + id
+        })
+      }
+          arr.push(v)
+
+    })
+    this.data2 = arr
+    newArr = this.data2
+    console.log(arr, '102')
+
+
   },
   methods: {
     handleSizeChange() { },
     selectionChange(rows) {
+    },
+    showNode(data, checked) {
+      console.log(data)
+      console.log(checked)
+      // checked.checkedKeys.forEach(v => {
+//     const ar = checked.checkedKeys
+//     let temp = []
+//     let arr = []
+// constantRouterMap.forEach((v, id) => {
+//       let ID = id + 1
+//       v.id = ID
+//       if (v.children) {
+//         v.children.forEach((v, id) => {
+//           v.id = ID * 10 + 1 + id
+//         })
+//       }
+//           arr.push(v)
+
+//     })
+//       // })
+//       // this.newArr.push(checkedNodes)
+//          ar.forEach(key => {
+//   // 第一级  选满
+//         arr.forEach(v => {
+//           if (v.id === parseInt(key / 10)) {
+//             temp.push(v)
+//           }
+//         })
+//     })
+//     ar.filter(v => v > 10)
+//     ar.forEach(key => {
+//   // 第二级  去除没xua
+//         temp.forEach(V => {
+//           /// 进入子级
+//           if (V.children) {
+//             const c = []
+//         V.children.forEach((v, id) => {
+//           if (v.id === key) {
+//               c.push(v)
+//           }
+//         })
+//         V.children = c
+//       }
+//         })
+//     })
+
+//     console.log(temp)
     },
     handleCurrentChange(changePage) {
       // 重新请求本路由页 回到顶部

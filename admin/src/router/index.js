@@ -22,32 +22,14 @@ import Layout from '../views/layout/Layout'
     breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
   }
 **/
-export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
-
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index')
-      }
-    ]
-  },
-
-  {
+/* eslint-disable */
+export const constantRouterMap = [{
     path: '/girls',
     component: Layout,
     redirect: '/girls/list',
     name: 'Girls',
     meta: { title: '妹子们', icon: 'girl' },
-    children: [
-      {
+    children: [{
         path: 'list',
         name: 'List',
         component: () => import('@/views/list/index'),
@@ -75,8 +57,7 @@ export const constantRouterMap = [
     name: 'Spider',
     redirect: '/spider/status',
     meta: { title: '爬取设置', icon: 'spider' },
-    children: [
-      {
+    children: [{
         path: 'status',
         name: 'SpiderStatus', // 命中vue文件名字 进行缓存 （socket页-保活）
         component: () => import('@/views/spider/index'),
@@ -96,7 +77,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
   {
     path: '/permission',
     component: Layout,
@@ -106,8 +86,7 @@ export const constantRouterMap = [
       title: '权限管理',
       icon: 'permission'
     },
-    children: [
-      {
+    children: [{
         path: 'admin',
         component: () => import('@/views/permission/admin/index'),
         name: 'Admin',
@@ -116,7 +95,6 @@ export const constantRouterMap = [
       {
         path: 'role',
         name: 'Role',
-        hidden: true,
         component: () => import('@/views/permission/role/index'),
         meta: { title: '角色列表', icon: 'role' }
       }
@@ -131,8 +109,7 @@ export const constantRouterMap = [
       title: '日志记录',
       icon: 'log'
     },
-    children: [
-      {
+    children: [{
         path: 'index',
         component: () => import('@/views/log/visit/index'),
         name: 'LogIndex',
@@ -162,14 +139,12 @@ export const constantRouterMap = [
       title: '个人中心',
       icon: 'center'
     },
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/center/index'),
-        name: 'InfoIndex',
-        meta: { title: '我的信息', icon: 'center' }
-      }
-    ]
+    children: [{
+      path: 'index',
+      component: () => import('@/views/center/index'),
+      name: 'InfoIndex',
+      meta: { title: '我的信息', icon: 'center' }
+    }]
   },
   {
     path: '/nested',
@@ -180,14 +155,12 @@ export const constantRouterMap = [
       title: '多层网',
       icon: 'nested'
     },
-    children: [
-      {
+    children: [{
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'Menu1' },
-        children: [
-          {
+        children: [{
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
@@ -198,8 +171,7 @@ export const constantRouterMap = [
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
             meta: { title: 'Menu1-2' },
-            children: [
-              {
+            children: [{
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
@@ -227,13 +199,28 @@ export const constantRouterMap = [
         meta: { title: 'menu2' }
       }
     ]
-  },
-  {
+  }
+]
+
+const routerStatic = [{
     path: 'external-link',
     component: Layout,
     children: [{
       path: 'https://github.com/Xu-Angel/Girl',
       meta: { title: '查看Github', icon: 'link' }
+    }]
+  },
+  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'Dashboard',
+    hidden: true,
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index')
     }]
   },
   { path: '*', redirect: '/404', hidden: true }
@@ -242,5 +229,5 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRouterMap.concat(routerStatic)
 })

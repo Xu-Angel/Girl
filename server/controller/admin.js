@@ -62,7 +62,7 @@ class Admin extends Base {
           res.send({
             status: 200,
             message: '注册管理员成功',
-            token: config.token,
+            token: req.session,
             data: {
               role: admin.role,
               avatar: admin.avatar,
