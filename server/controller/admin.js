@@ -284,7 +284,7 @@ class Admin extends Base {
         res.send({
           status: 200,
           data: info,
-          region: region.result
+          region: region.result.ad_info
         })
       }
     } catch (err) {

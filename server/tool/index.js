@@ -41,10 +41,13 @@ const Tool = {
    */
   getRegion(ip) {
     return new Promise((resolve, reject) => {
+      // let ip = '59.41.198.154'
       request({
-        url: ` http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=d8f5585d01ff69ea22e468d8ccbafbed`,
+        // url: `http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=d8f5585d01ff69ea22e468d8ccbafbed`,
+        url: `https://apis.map.qq.com/ws/location/v1/ip?ip=${ip}&key=FXSBZ-K2OHQ-PUQ57-GOWXM-ZM62Q-27FHP`,
       }, (err, res, body) => {
           if (res) {
+            console.log(body)
             resolve(body.replace(/^"/, '').replace(/"$/, ''))
           }
           if (err) {

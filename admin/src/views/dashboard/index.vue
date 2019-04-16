@@ -3,7 +3,7 @@
     <div class="dashboard-text">当前版本V1.1.0</div>
     <div
       class="dashboard-text"
-    >你好,{{ region ? ('来自' + region.Country + region.Province + region.City + '的') : '' }}管理员:{{ name }}</div>
+    >你好,{{ region ? ('来自' + region.nation + region.province + region.city + '的') : '' }}管理员:{{ name }}</div>
     <div class="dashboard-text">
       角色:
       <span>{{ roles == 1 ? '普通管理员' : '超级管理员' }}</span>

@@ -150,7 +150,7 @@ export default {
     this.search = params || this.search
     this.uid = uid
     if (!this.search.area && this.region) {
-      this.search.area = this.region.Province
+      this.search.area = this.region.city
     }
     this.fetchData()
     getSipderConfig().then(rs => {
