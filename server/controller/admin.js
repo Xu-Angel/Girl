@@ -280,14 +280,15 @@ class Admin extends Base {
       if (!info) {
         throw new Error('未找到当前管理员')
       } else {
-        const region = JSON.parse(await Tool.getRegion(Tool.getClientIp(req)) || '')
+        const region = await Tool.getRegion(Tool.getClientIp(req)) || ''
         res.send({
           status: 200,
           data: info,
-          region: region.result.ad_info
+          region: region && region.result.ad_info || ''
         })
       }
     } catch (err) {
+      console.log(err, 'in');
       console.log('获取管理员信息失败');
       res.send({
         status: 0,
