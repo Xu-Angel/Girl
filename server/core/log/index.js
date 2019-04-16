@@ -9,7 +9,7 @@ export function LogReq(req) {
   const ua = Tool.getBrowserInfo(req.headers['user-agent'])
   const referer = req.headers.referer
   const host = req.headers.host
-  const ip = Tool.getClientIp(req).match(/\d+.\d+.\d+.\d+/)
+  const ip = Tool.getClientIp(req)
   const url = req.url
 
   Tool.confirmPath(path.resolve(__dirname, `../../logs/req`))

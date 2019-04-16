@@ -8,7 +8,8 @@ const user = {
     avatar: '',
     roles: [],
     id: '',
-    createTime: ''
+    createTime: '',
+    region: null
   },
 
   mutations: {
@@ -17,6 +18,9 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_REGION: (state, region) => {
+      state.region = region
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -72,6 +76,7 @@ const user = {
             reject('getInfo: roles must be a non-null array !')
           }
           commit('SET_NAME', data.username)
+          commit('SET_REGION', response.region)
           commit('SET_ID', data.id)
           commit('SET_CREATETIME', data.createTime)
           commit('SET_AVATAR', !/^[a-z][a-z0-9+.-]*:/.test(data.avatar) && !/default_avatar/.test(data.avatar) ? process.env.BASE_API + data.avatar : '')

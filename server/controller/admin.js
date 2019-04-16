@@ -3,6 +3,7 @@ import formidable from 'formidable'
 import crypto from 'crypto'
 import Base from './basePrototype'
 import config from 'config-lite'
+import Tool from '../tool/index'
 class Admin extends Base {
   constructor() {
     super()
@@ -279,9 +280,11 @@ class Admin extends Base {
       if (!info) {
         throw new Error('未找到当前管理员')
       } else {
+        const region = JSON.parse(await Tool.getRegion(Tool.getClientIp(req)) || '')
         res.send({
           status: 200,
-          data: info
+          data: info,
+          region: region.result
         })
       }
     } catch (err) {

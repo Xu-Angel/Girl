@@ -102,7 +102,7 @@
 <script>
 import { getList } from '@/api/table'
 import { getSipderConfig } from '@/api/common'
-
+import { mapGetters } from 'vuex'
 export default {
   filters: {
     statusFilter(status) {
@@ -139,14 +139,21 @@ export default {
       uid: 0
     }
   },
+  computed: {
+    ...mapGetters([
+      'region'
+    ])
+  },
   created() {
     const { uid, pageNum, ...params } = this.$route.query
     this.currentPage = Number(pageNum) || 1
     this.search = params || this.search
     this.uid = uid
+    if (!this.search.area && this.region) {
+      this.search.area = this.region.Province
+    }
     this.fetchData()
     getSipderConfig().then(rs => {
-      console.log(rs)
       this.area = rs.data.area
       this.height = rs.data.height
       this.age = rs.data.age

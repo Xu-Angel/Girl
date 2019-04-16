@@ -19,7 +19,7 @@ log4.e = function(ctx, error, resTime) {
 //格式化请求日志
 const formatReqLog = function(req, resTime) {
 
-  let ip = Tool.getClientIp(req).match(/\d+.\d+.\d+.\d+/)
+  let ip = Tool.getClientIp(req)
 
   let logText = new String()
   //访问方法

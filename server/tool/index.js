@@ -1,4 +1,5 @@
 import fs from 'fs'
+import request from 'request'
 
 const Tool = {
   /**
@@ -32,7 +33,25 @@ const Tool = {
     return (req.ip || req.headers['x-forwarded-for'] ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress || '')
+      req.connection.socket.remoteAddress || '').match(/\d+.\d+.\d+.\d+/)
+  },
+  /**
+   * 根据IP返回信息
+   * @param {*} ip 
+   */
+  getRegion(ip) {
+    return new Promise((resolve, reject) => {
+      request({
+        url: ` http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=d8f5585d01ff69ea22e468d8ccbafbed`,
+      }, (err, res, body) => {
+          if (res) {
+            resolve(body.replace(/^"/, '').replace(/"$/, ''))
+          }
+          if (err) {
+            reject(err)
+          }
+      })
+    })
   }
 }
 
