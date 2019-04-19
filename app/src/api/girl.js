@@ -7,3 +7,11 @@ export function getList(data = {}) {
     data
   })
 }
+
+export function getDetail(data = {}) {
+  return request({
+    url: '/girl/getdetail',
+    method: 'post',
+    data
+  })
+}

@@ -1,76 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import { getList } from './api/girl.js'
+import Home from './views/Home/index'
+import List from './views/List/index'
+import Detail from './views/Detail/index'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+
+// 处理页面显示 总入口
+
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      items: null
-    }
-  }
-  componentDidMount() {
-    getList({
-      page: 1,
-      pageSize: 10
-    }).then(rs => {
-      this.setState({ items: rs.data.items })
-    })
-  }
   render() {
-    const items = this.state.items
-    console.log(items);
     return (
-      <div className="App">
-        <header className="App-header">
-          <ul>
-          {
-            items && items.map((v, i) => (
-              <li key={i}>
-                <p>{v.nickname}</p>
-              </li>)
-            )
-            }
-            </ul>
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="./"
-          >
-            Home
-          </a>
-          <a
-            className="App-link"
-            href="./Game"
-          >
-            Game
-          </a>
-          <a
-            className="App-link"
-            href="./Toggle"
-          >
-            Toggle
-          </a>
-          <a
-            className="App-link"
-            href="./Hook"
-          >
-            Hook
-          </a>
-          <a
-            className="App-link"
-            href="./State"
-          >
-            State
-          </a>
-        </header>
-      </div>
-    );
+      <BrowserRouter>
+      <Switch>
+        <Route exact path='/' component={Home}/>
+        <Route exact path='/list' component={List}/>
+        <Route exact path='/detail' component={Detail}/>
+      </Switch>
+      </BrowserRouter>
+    )
   }
 }
+
 
 export default hot(module)(App);

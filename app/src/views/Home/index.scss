@@ -1,0 +1,13 @@
+.bottom {
+  width: 100vw;
+  height: 10vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #D65CFF;
+  div {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+  }
+}

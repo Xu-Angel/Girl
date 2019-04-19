@@ -1,0 +1,46 @@
+.detail-container {
+  width: 100vw;
+
+  .figure-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .figure-list:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .figure-list li {
+    list-style: none;
+    float: left;
+    width: 23.5%;
+    margin: 0 2% 2% 0;
+  }
+
+  .figure-list figure {
+    border: 1px solid #000;
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding-bottom: 100%;
+    /* 关键就在这里 */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .figure-list figure a {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+  }
+}
