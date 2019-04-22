@@ -16,3 +16,5 @@ server/logs/req/
 server/logs/response/
 
 server/public/img/
+
+server/public/

@@ -18,12 +18,13 @@
   .figure-list li {
     list-style: none;
     float: left;
-    width: 23.5%;
-    margin: 0 2% 2% 0;
+    width: 31%;
+    margin: 1%;
+    // margin: 0 2% 2% 0;
   }
 
   .figure-list figure {
-    border: 1px solid #000;
+    border: 1px solid #f1f2f7;
     position: relative;
     width: 100%;
     height: 0;

@@ -1,4 +1,7 @@
 .bottom {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   width: 100vw;
   height: 10vw;
   display: flex;
@@ -9,5 +12,8 @@
     flex: 1;
     text-align: center;
     color: #fff;
+    a {
+      text-decoration: none;
+    }
   }
 }

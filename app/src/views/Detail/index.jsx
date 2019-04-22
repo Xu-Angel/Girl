@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './index.scss'
 import { getDetail } from '../../api/girl'
-import { Link } from 'react-router-dom'
 
 class Detail extends Component {
   constructor(props) {
@@ -23,9 +22,8 @@ class Detail extends Component {
     console.log( this.state.detail, 'i');
     return (
       <div className="detail-container">
-        <Link to='./'>首页</Link>
         <div dangerouslySetInnerHTML={{ __html: this.state.detail && this.state.detail['自我介绍'] }}></div>
-        <ul class="figure-list">
+        <ul className="figure-list">
         {
           this.state.detail && this.state.detail['照片'].big.map((v, i) => 
             (
