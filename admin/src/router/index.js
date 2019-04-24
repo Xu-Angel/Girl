@@ -49,20 +49,20 @@ export const constantRouterMap = [
     children: [
       {
         path: 'list',
-        name: 'List',
+        name: 'GilrList',
         component: () => import('@/views/list/index'),
         meta: { title: '列表', icon: 'list' }
       },
       {
         path: 'detail',
-        name: 'Detail',
+        name: 'GirlDetail',
         hidden: true,
         component: () => import('@/views/list/detail/index'),
         meta: { title: '详情', icon: 'tree' }
       },
       {
         path: 'chart',
-        name: 'Chart',
+        name: 'GirlChart',
         component: () => import('@/views/list/chart/index'),
         meta: { title: '图表', icon: 'chart' }
       }

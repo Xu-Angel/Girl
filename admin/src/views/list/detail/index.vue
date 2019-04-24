@@ -117,6 +117,7 @@ import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer/src/component.vue'
 
 export default {
+  name: 'GirlDetail',
   components: {
     Viewer
   },

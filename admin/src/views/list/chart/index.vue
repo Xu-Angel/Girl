@@ -5,6 +5,7 @@
 <script>
 
 export default {
+  name: 'GirlChart',
   data() {
     return {
       uid: 0

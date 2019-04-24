@@ -39,6 +39,7 @@
 import { getVisit, delReq } from '@/api/log'
 
 export default {
+  name: 'LogIndex',
   data() {
     return {
       list: null,

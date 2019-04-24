@@ -46,6 +46,7 @@
 import { getIpList, checkIp, startSpiIpPool, distinct } from '@/api/ip'
 
 export default {
+  name: 'Ip',
   data() {
     return {
       list: null,

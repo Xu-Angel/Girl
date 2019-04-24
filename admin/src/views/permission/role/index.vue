@@ -47,6 +47,7 @@
 import { getList, delAdmin } from '@/api/admin'
 
 export default {
+  name: 'Role',
   filters: {
     statusFilter(status) {
       const statusMap = {

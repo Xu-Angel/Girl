@@ -104,6 +104,7 @@ import { getList } from '@/api/table'
 import { getSipderConfig } from '@/api/common'
 import { mapGetters } from 'vuex'
 export default {
+  name: 'GilrList',
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -149,7 +150,7 @@ export default {
       this.$router.push({
         path: '/girls/list',
         query: {
-          area: this.region.province.substr(0, this.region.province.length - 1)
+          area: this.region.province && this.region.province.substr(0, this.region.province.length - 1) || ''
         }
       })
     }

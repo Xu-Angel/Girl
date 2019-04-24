@@ -35,7 +35,7 @@ export default {
       visitCount: parseInt(Math.random() * 10000),
       finishedCount: 0,
       girlCount: 0,
-      // userCount: 0,
+      userCount: 0,
       ipCount: 0
     }
   },

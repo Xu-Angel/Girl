@@ -53,6 +53,7 @@ import store from '../../store'
 import { updateInfo } from '@/api/admin'
 
 export default {
+  name: 'InfoIndex',
   data() {
     const checkName = (rule, value, callback) => {
       if (!value) {

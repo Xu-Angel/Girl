@@ -57,6 +57,7 @@
 import { getFile, delFile } from '@/api/log'
 
 export default {
+  name: 'LogFile',
   data() {
     return {
       list: null,

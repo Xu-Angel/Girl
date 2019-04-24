@@ -87,6 +87,7 @@
 import { getSipderConfig } from '@/api/common'
 import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid } from '@/api/spider'
 export default {
+  name: 'Config',
   data() {
     return {
       age: [],
