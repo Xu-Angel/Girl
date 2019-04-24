@@ -7,13 +7,17 @@ const Tool = {
    * @param {*} ua
    */
   getBrowserInfo(ua) {
+   try {
     let Sys = {}
     ua = ua.toLowerCase()
     let re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/
     let m = ua.match(re)
-    Sys.browser = m[1].replace(/version/, "'safari")
-    Sys.ver = m[2]
+    Sys.browser =  m && m[1] && m[1].replace(/version/, "'safari") || ''
+    Sys.ver = m && m[2] && m[2] || ''
     return Sys.browser + "的版本是：" + Sys.ver
+   } catch (error) {
+     console.log('获取浏览器信息出错：' + error)
+   }
   },
   /**
    * 判断文件夹是否存在 并创建
