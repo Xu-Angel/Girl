@@ -11,9 +11,13 @@ const Tool = {
     ua = ua.toLowerCase()
     let re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/
     let m = ua.match(re)
-    Sys.browser = m[1].replace(/version/, "'safari")
-    Sys.ver = m[2]
-    return Sys.browser + "的版本是：" + Sys.ver
+    if (m) {
+      Sys.browser = m[1] && m[1].replace(/version/, "'safari") || ''
+      Sys.ver = m[2] && m[2] || ''
+      return Sys.browser + "的版本是：" + Sys.ver
+    } else {
+      return ''
+    }
   },
   /**
    * 判断文件夹是否存在 并创建
