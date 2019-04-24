@@ -14,14 +14,13 @@ const m = ['丧偶', '离异', '未婚']
  * 给每条数据进行权重计算
 */
 export async function setTop() {
-  const girls = await AllGirlModel.find({top: 0})
   let numArr = []
-  const len = girls.length
+  const len = await AllGirlModel.count({top: 0})
   for (let i = 0; i < len; i++) {
     numArr.push(i)
   }
   async.mapLimit(numArr, 100, async function (num, cb) {
-    const girl = girls[num]
+    const girl = await AllGirlModel.findOne({ top: 0 })
     const realUid = girl['realUid']
     let top = 0
     top += m.findIndex(e => e === girl['marriage']) * 5 // 婚姻
@@ -34,6 +33,6 @@ export async function setTop() {
     await AllGirlModel.findOneAndUpdate({ realUid }, { $set: { top } }).exec()
     cb(null, realUid)
   }, function (err, rs) {
-    console.log(`本次设置权重的的realUid：\n${rs}`, '权重设置完成')
+    console.log(`本次设置权重的realUid：\n${rs}`, '权重设置完成')
   })
 }
