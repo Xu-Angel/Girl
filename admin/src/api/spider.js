@@ -31,3 +31,11 @@ export function exportRealUid(data = {}) {
     data
   })
 }
+
+export function setTop(data = {}) {
+  return request({
+    url: '/spider/setTop',
+    method: 'post',
+    data
+  })
+}

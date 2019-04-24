@@ -1,13 +1,27 @@
 const schedule = require('node-schedule')
 import moment from 'moment'
-import { getIpPool } from '../ip/index'
+import { getIpPool,checkIpPool } from '../ip/index'
 import { default as getList2Json } from '../spider/getList2Json'
+import { setTop } from './sortTask'
 
 export default function () {
-  // 每20分钟爬取一次IP池
-  const IPTask = schedule.scheduleJob('*/20 * * * *', async function () {
-    console.log('IP池定时任务开始执行!', moment().format('YYYY-MM-DD HH:mm:ss'))
+
+  // 每个钟点的20分钟倍数爬取一次IP池
+  const IpTask = schedule.scheduleJob('*/20 * * * *', async function () {
+    console.log('IP池爬取任务开始执行!', moment().format('YYYY-MM-DD HH:mm:ss'))
     await getIpPool()
+  })
+
+  // 每个钟点的30分钟倍数检查一次代理池
+  const CheckIpPoolTask = schedule.scheduleJob('*/30 * * * *', async function () {
+    console.log('IP池检查任务开始执行!', moment().format('YYYY-MM-DD HH:mm:ss'))
+    await checkIpPool()
+  })
+
+  // 检查权重
+  const SortTask = schedule.scheduleJob('30 1 05 * * *', async function () {
+    console.log('检查权重开始执行!', moment().format('YYYY-MM-DD HH:mm:ss'))
+    await setTop()
   })
 
   const params = {

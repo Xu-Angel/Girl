@@ -45,7 +45,7 @@
           @click.native.prevent="handleLogin"
         >登录/注册</el-button>
       </el-form-item>
-      <div class="tips">当前版本v1.1.0</div>
+      <div class="tips">当前版本v1.1.1<span style="margin-left:20px;color: pink">@#第一次登录就是注册#@</span></div>
     </el-form>
   </div>
 </template>

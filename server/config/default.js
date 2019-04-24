@@ -12,5 +12,6 @@ module.exports = {
       maxAge: 5 * 60 * 60 * 1000,  // 5hours -> millisecondes
     }
   },
-  token: 'Girl'
+  token: 'Girl',
+  ipKey: 'FXSBZ-K2OHQ-PUQ57-GOWXM-ZM62Q-27FHP' // 请替换为自己的腾讯位置服务开发密匙https://lbs.qq.com/console/mykey.html?console=mykey
 }

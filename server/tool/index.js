@@ -1,6 +1,6 @@
 import fs from 'fs'
 import request from 'request'
-
+import config from 'config-lite' // 1.V 版本调用方式
 const Tool = {
   /**
    * 根据UA返回来浏览器信息
@@ -42,18 +42,15 @@ const Tool = {
   getRegion(ip) {
     return new Promise((resolve, reject) => {
       request({
-        // url: `http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=d8f5585d01ff69ea22e468d8ccbafbed`,
-        url: `https://apis.map.qq.com/ws/location/v1/ip?ip=${ip}&key=FXSBZ-K2OHQ-PUQ57-GOWXM-ZM62Q-27FHP`,
+        url: `https://apis.map.qq.com/ws/location/v1/ip?ip=${ip}&key=${config.ipKey}`
       }, (err, res, bo) => {
           if (res) {
             const body = JSON.parse(bo)
-            console.log(body.status, 'd')
             if (body.status === 0) {
               resolve(body)
             } else {
               resolve('')
             }
-            // resolve(body.replace(/^"/, '').replace(/"$/, ''))
           }
           if (err) {
             resolve('')

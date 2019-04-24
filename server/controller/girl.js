@@ -50,10 +50,10 @@ class Girl extends Base {
       try {
         const total = await AllGirlModel.countDocuments({ ...params })
         let girl = null
-        if (total < 10) { //TODO: 优先展示排序规则  1-最新完成爬取页的在前面 2-没完成的话就根据最新创建时间在前面
-          girl = await AllGirlModel.find({ ...params }).sort({ 'finishTime': -1, 'createTime': -1 })
+        if (total < 10) {
+          girl = await AllGirlModel.find({ ...params }).sort({ 'top': -1 })
         } else {
-          girl = await AllGirlModel.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ 'finishTime': -1, 'createTime': -1 })
+          girl = await AllGirlModel.find({ ...params }).skip((page - 1) * pageSize).limit(pageSize).sort({ 'top': -1})
         }
         res.send({
           status: 200,
@@ -112,6 +112,49 @@ class Girl extends Base {
         res.send({
           status: 400,
           message: `查询失败,失败原因:${err}`
+        })
+      }
+    })
+  }
+  /**
+   * 更新女性权重值
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async updateTop(req, res, next) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        res.send({
+          status: 100,
+          message: '表单信息错误'
+        })
+        return
+      }
+      const { realUid, type } = fields
+      try {
+        if (!realUid) {
+          throw new Error('参数错误')
+        }
+      } catch (err) {
+        res.send({
+          status: 400,
+          message: err.message,
+        })
+        return
+      }
+      try {
+        const setp = type ? 10 : -10
+        await AllGirlModel.findOneAndUpdate({ realUid }, { $inc: { top: setp } }).exec()
+        res.send({
+          status: 200,
+          message: '操作成功'
+        })
+      } catch (err) {
+        res.send({
+          status: 400,
+          message: `增加失败,失败原因:${err}`
         })
       }
     })

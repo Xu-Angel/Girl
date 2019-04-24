@@ -50,6 +50,7 @@ export const constantRouterMap = [
       {
         path: 'list',
         name: 'GilrList',
+        noCache: true,
         component: () => import('@/views/list/index'),
         meta: { title: '列表', icon: 'list' }
       },

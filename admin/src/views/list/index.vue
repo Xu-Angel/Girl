@@ -38,6 +38,7 @@
       fit
       style="width: 100%"
     >
+      <el-table-column prop="top" align="center" label="热度"></el-table-column>
       <el-table-column prop="nickname" align="center" label="昵称"></el-table-column>
       <el-table-column prop="marriage" class-name="status-col" label="婚史" align="center" width="80">
         <template slot-scope="scope">
@@ -100,7 +101,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getList } from '@/api/girl'
 import { getSipderConfig } from '@/api/common'
 import { mapGetters } from 'vuex'
 export default {

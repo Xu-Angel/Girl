@@ -42,7 +42,12 @@ export function pushOne(area, I = 1, endPage) {
     try {
       const json = require(path.resolve(__dirname, `../../db/json/${area}/${I}.json`))
       await json.userInfo.forEach(async (v, i) => {
-        await new GirlModel({ ...v, area, createTime: new Date() }).save(function (err, data) {
+        // 设置初始权重
+        const m = ['丧偶', '离异', '未婚']
+        let top = 0
+        top += m.findIndex(e => e === v['marriage']) * 5 // 婚姻
+        top += parseInt((10 / v['age']) * 50)// 年龄
+        await new GirlModel({ ...v, top, area, createTime: new Date() }).save(function (err, data) {
           if (err) {
             console.log(err)
             G.ListStatuspageErr = { 'text': `传送时间:${new Date()}--数据库写入${area}/${I}.json的第${i}条数据-时候发生错误：${err}` }

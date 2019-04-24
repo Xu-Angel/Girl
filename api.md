@@ -30,6 +30,8 @@ baseUrl: http://localhost:8088
 [22、删除某条路由访问记录](#22删除某条路由访问记录)<br/>
 [23、删除日志文件](#23删除日志文件)<br/>
 [24、获取日志文件列表](#24获取日志文件列表)<br/>
+[25、更新权重](#25更新权重)<br/>
+[26、开启设置权重任务](#26开启设置权重任务)<br/>
 ## 接口列表：
 ### 1、登录注册
 - [x] 状态 请求URL:  
@@ -285,5 +287,20 @@ eg: http://localhost:8088/log/delFile
 - [x] 状态 请求URL：
 ```
 eg: http://localhost:8088/log/getFile
+```
+### 24、获取日志文件列表
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/log/getFile
+```
+###25 更新权重
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/girl/updateTop
+```
+###26 开启设置权重任务
+- [x] 状态 请求URL：
+```
+eg: http://localhost:8088/spider/setTop
 ```
 

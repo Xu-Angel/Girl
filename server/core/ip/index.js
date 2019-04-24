@@ -115,3 +115,31 @@ export function check(ip) {
     }
   })
 }
+
+/**
+ * 代理池全局检查
+ */
+export async function checkIpPool() {
+  const ips = await ippoolSchema.find({})
+  let numArr = []
+  const len = ips.length
+  for (let i = 0; i < len; i++) {
+    numArr.push(i)
+  }
+  async.mapLimit(numArr, 50, function (num, cb) {
+    const tempData = ips[num]
+    const ip = tempData['type'] + '://' + tempData['host'] + ':' + tempData['port'] + '/'
+    const _id = tempData['_id']
+    check(ip).then(async (rs) => {
+      if (rs.code === 2 || rs === 0) {
+        ippoolSchema.deleteOne({_id}).exec()
+      }
+      cb(null, ip)
+    }).catch(err => {
+      ippoolSchema.deleteOne({_id}).exec()
+      cb(null, ip)
+    })
+  }, function (err, rs) {
+    console.log(`无效的IP：\n${rs}`, '代理池检查完成')
+  })
+}

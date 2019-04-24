@@ -2,6 +2,8 @@
   <div class="app-container">
     <!-- start -->
     <div style="text-align: right;padding-bottom: 20px;">
+      <el-button type="success" @click="like(1)">心动♡ʚ♡ɞ(ू• ̮ •ू❁)</el-button>
+      <el-button type="info" @click="like(0)">不心动💔</el-button>
       <el-button type="danger" @click="findme">联系我</el-button>
       <el-button class="return-list" icon="el-icon-back" @click="returnList">返回列表</el-button>
     </div>
@@ -112,7 +114,7 @@
 </template>
 
 <script>
-import { getDetail } from '@/api/table'
+import { getDetail, updateTop } from '@/api/girl'
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer/src/component.vue'
 
@@ -155,6 +157,9 @@ export default {
 
   },
   methods: {
+    like(type) {
+      updateTop({ realUid: this.uid, type })
+    },
     returnList() {
       this.$router.push({
         path: '/girls/list',

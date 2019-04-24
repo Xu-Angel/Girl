@@ -16,9 +16,10 @@ export function getDetail(data = {}) {
   })
 }
 
-export function distinctGirls() {
+export function updateTop(data = {}) {
   return request({
-    url: '/girl/distinct',
-    method: 'get'
+    url: '/girl/updateTop',
+    method: 'post',
+    data
   })
 }

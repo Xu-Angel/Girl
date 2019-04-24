@@ -8,6 +8,7 @@ import getList2Json from '../core/spider/getList2Json'
 import getDetail from '../core/spider/getdetail'
 import async from 'async'
 import { getipList } from '../core/config'
+import {setTop as _setTop} from '../core/schedule/sortTask'
 let G = global
 class Spider extends Base {
   constructor() {
@@ -166,6 +167,37 @@ class Spider extends Base {
         res.send({
           status: 100,
           message: `爬取列表页已开始~`
+        })
+      } catch (err) {
+        res.send({
+          status: 400,
+          message: `操作失败,失败原因:${err}`
+        })
+      }
+    })
+  }
+
+  /**
+   * 设置权重
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next 
+   */
+  async setTop(req, res, next) {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err, fields, files) => {
+      if (req.session.role !== 2) {
+        res.send({
+          status: 100,
+          message: '对不起，你没有权限操作~'
+        })
+        return
+      }
+      try {
+        await _setTop()
+        res.send({
+          status: 100,
+          message: `设置权重任务已开始~`
         })
       } catch (err) {
         res.send({

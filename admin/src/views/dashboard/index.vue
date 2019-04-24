@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">当前版本V1.1.0</div>
+    <div class="dashboard-text">当前版本V1.1.1</div>
     <div
       class="dashboard-text"
     >你好,{{ region ? ('来自' + region.nation + region.province + region.city + '的') : '' }}管理员:{{ name }}</div>

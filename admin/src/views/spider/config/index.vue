@@ -1,6 +1,7 @@
 <template>
   <div class="config-container">
     <el-row style="margin-bottom: 20px;">
+      <el-button type="danger" @click="toSetTop">更新权重</el-button>
       <el-button type="danger" @click="detailConfigDialog=true">详细页配置</el-button>
       <!-- <el-button type="danger" @click="spiDetail">爬取详细页数据</el-button> -->
       <el-button type="danger" @click="genRealUid">生成Uid表</el-button>
@@ -85,7 +86,7 @@
 
 <script>
 import { getSipderConfig } from '@/api/common'
-import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid } from '@/api/spider'
+import { updateTaskConfig, distinctGirl, spiDetailByRealUid, exportRealUid, setTop } from '@/api/spider'
 export default {
   name: 'Config',
   data() {
@@ -133,6 +134,9 @@ export default {
     })
   },
   methods: {
+    toSetTop() {
+      setTop()
+    },
     updateListConfig() {
       this.$refs['listConfig'].validate((valid) => {
         if (valid) {
