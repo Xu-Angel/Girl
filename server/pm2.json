@@ -21,6 +21,7 @@
     "max_restarts": 30,
     "autorestart": true,
     "cron_restart": "",
-    "restart_delay": 10
+    "restart_delay": 10,
+    "max_memory_restart": 350
   }
 }
