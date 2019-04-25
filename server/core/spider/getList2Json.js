@@ -74,6 +74,7 @@ export default function (config = {}) {
           'User-Agent': userAgent
         },
         proxy: ip,
+        timeout: 10000, // 十秒断开 列表任务用的是闭包 防止一直连接内存溢出
         // 2:24.25  年龄24-25
         // 28:1 高级白领
         formData: {
