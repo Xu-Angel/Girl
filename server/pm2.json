@@ -20,8 +20,8 @@
     "min_uptime": "600s",
     "max_restarts": 30,
     "autorestart": true,
-    "cron_restart": "",
-    "restart_delay": 10,
-    "max_memory_restart": 350
+    "cron_restart": "30 1 7 * * *",
+    "restart_delay": 1,
+    "max_memory_restart": "350M"
   }
 }
