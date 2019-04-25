@@ -49,7 +49,7 @@ export function pushOne(area, I = 1, endPage) {
         top += parseInt((10 / v['age']) * 50)// 年龄
         await new GirlModel({ ...v, top, area, createTime: new Date() }).save(function (err, data) {
           if (err) {
-            console.log(err)
+            // console.log(err)
             G.ListStatuspageErr = { 'text': `传送时间:${new Date()}--数据库写入${area}/${I}.json的第${i}条数据-时候发生错误：${err}` }
           } else {
             // 进度事件
@@ -62,7 +62,7 @@ export function pushOne(area, I = 1, endPage) {
       // console.log(`地区 ${area} 第 ${I} 页 JSON文件已删除`)
       resolve()
     } catch (error) {
-      console.log(`数据库写入${area}/${I}.json-时候发生错误：${error}`)
+      // console.log(`数据库写入${area}/${I}.json-时候发生错误：${error}`)
       // 错误事件
       G.ListStatuspageErr = { 'text': `传送时间:${new Date()}--数据库写入${area}/${I}.json-时候发生错误：${error}` }
       fs.renameSync(path.resolve(__dirname, `../../db/json/${area}/${I}.json`), path.resolve(__dirname, `../../db/json/${area}/problem_${I}.json`))

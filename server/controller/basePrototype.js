@@ -12,9 +12,9 @@ export default class BaseComponent {
    * @param {*} type 
    */
   async getId(type) {
-    console.log('11', this.idList, type)
+    // console.log('11', this.idList, type)
     if (!this.idList.includes(type)) {
-      console.log('id类型错误')
+      // console.log('id类型错误')
       throw new Error('id类型错误')
       return
     }
@@ -24,7 +24,7 @@ export default class BaseComponent {
       await idData.save()
       return idData[type]
     } catch (err) {
-      console.log('获取ID数据失败')
+      // console.log('获取ID数据失败')
       throw new Error(err)
     }
   }
@@ -42,7 +42,7 @@ export default class BaseComponent {
         try {
           img_id = await this.getId('img_id')
         } catch (err) {
-          console.log('获取图片id失败')
+          // console.log('获取图片id失败')
           fs.unlinkSync(files.file.path)
           reject('获取图片id失败')
         }
@@ -64,7 +64,7 @@ export default class BaseComponent {
           fs.renameSync(files.file.path, repath)
           resolve({ fullName, fields })
         } catch (err) {
-          console.log('保存图片失败', err)
+          // console.log('保存图片失败', err)
           if (fs.existsSync(repath)) {
             fs.unlinkSync(repath)
           } else {

@@ -70,7 +70,7 @@ export async function getIpPool() {
           G.IpStatusIpErr = { 'text': `requrest错误${err.error}，已过滤` }
         })
       }, function (err, rs) {
-        console.log(rs, '所有任务完成')
+        console.log('IP入库任务完成')
       })
     } catch (error) {
       console.log(error)
@@ -140,6 +140,6 @@ export async function checkIpPool() {
       cb(null, ip)
     })
   }, function (err, rs) {
-    console.log(`无效的IP：\n${rs}`, '代理池检查完成')
+    console.log('代理池检查完成')
   })
 }

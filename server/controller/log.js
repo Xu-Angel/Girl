@@ -117,10 +117,6 @@ class Log extends Base {
       const arr = []
       dir.forEach((v) => {
         if (fs.statSync(path.resolve(__dirname, `../logs/${type}/${v}`)).size > 0) {
-          console.log({
-            file: v,
-            type
-          })
           arr.push({
             file: v,
             type

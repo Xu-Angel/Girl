@@ -21,7 +21,7 @@ class Admin extends Base {
   async login(req, res, next) {
     const form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
-      console.log(fields);
+      // console.log(fields);
       if (err) {
         res.send({
           status: 100,
@@ -37,7 +37,7 @@ class Admin extends Base {
           throw new Error('密码参数错误')
         }
       } catch (err) {
-        console.log(err.message, err)
+        // console.log(err.message, err)
         res.send({
           status: 400,
           message: err.message
@@ -114,7 +114,7 @@ class Admin extends Base {
         message: '退出成功'
       })
     } catch (err) {
-      console.log('退出失败', err)
+      // console.log('退出失败', err)
       res.send({
         status: 400,
         message: '退出失败'
@@ -144,7 +144,7 @@ class Admin extends Base {
         avatar: data.fullName
       })
     } catch (err) {
-      console.log('上传图片失败', err)
+      // console.log('上传图片失败', err)
       res.send({
         status: 400,
         message: `上传图片失败${err}`
@@ -164,7 +164,7 @@ class Admin extends Base {
       form.parse(req, async (err, fields, files) => {
         const { oldPass, newPass, name, id } = fields
         const admin = await AdminModel.findOne({ id })
-        console.log(admin)
+        // console.log(admin)
         const oldpassword = this.encryption(oldPass)
         if (oldpassword.toString() != admin.password.toString()) {
           res.send({
@@ -267,7 +267,7 @@ class Admin extends Base {
   async getAdminInfo(req, res, next) {
     const admin_id = req.session.admin_id
     if (!admin_id || !Number(admin_id)) {
-      console.log('获取管理员信息的session失效')
+      // console.log('获取管理员信息的session失效')
       res.send({
         status: 400,
         type: 'ERROR_SESSION',
@@ -288,8 +288,8 @@ class Admin extends Base {
         })
       }
     } catch (err) {
-      console.log(err, 'in');
-      console.log('获取管理员信息失败');
+      // console.log(err, 'in');
+      // console.log('获取管理员信息失败');
       res.send({
         status: 0,
         type: 'GET_ADMIN_INFO_FAILED',

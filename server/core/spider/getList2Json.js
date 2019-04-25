@@ -100,7 +100,7 @@ export default function (config = {}) {
         } catch (error) {
           // 错误事件
           G.ListStatuspageErr = { 'text': `爬取列表页的时候发生错误:${error}` }
-          console.log(`爬取列表页的时候发生错误:${error}`)
+          // console.log(`爬取列表页的时候发生错误:${error}`)
         }
       })
     }

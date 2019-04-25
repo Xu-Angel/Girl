@@ -17,7 +17,6 @@ class Ip extends Base {
   async getIpList(req, res, next) {
     const form = new formidable.IncomingForm()
     form.parse(req, async (err, fields, files) => {
-      console.log(fields);
       if (err) {
         res.send({
           status: 100,
@@ -168,7 +167,7 @@ class Ip extends Base {
         message: `去重成功,现在条数:${data.length}`
       })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
     }
   }
   /**

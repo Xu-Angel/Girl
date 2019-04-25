@@ -122,15 +122,15 @@ class Spider extends Base {
 
             }
           }).catch(err => {
-            console.log(err)
+            // console.log(err)
             cb(null, ' ')
           })
         }, async (err, data) => {
-          console.log(`所有任务完成：${data}`)
+          console.log(`详细页爬取任务完成`)
         })
 
       } catch (err) {
-        console.log(err)
+        // console.log(err)
         // 发送邮件 报错
         // res.send({
         //   status: 400,

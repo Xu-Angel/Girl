@@ -25,7 +25,7 @@ const girlSchema = new Schema({
 })
 girlSchema.index({ 'realUid': 1, }, { unique: true })
 girlSchema.index({ 'createTime': -1, })
-girlSchema.index({ 'finishTime': -1, })
+girlSchema.index({ 'top': -1, })
 // girlSchema.index({ 'realUid': 1 })
 
 const Girl = mongoose.model('allgirl', girlSchema)
