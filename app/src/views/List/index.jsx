@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import './index.scss'
+// import './index.scss'
+import style from './index.scss'
 import { getList } from '../../api/girl'
 import { Link } from 'react-router-dom'
 
@@ -38,7 +39,7 @@ class List extends Component {
   render() {
     const items = this.state.items
     return (
-      <div className="list-container">
+      <div className={style.listContainer}>
         {
           items && items.map((v, i) => (v.status && <Link to={`./detail?id=${v.realUid}`} className="ava-wrap" key={i} id={v.realUid}><img alt=" " className="ava" src={v.image} /></Link>)
               )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './index.scss'
+import style from './index.scss'
 import { Link } from 'react-router-dom'
 
 class My extends Component {
@@ -13,7 +13,7 @@ class My extends Component {
   }
   render() {
     return (
-      <div className="my-container">
+      <div className={style.mycontainer}>
         这是My
       </div>
     );
