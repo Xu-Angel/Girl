@@ -5,7 +5,7 @@ import { default as getList2Json } from '../spider/getList2Json'
 import { setTop } from './sortTask'
 
 export default function () {
-
+  // TODO: global.gc();
   // 每30分钟倍数爬取一次IP池
   const IpTask = schedule.scheduleJob('*/30 * * * *', async function () {
     console.log('IP池爬取任务开始执行!', moment().format('YYYY-MM-DD HH:mm:ss'))

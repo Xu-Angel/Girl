@@ -31,7 +31,7 @@ app.all('*', async (req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
     res.header("Access-Control-Allow-Credentials", true) //可以带cookies
-    res.Header("Access-Control-Max-Age", "3600") //字段可选，用来指定本次预检请求的有效期，单位为秒。
+    res.header("Access-Control-Max-Age", "3600") //字段可选，用来指定本次预检请求的有效期，单位为秒。
     res.header("X-Powered-By", 'Express')
     // res.header("X-Token", config.token)
     if (req.method == 'OPTIONS') {
