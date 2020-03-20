@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./g2plot.js"></script>
+</head>
+
+<body>
+  <div id="canvas"></div>
+  <script>
+    function renderLine() {
+      const linePlot = new G2Plot.Line('canvas', {
+        data,
+        xField: 'date',
+        yField: 'count',
+      });
+
+      linePlot.render();
+    }
+    const data = JSON.parse(localStorage.getItem('_data'))
+    if (data) {
+    renderLine()
+    } else {
+      var request = new XMLHttpRequest();
+      request.open("GET", 'http://localhost:8088/statistics/getLine');
+      request.send();
+      request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+          if (request.status === 200) {
+            console.log(JSON.parse(request.response))
+            const data = JSON.parse(request.response).data.LineCount
+            localStorage.setItem('_data', JSON.stringify(data))
+            renderLine()
+          } else {
+            alert("发生错误：" + request.status);
+          }
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
