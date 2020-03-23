@@ -89,7 +89,7 @@ class Spider extends Base {
         const ipList = await getipList()
         await spiderModel.findOneAndUpdate({}, { $set: { cookie } })
         // 记录任务开始
-        async.mapLimit(realUids, 100, async function (realUid, cb) {
+        async.mapLimit(realUids, 500, async function (realUid, cb) {
           //way-1 详细任务开始 直接拿一波已有IP进行随机  每次请求都随机一个代理IP
           const row = ipList[parseInt(Math.random() * ipList.length)]
           const ip = `${row.type}://${row.host}:${row.port}/`
@@ -207,6 +207,7 @@ class Spider extends Base {
       }
     })
   }
+  
 
   /**
    * WARRING: v0.1 去重方法  已废弃

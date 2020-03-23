@@ -4,6 +4,9 @@ import allGirlModel from '../model/allgirls'
 import AdminModel from "../model/admins"
 import ipPoolModel from '../model/ippools'
 import formidable from 'formidable'
+import { stc } from "../core/config"
+
+
 class Common extends Base {
   constructor() {
     super()
@@ -24,6 +27,12 @@ class Common extends Base {
       new Date('2019-04-01').getTime()
       new Date('2020-01-03').getTime()
       */
+      const Province = Object.keys(stc)
+      const provicePeople = []
+      for (const val of Province) {
+        const people = await allGirlModel.count({ area: val })
+        provicePeople.push({province: val, count: people})
+      }
       const dayMil = 86400000
       const startDayMil = new Date('2019-04-01').getTime()
       const dayCount = (new Date('2020-01-03').getTime() - new Date('2019-04-01').getTime()) / dayMil
@@ -37,17 +46,15 @@ class Common extends Base {
       res.send({
         status: 200,
         data: {
-          girlCount,
-          finishedCount,
-          userCount,
-          ipCount,
-          LineCount: LineArr
+          LineCount: LineArr,
+          stc: Province,
+          provicePeopleCount: provicePeople
         }
       })
     } catch (error) {
       res.send({
         status: 400,
-        message: `获取失败,失败原因:${err}`
+        message: `获取失败,失败原因:${error}`
       })
     }
   }

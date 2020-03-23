@@ -10,8 +10,9 @@
 
 <body>
   <div id="canvas"></div>
+  <div id="canvas1"></div>
   <script>
-    function renderLine() {
+    function renderLine(data) {
       const linePlot = new G2Plot.Line('canvas', {
         data,
         xField: 'date',
@@ -20,9 +21,32 @@
 
       linePlot.render();
     }
+
+    function renderPeoLine(dataPeo) {
+      const linePlot = new G2Plot.Histogram('canvas1', {
+        title: {
+          visible: true,
+          text: '直方图',
+        },
+        description: {
+          visible: true,
+          text: '通过设置binNumber进行分箱，binNumber决定直方图分箱的区域。',
+        },
+        forceFit: true,
+        data: dataPeo,
+        padding: 'auto',
+        binField: 'province',
+        binNumber: 1,
+        color: '#1079a0',
+      });
+
+      linePlot.render();
+    }
     const data = JSON.parse(localStorage.getItem('_data'))
-    if (data) {
-    renderLine()
+    const dataPeo = JSON.parse(localStorage.getItem('_dataPeo'))
+    if (data && dataPeo) {
+      renderLine(data)
+      renderPeoLine(dataPeo)
     } else {
       var request = new XMLHttpRequest();
       request.open("GET", 'http://localhost:8088/statistics/getLine');
@@ -32,7 +56,9 @@
           if (request.status === 200) {
             console.log(JSON.parse(request.response))
             const data = JSON.parse(request.response).data.LineCount
+            const dataPeo = JSON.parse(request.response).data.provicePeopleCount
             localStorage.setItem('_data', JSON.stringify(data))
+            localStorage.setItem('_dataPeo', JSON.stringify(dataPeo))
             renderLine()
           } else {
             alert("发生错误：" + request.status);
