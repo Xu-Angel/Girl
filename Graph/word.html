@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./g2plot.js"></script>
+</head>
+
+<body>
+  <div id="canvas2"></div>
+  <script>
+    function getDataList(data) {
+      const list = [];
+      // change data type
+      data.forEach((d) => {
+        list.push({
+          word: d.word,
+          weight: d.count,
+          id: list.length,
+        });
+      });
+      return list;
+    }
+
+    function getWordCloudConfig(data) {
+      return {
+        width: 1000,
+        height: 1000,
+        forceFit: true,
+        data: getDataList(data),
+        maskImage: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*07tdTIOmvlYAAAAAAAAAAABkARQnAQ',
+        wordStyle: {
+          rotation: [-Math.PI / 2, Math.PI / 2],
+          rotateRatio: 0.5,
+          gridSize: 16,
+          rotationSteps: 4,
+          fontSize: [16, 120],
+          color: (word, weight) => {
+            return getRandomColor();
+          },
+          active: {
+            shadowColor: '#333333',
+            shadowBlur: 10,
+          },
+          gridSize: 8,
+        },
+        shape: 'diamond',
+        shuffle: false,
+        backgroundColor: '#fff',
+        tooltip: {
+          visible: true,
+        },
+        selected: -1,
+
+        onWordCloudHover: hoverAction,
+      };
+    }
+
+    function getRandomColor() {
+      const arr = [
+        '#5B8FF9',
+        '#5AD8A6',
+        '#5D7092',
+        '#F6BD16',
+        '#E8684A',
+        '#6DC8EC',
+        '#9270CA',
+        '#FF9D4D',
+        '#269A99',
+        '#FF99C3',
+      ];
+      return arr[Math.floor(Math.random() * (arr.length - 1))];
+    }
+
+    function hoverAction(item, dimension, evt, start) {
+      // console.log('hover action', item && item.word);
+    }
+    const data = JSON.parse(localStorage.getItem('_dataWord'))
+    if (data) {
+      const wordCloudPlot = new G2Plot.WordCloud('canvas2', getWordCloudConfig(data));
+      wordCloudPlot.render();
+    } else {
+      var request = new XMLHttpRequest();
+      request.open("GET", 'http://localhost:8088/statistics/getWords');
+      request.send();
+      request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+          if (request.status === 200) {
+            const marriagePeo = JSON.parse(request.response).data.ar
+            localStorage.setItem('_dataWord', JSON.stringify(marriagePeo))
+            const wordCloudPlot = new G2Plot.WordCloud('canvas2', getWordCloudConfig(marriagePeo));
+            wordCloudPlot.render();
+          } else {
+            alert("发生错误：" + request.status);
+          }
+        }
+
+      }
+    }
+  </script>
+</body>
+
+</html>
