@@ -27,16 +27,16 @@
     function getWordCloudConfig(data) {
       return {
         width: 1000,
-        height: 1000,
+        height: 900,
         forceFit: true,
         data: getDataList(data),
-        maskImage: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*07tdTIOmvlYAAAAAAAAAAABkARQnAQ',
+        // maskImage: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*07tdTIOmvlYAAAAAAAAAAABkARQnAQ',
         wordStyle: {
           rotation: [-Math.PI / 2, Math.PI / 2],
           rotateRatio: 0.5,
           gridSize: 16,
           rotationSteps: 4,
-          fontSize: [16, 120],
+          fontSize: [20, 120],
           color: (word, weight) => {
             return getRandomColor();
           },
@@ -46,7 +46,7 @@
           },
           gridSize: 8,
         },
-        shape: 'diamond',
+        shape: 'circle',
         shuffle: false,
         backgroundColor: '#fff',
         tooltip: {
@@ -78,7 +78,7 @@
       // console.log('hover action', item && item.word);
     }
     const data = JSON.parse(localStorage.getItem('_dataWord'))
-    if (data) {
+    if (false) {
       const wordCloudPlot = new G2Plot.WordCloud('canvas2', getWordCloudConfig(data));
       wordCloudPlot.render();
     } else {
